@@ -13,6 +13,7 @@
 		2A40D06928695A9C0068CD7A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A40D06828695A9C0068CD7A /* Preview Assets.xcassets */; };
 		2A40D06B28695A9C0068CD7A /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A40D06A28695A9C0068CD7A /* Persistence.swift */; };
 		2A40D06E28695A9C0068CD7A /* tokuMemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2A40D06C28695A9C0068CD7A /* tokuMemo.xcdatamodeld */; };
+		2A40D077286B29260068CD7A /* TokuMemoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A40D076286B29260068CD7A /* TokuMemoListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +24,7 @@
 		2A40D06828695A9C0068CD7A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2A40D06A28695A9C0068CD7A /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		2A40D06D28695A9C0068CD7A /* tokuMemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = tokuMemo.xcdatamodel; sourceTree = "<group>"; };
+		2A40D076286B29260068CD7A /* TokuMemoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokuMemoListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +59,7 @@
 			children = (
 				2A40D06128695A990068CD7A /* tokuMemoApp.swift */,
 				2A40D06328695A990068CD7A /* ContentView.swift */,
+				2A40D076286B29260068CD7A /* TokuMemoListView.swift */,
 				2A40D06528695A9C0068CD7A /* Assets.xcassets */,
 				2A40D06A28695A9C0068CD7A /* Persistence.swift */,
 				2A40D06C28695A9C0068CD7A /* tokuMemo.xcdatamodeld */,
@@ -167,6 +170,7 @@
 				2A40D06B28695A9C0068CD7A /* Persistence.swift in Sources */,
 				2A40D06428695A990068CD7A /* ContentView.swift in Sources */,
 				2A40D06E28695A9C0068CD7A /* tokuMemo.xcdatamodeld in Sources */,
+				2A40D077286B29260068CD7A /* TokuMemoListView.swift in Sources */,
 				2A40D06228695A990068CD7A /* tokuMemoApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
