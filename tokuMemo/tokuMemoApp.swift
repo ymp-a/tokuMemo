@@ -13,7 +13,7 @@ struct tokuMemoApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TokuMemoListView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
