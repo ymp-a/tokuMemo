@@ -11,30 +11,10 @@ struct CategoryListView: View {
     var body: some View {
         ZStack {
             VStack {
-                HStack {
-                    Spacer()
-                    Spacer()
-
+                HStack(alignment: .center) {
                     Text("カテゴリー（大分類）")
-
-                    Spacer()
-                    VStack {
-                        Button(action: {
-                            // タップで画面表示させる
-                        }, label: {
-                            // 追加Viewへ遷移する
-                            Image(systemName: "plus")
-                                .font(.system(size: 24))
-                                .foregroundColor(.white)
-                                .background(Color.orange)
-                                .clipShape(Circle())
-                        })
-                        Text("カテゴリ追加")
-                            .font(.system(size: 8))
-                            .foregroundColor(Color.orange)
-
-                    }
                 } // HStackここまで
+
                 Divider()
                     .background(Color.black)
 
@@ -69,6 +49,26 @@ struct CategoryListView: View {
                     Spacer()
                 } // HStackここまで
             } // VStackここまで
+
+            HStack {
+                Spacer()
+                VStack {
+                    Button(action: {
+                        // タップで画面表示させる
+                    }, label: {
+                        // 追加Viewへ遷移する
+                        Image(systemName: "plus")
+                            .font(.system(size: 24))
+                            .foregroundColor(.white)
+                            .background(Color.orange)
+                            .clipShape(Circle())
+                    })
+                    Text("カテゴリ追加")
+                        .font(.system(size: 8))
+                        .foregroundColor(Color.orange)
+                    Spacer()
+                } // VStackここまで
+            } //HStackここまで
         } // ZStackここまで
     } // bodyここまで
 } // CategoryListViewここまで
