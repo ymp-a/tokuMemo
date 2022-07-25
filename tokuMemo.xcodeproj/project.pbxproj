@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A10885C287EF460003AE0E8 /* ShopListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A10885B287EF460003AE0E8 /* ShopListView.swift */; };
 		2A16C6462879B0C1009E29CB /* CategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A16C6452879B0C1009E29CB /* CategoryListView.swift */; };
 		2A40D06228695A990068CD7A /* tokuMemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A40D06128695A990068CD7A /* tokuMemoApp.swift */; };
 		2A40D06628695A9C0068CD7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A40D06528695A9C0068CD7A /* Assets.xcassets */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2A10885B287EF460003AE0E8 /* ShopListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopListView.swift; sourceTree = "<group>"; };
 		2A16C6452879B0C1009E29CB /* CategoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListView.swift; sourceTree = "<group>"; };
 		2A40D05E28695A990068CD7A /* tokuMemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tokuMemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A40D06128695A990068CD7A /* tokuMemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tokuMemoApp.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 				2A40D06128695A990068CD7A /* tokuMemoApp.swift */,
 				2A40D076286B29260068CD7A /* TokuMemoListView.swift */,
 				2A16C6452879B0C1009E29CB /* CategoryListView.swift */,
+				2A10885B287EF460003AE0E8 /* ShopListView.swift */,
 				2A40D06528695A9C0068CD7A /* Assets.xcassets */,
 				2A40D06A28695A9C0068CD7A /* Persistence.swift */,
 				2A40D06C28695A9C0068CD7A /* tokuMemo.xcdatamodeld */,
@@ -169,6 +172,7 @@
 			files = (
 				2A40D06B28695A9C0068CD7A /* Persistence.swift in Sources */,
 				2A40D06E28695A9C0068CD7A /* tokuMemo.xcdatamodeld in Sources */,
+				2A10885C287EF460003AE0E8 /* ShopListView.swift in Sources */,
 				2A40D077286B29260068CD7A /* TokuMemoListView.swift in Sources */,
 				2A40D06228695A990068CD7A /* tokuMemoApp.swift in Sources */,
 				2A16C6462879B0C1009E29CB /* CategoryListView.swift in Sources */,
