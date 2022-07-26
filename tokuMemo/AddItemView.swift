@@ -24,10 +24,11 @@ struct AddItemView: View {
     @State private var inputItemMemo = ""
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             HStack(alignment: .center) {
                 Text("商品名を登録")
                     .foregroundColor(.orange)
+                    .padding(.bottom)
             } // HStackここまで
             Divider()
                 .background(Color.black)
@@ -41,11 +42,12 @@ struct AddItemView: View {
             .padding(.top)
             .padding(.horizontal)
 
-            HStack(alignment: .center) {
+            HStack (alignment: .center, spacing: 0) {
                 Button(action: {
                     // タップしたらカテゴリ選択画面へ遷移したい
                 }) {
                     Text("カテゴリー")
+                        .frame(maxWidth: .infinity)
                     Image(systemName: "chevron.right.circle")
                 }
 
@@ -53,15 +55,17 @@ struct AddItemView: View {
                     // タップしたらショップ選択画面へ遷移したい
                 }) {
                     Text("ショップ")
+                        .frame(maxWidth: .infinity)
                     Image(systemName: "chevron.right.circle")
                 }
             } // HStackここまで
             .font(.title3)
             .buttonStyle(.bordered)
-
+            .padding(.bottom)
+            .padding(.horizontal)
             HStack {
                 Text("税込価格")
-                TextField("", text: $inputItemName)
+                TextField("", text: $inputItemPrice)
             }
             .padding(10)
             .frame(height: 50)
@@ -83,8 +87,8 @@ struct AddItemView: View {
                 Text("数量")
                 TextField("", text: $inputItemsVolume)
                 Picker(selection: $selection, label: Text("数量単位を選択")) {
-                    ForEach(0 ..< units.count) { num in
-                        Text(self.units[num])
+                    ForEach(units, id: \.self) { unit in
+                        Text(unit)
                     }
                 }
                 .pickerStyle(SegmentedPickerStyle())    // セグメントピッカースタイルの指定
@@ -106,7 +110,7 @@ struct AddItemView: View {
             .padding(.horizontal)
 
             Button(action: {
-                // 閉じる処理
+                // 登録タップ時の処理
             }) {
                 Text("商品を登録する")
                     .frame(maxWidth: .infinity)
@@ -115,9 +119,8 @@ struct AddItemView: View {
                     .foregroundColor(.white)
                     .background(.orange)
                     .padding(.horizontal)
-            } // 閉じるボタンここまで
+            } // 登録ボタンここまで
             Spacer()
-
         } // VStackここまで
     } // bodyここまで
 } // AddItemViewここまで
