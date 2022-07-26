@@ -16,6 +16,10 @@ struct AddItemView: View {
     @State private var inputDiscountPrice = ""
     // 数量
     @State private var inputItemsVolume = ""
+    // 数量単位
+    private let units = ["個", "g", "ml"]
+    // ピッカー初期値
+    @State private var selection = 1
     // メモ
     @State private var inputItemMemo = ""
 
@@ -78,6 +82,13 @@ struct AddItemView: View {
             HStack {
                 Text("数量")
                 TextField("", text: $inputItemsVolume)
+                Picker(selection: $selection, label: Text("数量単位を選択")) {
+                    ForEach(0 ..< units.count) { num in
+                        Text(self.units[num])
+                    }
+                }
+                .pickerStyle(SegmentedPickerStyle())    // セグメントピッカースタイルの指定
+                .frame(width: 200)
             }
             .padding(10)
             .frame(height: 50)
