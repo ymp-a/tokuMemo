@@ -38,9 +38,6 @@ struct TokuMemoListView: View {
                 .buttonStyle(.bordered)
                 .padding(.horizontal)
 
-                Divider()
-                    .background(Color.black)
-
                 List {
                     Text("120　商品１\n120 / 個　　スギ薬局中野南台")
                     Text("990　ディアボーテ オイルイン トリ\n4.95 / g  200g")
@@ -50,28 +47,20 @@ struct TokuMemoListView: View {
                 } // Listここまで
                 .foregroundColor(.orange)
 
-                Divider()
-                    .background(Color.black)
-                HStack {
-                    VStack {
-                        Image(systemName: "house")
-                            .font(.system(size: 30))
-                        Text("Top")
-                            .font(.system(size: 12))
-                    } // VStackここまで
-                    .foregroundColor(.brown)
-                    .padding(.horizontal)
-
-                    VStack {
-                        Image(systemName: "cart")
-                            .font(.system(size: 30))
-                            .padding(.horizontal)
-                        Text("買い物リスト")
-                            .font(.system(size: 12))
-                    }
-                    .foregroundColor(.gray)
-                    Spacer()
-                } // HStackここまで
+                TabView {
+                    Text("") // 1枚目の子ビュー
+                        .tabItem {
+                            Image(systemName: "house")
+                            Text("Top")
+                        }
+                    Text("") // 買い物リストView
+                        .tabItem {
+                            Image(systemName: "cart")
+                            Text("買い物リスト")
+                        }
+                } // TabViewここまで
+                .frame(width: .infinity, height: 40, alignment: .bottom)
+                .accentColor(.orange) // 選択中の色指定
             } // VStackここまで
 
             // ボタンのViewここから
