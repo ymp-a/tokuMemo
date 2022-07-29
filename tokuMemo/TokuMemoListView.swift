@@ -17,11 +17,12 @@ struct TokuMemoListView: View {
                 TextField("🔍 検索バー", text: $inputText)
                     .textFieldStyle(.roundedBorder)
                     .padding(.horizontal)
-                HStack(alignment: .center) {
+                HStack(alignment: .center, spacing: 0) {
                     Button(action: {
                         // タップしたらカテゴリ選択画面へ遷移したい
                     }) {
                         Text("カテゴリー")
+                            .frame(maxWidth: .infinity)
                         Image(systemName: "chevron.right.circle")
                     }
 
@@ -29,11 +30,13 @@ struct TokuMemoListView: View {
                         // タップしたらショップ選択画面へ遷移したい
                     }) {
                         Text("ショップ")
+                            .frame(maxWidth: .infinity)
                         Image(systemName: "chevron.right.circle")
                     }
                 } // HStackここまで
                 .font(.title3)
                 .buttonStyle(.bordered)
+                .padding(.horizontal)
 
                 Divider()
                     .background(Color.black)
