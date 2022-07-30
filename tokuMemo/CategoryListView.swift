@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct CategoryListView: View {
+    // モーダル終了処理
+    @Environment(\.dismiss) var dismiss
+
     var body: some View {
         ZStack {
             VStack {
@@ -24,6 +27,7 @@ struct CategoryListView: View {
 
                 Button(action: {
                     // 閉じる処理
+                    dismiss()
                 }) {
                     Text("閉じる")
                         .frame(maxWidth: .infinity)

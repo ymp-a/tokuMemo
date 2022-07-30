@@ -10,6 +10,8 @@ import SwiftUI
 struct TokuMemoListView: View {
     // メモ検索入力用
     @State private var inputText = ""
+    // カテゴリー画面表示フラグ
+    @State private var showingModalCategoryListView = false
 
     var body: some View {
         ZStack {
@@ -19,11 +21,16 @@ struct TokuMemoListView: View {
                     .padding(.horizontal)
                 HStack(alignment: .center, spacing: 0) {
                     Button(action: {
-                        // タップしたらカテゴリ選択画面へ遷移したい
+                        // ボタンタップでカテゴリ画面フラグオン
+                        self.showingModalCategoryListView.toggle()
                     }) {
                         Text("カテゴリー")
                             .frame(maxWidth: .infinity)
                         Image(systemName: "chevron.right.circle")
+                    }
+                    // カテゴリ画面モーダル表示
+                    .fullScreenCover(isPresented: $showingModalCategoryListView) {
+                        CategoryListView()
                     }
 
                     Button(action: {
