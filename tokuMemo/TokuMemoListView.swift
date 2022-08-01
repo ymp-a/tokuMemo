@@ -17,11 +17,12 @@ struct TokuMemoListView: View {
                 TextField("🔍 検索バー", text: $inputText)
                     .textFieldStyle(.roundedBorder)
                     .padding(.horizontal)
-                HStack(alignment: .center) {
+                HStack(alignment: .center, spacing: 0) {
                     Button(action: {
                         // タップしたらカテゴリ選択画面へ遷移したい
                     }) {
                         Text("カテゴリー")
+                            .frame(maxWidth: .infinity)
                         Image(systemName: "chevron.right.circle")
                     }
 
@@ -29,14 +30,13 @@ struct TokuMemoListView: View {
                         // タップしたらショップ選択画面へ遷移したい
                     }) {
                         Text("ショップ")
+                            .frame(maxWidth: .infinity)
                         Image(systemName: "chevron.right.circle")
                     }
                 } // HStackここまで
                 .font(.title3)
                 .buttonStyle(.bordered)
-
-                Divider()
-                    .background(Color.black)
+                .padding(.horizontal)
 
                 List {
                     Text("120　商品１\n120 / 個　　スギ薬局中野南台")
@@ -47,28 +47,20 @@ struct TokuMemoListView: View {
                 } // Listここまで
                 .foregroundColor(.orange)
 
-                Divider()
-                    .background(Color.black)
-                HStack {
-                    VStack {
-                        Image(systemName: "house")
-                            .font(.system(size: 30))
-                        Text("Top")
-                            .font(.system(size: 12))
-                    } // VStackここまで
-                    .foregroundColor(.brown)
-                    .padding(.horizontal)
-
-                    VStack {
-                        Image(systemName: "cart")
-                            .font(.system(size: 30))
-                            .padding(.horizontal)
-                        Text("買い物リスト")
-                            .font(.system(size: 12))
-                    }
-                    .foregroundColor(.gray)
-                    Spacer()
-                } // HStackここまで
+                TabView {
+                    Text("") // 1枚目の子ビュー
+                        .tabItem {
+                            Image(systemName: "house")
+                            Text("Top")
+                        }
+                    Text("") // 買い物リストView
+                        .tabItem {
+                            Image(systemName: "cart")
+                            Text("買い物リスト")
+                        }
+                } // TabViewここまで
+                .frame(width: .infinity, height: 40, alignment: .bottom)
+                .accentColor(.orange) // 選択中の色指定
             } // VStackここまで
 
             // ボタンのViewここから
