@@ -22,7 +22,7 @@ struct TokuMemoListView: View {
                 HStack(alignment: .center, spacing: 0) {
                     Button(action: {
                         // ボタンタップでカテゴリ画面フラグオン
-                        self.showingModalCategoryListView.toggle()
+                        showingModalCategoryListView.toggle()
                     }) {
                         Text("カテゴリー")
                             .frame(maxWidth: .infinity)
