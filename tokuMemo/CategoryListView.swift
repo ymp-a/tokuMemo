@@ -7,7 +7,25 @@
 
 import SwiftUI
 
+struct Category: Identifiable {
+    var id = UUID()
+    var name: String
+
+    init(_ name: String) {
+        self.name = name
+    } // initここまで
+} // Categoryここまで
+
 struct CategoryListView: View {
+    // サンプルデータ用
+    @State var categories: [Category] = [
+        Category("すべて"),
+        Category("日用品"),
+        Category("食品")
+    ]
+    // モーダル終了処理
+    @Environment(\.dismiss) var dismiss
+
     var body: some View {
         ZStack {
             VStack {
@@ -16,14 +34,28 @@ struct CategoryListView: View {
                 } // HStackここまで
 
                 List {
-                    Text("すべて")
-                    Text("日用品")
-                    Text("食品")
+                    ForEach(categories) { category in
+                        // セルの表示
+                        HStack {
+                            Text(category.name)
+                            Spacer()
+                        } // HStackここまで
+
+                        // タップできる範囲を拡張する
+                        .contentShape(Rectangle())
+                        // タップ時の処理
+                        .onTapGesture {
+                            // タップしたカテゴリー名をTokuMemoListViewのカテゴリーボタンへ渡したい
+                            // 閉じる処理
+                            dismiss()
+                        } // .onTapGestureここまで
+                    } // ForEachここまで
                 } // Listここまで
                 .foregroundColor(.orange)
 
                 Button(action: {
                     // 閉じる処理
+                    dismiss()
                 }) {
                     Text("閉じる")
                         .frame(maxWidth: .infinity)
