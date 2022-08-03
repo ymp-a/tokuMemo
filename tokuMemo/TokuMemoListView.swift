@@ -89,8 +89,7 @@ struct TokuMemoListView: View {
                     })
                     .padding(20)
                 } // HStackここまで
-                .padding(.bottom)
-                .padding(.bottom)
+                .padding(.bottom, 30)
             } // VStackここまで
         } // ZStackここまで
     } // bodyここまで
