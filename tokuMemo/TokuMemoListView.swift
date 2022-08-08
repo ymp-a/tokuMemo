@@ -12,6 +12,8 @@ struct TokuMemoListView: View {
     @State private var inputText = ""
     // カテゴリー画面表示フラグ
     @State private var showingModalCategoryListView = false
+    // ショップ画面表示フラグ
+    @State private var showingModalShopListView = false
 
     var body: some View {
         ZStack {
@@ -34,13 +36,18 @@ struct TokuMemoListView: View {
                     }
 
                     Button(action: {
-                        // タップしたらショップ選択画面へ遷移したい
+                        // ボタンタップでショップ画面フラグオン
+                        showingModalShopListView.toggle()
                     }) {
                         Text("ショップ")
                             .frame(maxWidth: .infinity)
                         Image(systemName: "chevron.right.circle")
                     }
-                } // HStackここまで
+                    // カテゴリ画面モーダル表示
+                    .fullScreenCover(isPresented: $showingModalShopListView) {
+                        ShopListView()
+                    }
+                }// HStackここまで
                 .font(.title3)
                 .buttonStyle(.bordered)
                 .padding(.horizontal)

@@ -7,7 +7,24 @@
 
 import SwiftUI
 
+struct Shop: Identifiable {
+    var id = UUID()
+    var name: String
+
+    init(_ name: String) {
+        self.name = name
+    } // initここまで
+} // Shopここまで
+
 struct ShopListView: View {
+    // サンプルデータ用
+    @State var shops: [Shop] = [
+        Shop("すべて"),
+        Shop("サンドラッグ新宿通り店")
+    ]
+    // モーダル終了処理
+    @Environment(\.dismiss) var dismiss
+
     var body: some View {
         ZStack {
             VStack {
@@ -16,14 +33,28 @@ struct ShopListView: View {
                 } // HStackここまで
 
                 List {
-                    Text("すべて")
-                    Text("スギ薬局中野南台")
-                    Text("ドンキホーテ新宿店")
+                    ForEach(shops) { shop in
+                        // セルの表示
+                        HStack {
+                            Text(shop.name)
+                            Spacer()
+                        } // HStackここまで
+
+                        // タップできる範囲を拡張する
+                        .contentShape(Rectangle())
+                        // タップ時の処理
+                        .onTapGesture {
+                            // タップしたカテゴリー名をTokuMemoListViewのカテゴリーボタンへ渡したい
+                            // 閉じる処理
+                            dismiss()
+                        } // .onTapGestureここまで
+                    } // ForEachここまで
                 } // Listここまで
                 .foregroundColor(.orange)
 
                 Button(action: {
                     // 閉じる処理
+                    dismiss()
                 }) {
                     Text("閉じる")
                         .frame(maxWidth: .infinity)
