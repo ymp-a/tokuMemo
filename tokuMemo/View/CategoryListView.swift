@@ -7,6 +7,88 @@
 
 import SwiftUI
 
+/// https://dev.classmethod.jp/articles/ios-alert-with-text-field/
+struct AlertControllerWithTextFieldContainer: UIViewControllerRepresentable {
+
+    @Binding var textFieldText: String
+    @Binding var isPresented: Bool
+
+    let title: String?
+    let message: String?
+    let placeholderText: String
+
+    func makeUIViewController(context: Context) -> UIViewController {
+        return UIViewController()
+    }
+
+    // SwiftUIから新しい情報を受け、viewControllerが更新されるタイミングで呼ばれる
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+
+        // TextFieldの追加
+        alert.addTextField { textField in
+            textField.placeholder = placeholderText
+            textField.returnKeyType = .done
+        }
+
+        // 決定ボタンアクション
+        let doneAction = UIAlertAction(title: "追加", style: .default) { _ in
+            if let textField = alert.textFields?.first,
+               let text = textField.text {
+                textFieldText = text
+            }
+        }
+
+        // キャンセルボタンアクション
+        let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel)
+
+        alert.addAction(cancelAction)
+        alert.addAction(doneAction)
+
+        DispatchQueue.main.async {
+            uiViewController.present(alert, animated: true) {
+                isPresented = false
+            }
+        }
+    }
+}
+
+// カスタムModifierの定義
+struct AlertWithTextField: ViewModifier {
+    @Binding var textFieldText: String
+    @Binding var isPresented: Bool
+
+    let title: String?
+    let message: String?
+    let placeholderText: String
+
+    func body(content: Content) -> some View {
+        ZStack {
+            content
+
+            if isPresented {
+                AlertControllerWithTextFieldContainer(textFieldText: $textFieldText,
+                                                      isPresented: $isPresented,
+                                                      title: title,
+                                                      message: message,
+                                                      placeholderText: placeholderText)
+            }
+        }
+    }
+}
+
+extension View {
+    // カスタムModifierのメソッド名を alertWithTextField に置き換え
+    func alertWithTextField(_ text: Binding<String>, isPresented: Binding<Bool>, title: String?, message: String?, placeholderText: String) -> some View {
+        self.modifier(AlertWithTextField(textFieldText: text,
+                                         isPresented: isPresented,
+                                         title: title,
+                                         message: message,
+                                         placeholderText: placeholderText))
+    }
+}
+
 struct Category: Identifiable {
     var id = UUID()
     var name: String
@@ -25,6 +107,9 @@ struct CategoryListView: View {
     ]
     // モーダル終了処理
     @Environment(\.dismiss) var dismiss
+
+    @State private var inputText = ""
+    @State private var presentAlert = false
 
     var body: some View {
         ZStack {
@@ -72,6 +157,7 @@ struct CategoryListView: View {
                 VStack {
                     Button(action: {
                         // タップで画面表示させる
+                        presentAlert.toggle()
                     }) {
                         // 追加Viewへ遷移する
                         Image(systemName: "plus")
@@ -87,6 +173,12 @@ struct CategoryListView: View {
                 } // VStackここまで
             } // HStackここまで
         } // ZStackここまで
+        .alertWithTextField($inputText,
+                            isPresented: $presentAlert,
+                            title: "カテゴリー入力",
+                            message: "追加するカテゴリーを入力下さい",
+                            placeholderText: "新規カテゴリー")
+
     } // bodyここまで
 } // CategoryListViewここまで
 
