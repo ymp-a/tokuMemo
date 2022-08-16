@@ -7,92 +7,102 @@
 
 import SwiftUI
 
-/// https://dev.classmethod.jp/articles/ios-alert-with-text-field/
-struct AlertControllerWithTextFieldContainer: UIViewControllerRepresentable {
-
-    @Binding var textFieldText: String
-    @Binding var isPresented: Bool
-
-    let title: String?
-    let message: String?
-    let placeholderText: String
-
-    func makeUIViewController(context: Context) -> UIViewController {
+// https://www.yururiwork.net/archives/1315
+struct TextFieldAlertView: UIViewControllerRepresentable {
+    
+    @Binding var text: String
+    @Binding var isShowingAlert: Bool
+    
+    let placeholder: String
+    let title: String
+    let message: String
+    
+    let leftButtonTitle: String?
+    let rightButtonTitle: String?
+    
+    var leftButtonAction: (() -> Void)?
+    var rightButtonAction: (() -> Void)?
+    
+    func makeUIViewController(context: UIViewControllerRepresentableContext<TextFieldAlertView>) -> some UIViewController {
         return UIViewController()
     }
-
-    // SwiftUIから新しい情報を受け、viewControllerが更新されるタイミングで呼ばれる
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-
+    
+    func updateUIViewController(_ uiViewController: UIViewControllerType, context: UIViewControllerRepresentableContext<TextFieldAlertView>) {
+        
+        guard context.coordinator.alert == nil else {
+            return
+        }
+        
+        if !isShowingAlert {
+            return
+        }
+        
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-
-        // TextFieldの追加
+        context.coordinator.alert = alert
+        
         alert.addTextField { textField in
-            textField.placeholder = placeholderText
-            textField.returnKeyType = .done
+            textField.placeholder = placeholder
+            textField.text = text
+            textField.delegate = context.coordinator
         }
-
-        // 決定ボタンアクション
-        let doneAction = UIAlertAction(title: "追加", style: .default) { _ in
-            if let textField = alert.textFields?.first,
-               let text = textField.text {
-                textFieldText = text
-            }
+        
+        if leftButtonTitle != nil {
+            alert.addAction(UIAlertAction(title: leftButtonTitle, style: .default) { _ in
+                alert.dismiss(animated: true) {
+                    isShowingAlert = false
+                    leftButtonAction?()
+                }
+            })
         }
-
-        // キャンセルボタンアクション
-        let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel)
-
-        alert.addAction(cancelAction)
-        alert.addAction(doneAction)
-
+        
+        if rightButtonTitle != nil {
+            alert.addAction(UIAlertAction(title: rightButtonTitle, style: .default) { _ in
+                if let textField = alert.textFields?.first, let text = textField.text {
+                    self.text = text
+                }
+                alert.dismiss(animated: true) {
+                    isShowingAlert = false
+                    rightButtonAction?()
+                }
+            })
+        }
+        
         DispatchQueue.main.async {
-            uiViewController.present(alert, animated: true) {
-                isPresented = false
-            }
+            uiViewController.present(alert, animated: true, completion: {
+                isShowingAlert = false
+                context.coordinator.alert = nil
+            })
         }
     }
-}
-
-// カスタムModifierの定義
-struct AlertWithTextField: ViewModifier {
-    @Binding var textFieldText: String
-    @Binding var isPresented: Bool
-
-    let title: String?
-    let message: String?
-    let placeholderText: String
-
-    func body(content: Content) -> some View {
-        ZStack {
-            content
-
-            if isPresented {
-                AlertControllerWithTextFieldContainer(textFieldText: $textFieldText,
-                                                      isPresented: $isPresented,
-                                                      title: title,
-                                                      message: message,
-                                                      placeholderText: placeholderText)
-            }
-        }
+    
+    func makeCoordinator() -> TextFieldAlertView.Coordinator {
+        Coordinator(self)
     }
-}
-
-extension View {
-    // カスタムModifierのメソッド名を alertWithTextField に置き換え
-    func alertWithTextField(_ text: Binding<String>, isPresented: Binding<Bool>, title: String?, message: String?, placeholderText: String) -> some View {
-        self.modifier(AlertWithTextField(textFieldText: text,
-                                         isPresented: isPresented,
-                                         title: title,
-                                         message: message,
-                                         placeholderText: placeholderText))
+    
+    class Coordinator: NSObject, UITextFieldDelegate {
+        
+        var alert: UIAlertController?
+        var view: TextFieldAlertView
+        
+        init(_ view: TextFieldAlertView) {
+            self.view = view
+        }
+        
+        func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+            if let text = textField.text as NSString? {
+                self.view.text = text.replacingCharacters(in: range, with: string)
+            } else {
+                self.view.text = ""
+            }
+            return true
+        }
     }
 }
 
 struct Category: Identifiable {
     var id = UUID()
     var name: String
-
+    
     init(_ name: String) {
         self.name = name
     } // initここまで
@@ -107,17 +117,34 @@ struct CategoryListView: View {
     ]
     // モーダル終了処理
     @Environment(\.dismiss) var dismiss
-
+    
     @State private var inputText = ""
     @State private var presentAlert = false
-
+    
     var body: some View {
         ZStack {
+            TextFieldAlertView(
+                text: $inputText,
+                isShowingAlert: $presentAlert,
+                placeholder: "カテゴリー名",
+                title: "カテゴリーの追加",
+                message: "入力した内容でカテゴリー追加します",
+                leftButtonTitle: "キャンセル",
+                rightButtonTitle: "追加",
+                leftButtonAction: {
+                    // 入力内容の初期化
+                    inputText = ""
+                },
+                rightButtonAction: {
+                    // 追加タップ時の処理　CoreDateへ追加
+                }
+            ) // TextFieldAlertViewここまで
+            
             VStack {
                 HStack(alignment: .center) {
                     Text("カテゴリー（大分類）")
                 } // HStackここまで
-
+                
                 List {
                     ForEach(categories) { category in
                         // セルの表示
@@ -125,7 +152,7 @@ struct CategoryListView: View {
                             Text(category.name)
                             Spacer()
                         } // HStackここまで
-
+                        
                         // タップできる範囲を拡張する
                         .contentShape(Rectangle())
                         // タップ時の処理
@@ -137,7 +164,7 @@ struct CategoryListView: View {
                     } // ForEachここまで
                 } // Listここまで
                 .foregroundColor(.orange)
-
+                
                 Button(action: {
                     // 閉じる処理
                     dismiss()
@@ -151,12 +178,12 @@ struct CategoryListView: View {
                 } // 閉じるボタンここまで
                 Spacer()
             } // VStackここまで
-
+            
             HStack {
                 Spacer()
                 VStack {
                     Button(action: {
-                        // タップで画面表示させる
+                        // タップでカテゴリー追加アラートを表示
                         presentAlert.toggle()
                     }) {
                         // 追加Viewへ遷移する
@@ -173,12 +200,6 @@ struct CategoryListView: View {
                 } // VStackここまで
             } // HStackここまで
         } // ZStackここまで
-        .alertWithTextField($inputText,
-                            isPresented: $presentAlert,
-                            title: "カテゴリー入力",
-                            message: "追加するカテゴリーを入力下さい",
-                            placeholderText: "新規カテゴリー")
-
     } // bodyここまで
 } // CategoryListViewここまで
 
