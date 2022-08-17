@@ -9,43 +9,43 @@ import SwiftUI
 
 // https://www.yururiwork.net/archives/1315
 struct TextFieldAlertView: UIViewControllerRepresentable {
-    
+
     @Binding var text: String
     @Binding var isShowingAlert: Bool
-    
+
     let placeholder: String
     let title: String
     let message: String
-    
+
     let leftButtonTitle: String?
     let rightButtonTitle: String?
-    
+
     var leftButtonAction: (() -> Void)?
     var rightButtonAction: (() -> Void)?
-    
+
     func makeUIViewController(context: UIViewControllerRepresentableContext<TextFieldAlertView>) -> some UIViewController {
         return UIViewController()
     }
-    
+
     func updateUIViewController(_ uiViewController: UIViewControllerType, context: UIViewControllerRepresentableContext<TextFieldAlertView>) {
-        
+
         guard context.coordinator.alert == nil else {
             return
         }
-        
+
         if !isShowingAlert {
             return
         }
-        
+
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         context.coordinator.alert = alert
-        
+
         alert.addTextField { textField in
             textField.placeholder = placeholder
             textField.text = text
             textField.delegate = context.coordinator
         }
-        
+
         if leftButtonTitle != nil {
             alert.addAction(UIAlertAction(title: leftButtonTitle, style: .default) { _ in
                 alert.dismiss(animated: true) {
@@ -54,7 +54,7 @@ struct TextFieldAlertView: UIViewControllerRepresentable {
                 }
             })
         }
-        
+
         if rightButtonTitle != nil {
             alert.addAction(UIAlertAction(title: rightButtonTitle, style: .default) { _ in
                 if let textField = alert.textFields?.first, let text = textField.text {
@@ -66,7 +66,7 @@ struct TextFieldAlertView: UIViewControllerRepresentable {
                 }
             })
         }
-        
+
         DispatchQueue.main.async {
             uiViewController.present(alert, animated: true, completion: {
                 isShowingAlert = false
@@ -74,20 +74,20 @@ struct TextFieldAlertView: UIViewControllerRepresentable {
             })
         }
     }
-    
+
     func makeCoordinator() -> TextFieldAlertView.Coordinator {
         Coordinator(self)
     }
-    
+
     class Coordinator: NSObject, UITextFieldDelegate {
-        
+
         var alert: UIAlertController?
         var view: TextFieldAlertView
-        
+
         init(_ view: TextFieldAlertView) {
             self.view = view
         }
-        
+
         func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
             if let text = textField.text as NSString? {
                 self.view.text = text.replacingCharacters(in: range, with: string)
@@ -102,7 +102,7 @@ struct TextFieldAlertView: UIViewControllerRepresentable {
 struct Category: Identifiable {
     var id = UUID()
     var name: String
-    
+
     init(_ name: String) {
         self.name = name
     } // initここまで
@@ -117,10 +117,10 @@ struct CategoryListView: View {
     ]
     // モーダル終了処理
     @Environment(\.dismiss) var dismiss
-    
+
     @State private var inputText = ""
     @State private var presentAlert = false
-    
+
     var body: some View {
         ZStack {
             TextFieldAlertView(
@@ -139,12 +139,12 @@ struct CategoryListView: View {
                     // 追加タップ時の処理　CoreDateへ追加
                 }
             ) // TextFieldAlertViewここまで
-            
+
             VStack {
                 HStack(alignment: .center) {
                     Text("カテゴリー（大分類）")
                 } // HStackここまで
-                
+
                 List {
                     ForEach(categories) { category in
                         // セルの表示
@@ -152,7 +152,7 @@ struct CategoryListView: View {
                             Text(category.name)
                             Spacer()
                         } // HStackここまで
-                        
+
                         // タップできる範囲を拡張する
                         .contentShape(Rectangle())
                         // タップ時の処理
@@ -164,7 +164,7 @@ struct CategoryListView: View {
                     } // ForEachここまで
                 } // Listここまで
                 .foregroundColor(.orange)
-                
+
                 Button(action: {
                     // 閉じる処理
                     dismiss()
@@ -178,7 +178,7 @@ struct CategoryListView: View {
                 } // 閉じるボタンここまで
                 Spacer()
             } // VStackここまで
-            
+
             HStack {
                 Spacer()
                 VStack {
