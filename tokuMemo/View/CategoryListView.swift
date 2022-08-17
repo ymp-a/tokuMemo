@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreData
 
 // https://www.yururiwork.net/archives/1315
 struct TextFieldAlertView: UIViewControllerRepresentable {
@@ -99,27 +100,22 @@ struct TextFieldAlertView: UIViewControllerRepresentable {
     }
 }
 
-struct Category: Identifiable {
-    var id = UUID()
-    var name: String
-
-    init(_ name: String) {
-        self.name = name
-    } // initここまで
-} // Categoryここまで
-
 struct CategoryListView: View {
-    // サンプルデータ用
-    @State var categories: [Category] = [
-        Category("すべて"),
-        Category("日用品"),
-        Category("食品")
-    ]
     // モーダル終了処理
     @Environment(\.dismiss) var dismiss
 
     @State private var inputText = ""
     @State private var presentAlert = false
+
+    /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
+    @Environment(\.managedObjectContext) private var context
+
+    /// データ取得処理
+    @FetchRequest(
+        entity: Category.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Category.timestamp, ascending: true)],
+        predicate: nil
+    ) private var categories: FetchedResults<Category>
 
     var body: some View {
         ZStack {
@@ -136,7 +132,16 @@ struct CategoryListView: View {
                     inputText = ""
                 },
                 rightButtonAction: {
-                    // 追加タップ時の処理　CoreDateへ追加
+                    // 追加タップ時の処理
+                    // カテゴリー新規登録処理
+                    let newCategory = Category(context: context)
+                    newCategory.timestamp = Date()
+                    newCategory.memo = ""
+                    newCategory.name = inputText
+
+                    try? context.save()
+                    // 入力内容の初期化
+                    inputText = ""
                 }
             ) // TextFieldAlertViewここまで
 
@@ -149,7 +154,7 @@ struct CategoryListView: View {
                     ForEach(categories) { category in
                         // セルの表示
                         HStack {
-                            Text(category.name)
+                            Text("\(category.name!)")
                             Spacer()
                         } // HStackここまで
 
