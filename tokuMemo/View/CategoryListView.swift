@@ -99,6 +99,38 @@ struct TextFieldAlertView: UIViewControllerRepresentable {
         }
     }
 }
+// 初期データ登録用
+func registSampleData(context: NSManagedObjectContext) {
+
+    /// Categoryテーブル初期値
+    let categoryList = [
+        ["すべて", "", "2022/08/10" ],
+        ["食品", "", "2022/08/14"],
+        ["日用品", "", "2022/08/18"]
+    ]
+
+    /// Studentテーブル全消去
+    let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+    fetchRequest.entity = Category.entity()
+    let categories = try? context.fetch(fetchRequest) as? [Category]
+    for category in categories! {
+        context.delete(category)
+    }
+
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy/M/d"
+
+    /// Studentテーブル登録
+    for category in categoryList {
+        let newCategory = Category(context: context)
+        newCategory.name = category[0]         // カテゴリー名
+        newCategory.memo = category[1]        // メモ
+        newCategory.timestamp = dateFormatter.date(from: category[2])! // 追加日
+    }
+
+    /// コミット
+    try? context.save()
+}
 
 struct CategoryListView: View {
     // モーダル終了処理
@@ -205,6 +237,13 @@ struct CategoryListView: View {
                 } // VStackここまで
             } // HStackここまで
         } // ZStackここまで
+        .onAppear {
+            // カテゴリー名が０のとき
+            if self.categories.count == 0 {
+                /// Listビュー表示時に初期データ登録処理を実行する
+                registSampleData(context: context)
+            }
+        }
     } // bodyここまで
 } // CategoryListViewここまで
 
