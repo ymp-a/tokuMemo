@@ -74,11 +74,11 @@ struct TextFieldAlertView: UIViewControllerRepresentable {
                 context.coordinator.alert = nil
             })
         }
-    }
+    } // updateUIViewControllerここまで
 
     func makeCoordinator() -> TextFieldAlertView.Coordinator {
         Coordinator(self)
-    }
+    } // makeCoordinatorここまで
 
     class Coordinator: NSObject, UITextFieldDelegate {
 
@@ -96,9 +96,10 @@ struct TextFieldAlertView: UIViewControllerRepresentable {
                 self.view.text = ""
             }
             return true
-        }
-    }
-}
+        } // textFieldここまで
+    } // Coordinatorここまで
+} // TextFieldAlertViewここまで
+
 // 初期データ登録用
 func registSampleData(context: NSManagedObjectContext) {
 
@@ -243,7 +244,7 @@ struct CategoryListView: View {
                 /// Listビュー表示時に初期データ登録処理を実行する
                 registSampleData(context: context)
             }
-        }
+        } // onAppearここまで
     } // bodyここまで
 } // CategoryListViewここまで
 
