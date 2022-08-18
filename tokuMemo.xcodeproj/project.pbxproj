@@ -42,6 +42,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2A1088C328A28BB9003AE0E8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2A1088BC288ECBA1003AE0E8 /* AddItemView.swift */,
+				2A10885B287EF460003AE0E8 /* ShopListView.swift */,
+				2A16C6452879B0C1009E29CB /* CategoryListView.swift */,
+				2A40D076286B29260068CD7A /* TokuMemoListView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		2A1088C428A28BC0003AE0E8 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		2A1088C528A28BC9003AE0E8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		2A40D05528695A990068CD7A = {
 			isa = PBXGroup;
 			children = (
@@ -62,10 +87,9 @@
 			isa = PBXGroup;
 			children = (
 				2A40D06128695A990068CD7A /* tokuMemoApp.swift */,
-				2A40D076286B29260068CD7A /* TokuMemoListView.swift */,
-				2A16C6452879B0C1009E29CB /* CategoryListView.swift */,
-				2A10885B287EF460003AE0E8 /* ShopListView.swift */,
-				2A1088BC288ECBA1003AE0E8 /* AddItemView.swift */,
+				2A1088C528A28BC9003AE0E8 /* Model */,
+				2A1088C428A28BC0003AE0E8 /* ViewModel */,
+				2A1088C328A28BB9003AE0E8 /* View */,
 				2A40D06528695A9C0068CD7A /* Assets.xcassets */,
 				2A40D06A28695A9C0068CD7A /* Persistence.swift */,
 				2A40D06C28695A9C0068CD7A /* tokuMemo.xcdatamodeld */,

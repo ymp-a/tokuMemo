@@ -42,7 +42,7 @@ struct AddItemView: View {
             .padding(.top)
             .padding(.horizontal)
 
-            HStack (alignment: .center, spacing: 0) {
+            HStack(alignment: .center, spacing: 0) {
                 Button(action: {
                     // タップしたらカテゴリ選択画面へ遷移したい
                 }) {
