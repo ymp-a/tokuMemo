@@ -6,27 +6,84 @@
 //
 
 import SwiftUI
+import CoreData
 
-struct Shop: Identifiable {
-    var id = UUID()
-    var name: String
+// 初期データ登録用
+func registSampleShopData(context: NSManagedObjectContext) {
 
-    init(_ name: String) {
-        self.name = name
-    } // initここまで
-} // Shopここまで
+    /// Shopテーブル初期値
+    let shopList = [
+        ["すべて", "", "2022/08/09" ],
+        ["サンプル店", "", "2022/08/10"]
+    ]
+
+    /// Shopテーブル全消去
+    let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+    fetchRequest.entity = Shop.entity()
+    let shops = try? context.fetch(fetchRequest) as? [Shop]
+    for shop in shops! {
+        context.delete(shop)
+    }
+
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy/M/d"
+
+    /// Shopテーブル登録
+    for shop in shopList {
+        let newShop = Shop(context: context)
+        newShop.name = shop[0]         // カテゴリー名
+        newShop.memo = shop[1]        // メモ
+        newShop.timestamp = dateFormatter.date(from: shop[2])! // 追加日
+    }
+
+    /// コミット
+    try? context.save()
+}
 
 struct ShopListView: View {
-    // サンプルデータ用
-    @State var shops: [Shop] = [
-        Shop("すべて"),
-        Shop("サンドラッグ新宿通り店")
-    ]
     // モーダル終了処理
     @Environment(\.dismiss) var dismiss
 
+    @State private var inputText = ""
+    @State private var presentAlert = false
+
+    /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
+    @Environment(\.managedObjectContext) private var context
+
+    /// データ取得処理
+    @FetchRequest(
+        entity: Shop.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Shop.timestamp, ascending: true)],
+        predicate: nil
+    ) private var shops: FetchedResults<Shop>
+
     var body: some View {
         ZStack {
+            TextFieldAlertView(
+                text: $inputText,
+                isShowingAlert: $presentAlert,
+                placeholder: "ショップ名",
+                title: "ショップの追加",
+                message: "入力した内容でショップを追加します",
+                leftButtonTitle: "キャンセル",
+                rightButtonTitle: "追加",
+                leftButtonAction: {
+                    // 入力内容の初期化
+                    inputText = ""
+                },
+                rightButtonAction: {
+                    // 追加タップ時の処理
+                    // 新規ショップ登録処理
+                    let newShop = Shop(context: context)
+                    newShop.timestamp = Date()
+                    newShop.memo = ""
+                    newShop.name = inputText
+
+                    try? context.save()
+                    // 入力内容の初期化
+                    inputText = ""
+                }
+            ) // TextFieldAlertViewここまで
             VStack {
                 HStack(alignment: .center) {
                     Text("SHOP")
@@ -36,7 +93,7 @@ struct ShopListView: View {
                     ForEach(shops) { shop in
                         // セルの表示
                         HStack {
-                            Text(shop.name)
+                            Text("\(shop.name!)")
                             Spacer()
                         } // HStackここまで
 
@@ -44,7 +101,7 @@ struct ShopListView: View {
                         .contentShape(Rectangle())
                         // タップ時の処理
                         .onTapGesture {
-                            // タップしたカテゴリー名をTokuMemoListViewのカテゴリーボタンへ渡したい
+                            // タップしたカテゴリー名をTokuMemoListViewのショップボタンへ渡したい
                             // 閉じる処理
                             dismiss()
                         } // .onTapGestureここまで
@@ -70,7 +127,8 @@ struct ShopListView: View {
                 Spacer()
                 VStack {
                     Button(action: {
-                        // タップで画面表示させる
+                        // タップでショップ追加アラート画面表示
+                        presentAlert.toggle()
                     }) {
                         // 追加Viewへ遷移する
                         Image(systemName: "plus")
@@ -86,6 +144,13 @@ struct ShopListView: View {
                 } // VStackここまで
             } // HStackここまで
         } // ZStackここまで
+        .onAppear {
+            // ショップが０のとき
+            if self.shops.count == 0 {
+                /// Listビュー表示時に初期データ登録処理を実行する
+                registSampleShopData(context: context)
+            }
+        } // onAppearここまで
     } // bodyここまで
 } // CategoryListViewここまで
 
