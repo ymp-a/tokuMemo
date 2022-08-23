@@ -14,6 +14,8 @@ struct TokuMemoListView: View {
     @State private var showingModalCategoryListView = false
     // ショップ画面表示フラグ
     @State private var showingModalShopListView = false
+    // 商品画面表示フラグ
+    @State private var showingModalAddItemView = false
 
     var body: some View {
         ZStack {
@@ -84,7 +86,8 @@ struct TokuMemoListView: View {
                     Spacer()
                     // 追加ボタン
                     Button(action: {
-                        // タップで画面表示させる
+                        // ボタンタップで商品画面フラグオン
+                        showingModalAddItemView.toggle()
                     }, label: {
                         // 追加Viewへ遷移する
                         Image(systemName: "plus")
@@ -95,6 +98,10 @@ struct TokuMemoListView: View {
                             .clipShape(Circle())
                     })
                     .padding(20)
+                    // 商品追加画面モーダル表示
+                    .fullScreenCover(isPresented: $showingModalAddItemView) {
+                        AddItemView()
+                    }
                 } // HStackここまで
                 .padding(.bottom, 30)
             } // VStackここまで
