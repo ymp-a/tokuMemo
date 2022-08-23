@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AddItemView: View {
+    // モーダル終了処理
+    @Environment(\.dismiss) var dismiss
     // 商品名
     @State private var inputItemName = ""
     // 商品価格
@@ -25,11 +27,7 @@ struct AddItemView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            HStack(alignment: .center) {
-                Text("商品名を登録")
-                    .foregroundColor(.orange)
-                    .padding(.bottom)
-            } // HStackここまで
+            Text("") // なにか挟まないとタイトルバーが真っ黒になる
             Divider()
                 .background(Color.black)
             HStack {
@@ -111,6 +109,7 @@ struct AddItemView: View {
 
             Button(action: {
                 // 登録タップ時の処理
+                dismiss()
             }) {
                 Text("商品を登録する")
                     .frame(maxWidth: .infinity)
@@ -122,6 +121,8 @@ struct AddItemView: View {
             } // 登録ボタンここまで
             Spacer()
         } // VStackここまで
+        .navigationBarTitle(Text("商品名を登録"))
+        .navigationBarTitleDisplayMode(.inline)
     } // bodyここまで
 } // AddItemViewここまで
 
