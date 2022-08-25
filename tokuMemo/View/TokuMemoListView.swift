@@ -88,10 +88,7 @@ struct TokuMemoListView: View {
                     HStack {
                         Spacer()
                         // 追加ボタン
-                        Button(action: {
-                            // ボタンタップで商品画面フラグオン
-                            //                        showingModalAddItemView.toggle()
-                        }, label: {
+                        Button(action: {}, label: {
                             // 追加Viewへ遷移する
                             NavigationLink(destination: AddItemView()) {
                                 Image(systemName: "plus")
