@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AddItemView: View {
+    // モーダル終了処理
+    @Environment(\.dismiss) var dismiss
     // 商品名
     @State private var inputItemName = ""
     // 商品価格
@@ -22,16 +24,18 @@ struct AddItemView: View {
     @State private var selection = 1
     // メモ
     @State private var inputItemMemo = ""
+    // 参考 https://gist.github.com/takoikatakotako/4493a9fd947e7ceda8a97d04d7ea6c83
+    init() {
+        // navigationTitleカラー変更
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.orange]
+    }
 
     var body: some View {
         VStack(spacing: 0) {
-            HStack(alignment: .center) {
-                Text("商品名を登録")
-                    .foregroundColor(.orange)
-                    .padding(.bottom)
-            } // HStackここまで
-            Divider()
-                .background(Color.black)
+            Rectangle()
+            // Divider()の代わりに利用、色とライン高さ変更可能
+                .foregroundColor(.orange)
+                .frame(height: 1)
             HStack {
                 Text("商品名")
                 TextField("", text: $inputItemName)
@@ -111,6 +115,7 @@ struct AddItemView: View {
 
             Button(action: {
                 // 登録タップ時の処理
+                dismiss()
             }) {
                 Text("商品を登録する")
                     .frame(maxWidth: .infinity)
@@ -122,6 +127,7 @@ struct AddItemView: View {
             } // 登録ボタンここまで
             Spacer()
         } // VStackここまで
+        .navigationBarTitle("商品名を登録", displayMode: .inline)
     } // bodyここまで
 } // AddItemViewここまで
 
