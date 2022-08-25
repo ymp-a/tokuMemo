@@ -24,12 +24,18 @@ struct AddItemView: View {
     @State private var selection = 1
     // メモ
     @State private var inputItemMemo = ""
+    // 参考 https://gist.github.com/takoikatakotako/4493a9fd947e7ceda8a97d04d7ea6c83
+    init() {
+        // navigationTitleカラー変更
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.orange]
+    }
 
     var body: some View {
         VStack(spacing: 0) {
-            Text("") // なにか挟まないとタイトルバーが真っ黒になる
-            Divider()
-                .background(Color.black)
+            Rectangle()
+            // Divider()の代わりに利用、色とライン高さ変更可能
+                .foregroundColor(.orange)
+                .frame(height: 1)
             HStack {
                 Text("商品名")
                 TextField("", text: $inputItemName)
@@ -121,8 +127,7 @@ struct AddItemView: View {
             } // 登録ボタンここまで
             Spacer()
         } // VStackここまで
-        .navigationBarTitle(Text("商品名を登録"))
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarTitle("商品名を登録", displayMode: .inline)
     } // bodyここまで
 } // AddItemViewここまで
 
