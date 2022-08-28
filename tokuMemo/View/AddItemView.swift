@@ -29,11 +29,15 @@ struct AddItemView: View {
         // navigationTitleカラー変更
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.orange]
     }
+    // カテゴリー画面表示フラグ
+    @State private var showingModalCategoryListView = false
+    // ショップ画面表示フラグ
+    @State private var showingModalShopListView = false
 
     var body: some View {
         VStack(spacing: 0) {
             Rectangle()
-            // Divider()の代わりに利用、色とライン高さ変更可能
+                // Divider()の代わりに利用、色とライン高さ変更可能
                 .foregroundColor(.orange)
                 .frame(height: 1)
             HStack {
@@ -48,19 +52,29 @@ struct AddItemView: View {
 
             HStack(alignment: .center, spacing: 0) {
                 Button(action: {
-                    // タップしたらカテゴリ選択画面へ遷移したい
+                    // ボタンタップでカテゴリ画面フラグオン
+                    showingModalCategoryListView.toggle()
                 }) {
                     Text("カテゴリー")
                         .frame(maxWidth: .infinity)
                     Image(systemName: "chevron.right.circle")
                 }
+                // カテゴリ画面モーダル表示
+                .fullScreenCover(isPresented: $showingModalCategoryListView) {
+                    CategoryListView()
+                }
 
                 Button(action: {
-                    // タップしたらショップ選択画面へ遷移したい
+                    // ボタンタップでショップ画面フラグオン
+                    showingModalShopListView.toggle()
                 }) {
                     Text("ショップ")
                         .frame(maxWidth: .infinity)
                     Image(systemName: "chevron.right.circle")
+                }
+                // カテゴリ画面モーダル表示
+                .fullScreenCover(isPresented: $showingModalShopListView) {
+                    ShopListView()
                 }
             } // HStackここまで
             .font(.title3)
