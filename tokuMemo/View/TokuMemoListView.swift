@@ -15,6 +15,8 @@ struct TokuMemoListView: View {
     // ショップ画面表示フラグ
     @State private var showingModalShopListView = false
 
+    @Binding var categoryText: String
+
     var body: some View {
         NavigationView {
             ZStack {
@@ -90,7 +92,7 @@ struct TokuMemoListView: View {
                         // 追加ボタン
                         Button(action: {}, label: {
                             // 追加Viewへ遷移する
-                            NavigationLink(destination: AddItemView()) {
+                            NavigationLink(destination: AddItemView(categoryText: $categoryText)) {
                                 Image(systemName: "plus")
                                     .font(.system(size: 24))
                                     .foregroundColor(.white)
@@ -109,7 +111,10 @@ struct TokuMemoListView: View {
 } // structここまで
 
 struct TokuMemoListView_Previews: PreviewProvider {
+
+    @State static var categoryText = "すべて"
+
     static var previews: some View {
-        TokuMemoListView()
+        TokuMemoListView(categoryText: $categoryText)
     }
 }

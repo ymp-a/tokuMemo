@@ -139,6 +139,7 @@ struct CategoryListView: View {
 
     @State private var inputText = ""
     @State private var presentAlert = false
+    @State var categoryText: String? = "すべて"
 
     /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
     @Environment(\.managedObjectContext) private var context
@@ -184,7 +185,7 @@ struct CategoryListView: View {
                 } // HStackここまで
 
                 List {
-                    ForEach(categories) { category in
+                    ForEach(categories, id: \.self) { category in
                         // セルの表示
                         HStack {
                             Text("\(category.name!)")
@@ -196,6 +197,8 @@ struct CategoryListView: View {
                         // タップ時の処理
                         .onTapGesture {
                             // タップしたカテゴリー名をTokuMemoListViewのカテゴリーボタンへ渡したい
+                            //　categoryTextに値が代入されていない
+                            self.categoryText = category.name!
                             // 閉じる処理
                             dismiss()
                         } // .onTapGestureここまで
@@ -248,8 +251,8 @@ struct CategoryListView: View {
     } // bodyここまで
 } // CategoryListViewここまで
 
-struct CategoryListView_Previews: PreviewProvider {
-    static var previews: some View {
-        CategoryListView()
-    }
-}
+// struct CategoryListView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        CategoryListView()
+//    }
+// }

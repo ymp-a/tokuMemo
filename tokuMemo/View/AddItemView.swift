@@ -12,8 +12,10 @@ struct AddItemView: View {
     @Environment(\.dismiss) var dismiss
     // 商品名
     @State private var inputItemName = ""
+    // カテゴリー
+    @Binding var categoryText: String
     // 商品価格
-    @State private var inputItemPrice = ""
+    @State var inputItemPrice = ""
     // 値引金額
     @State private var inputDiscountPrice = ""
     // 数量
@@ -25,9 +27,11 @@ struct AddItemView: View {
     // メモ
     @State private var inputItemMemo = ""
     // 参考 https://gist.github.com/takoikatakotako/4493a9fd947e7ceda8a97d04d7ea6c83
-    init() {
+    init(categoryText: Binding<String>) {
         // navigationTitleカラー変更
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.orange]
+
+        self._categoryText = categoryText
     }
     // カテゴリー画面表示フラグ
     @State private var showingModalCategoryListView = false
@@ -55,7 +59,7 @@ struct AddItemView: View {
                     // ボタンタップでカテゴリ画面フラグオン
                     showingModalCategoryListView.toggle()
                 }) {
-                    Text("カテゴリー")
+                    Text("\(categoryText)")
                         .frame(maxWidth: .infinity)
                     Image(systemName: "chevron.right.circle")
                 }
@@ -146,7 +150,10 @@ struct AddItemView: View {
 } // AddItemViewここまで
 
 struct AddItemView_Previews: PreviewProvider {
+
+    @State static var categoryText = "すべて"
+
     static var previews: some View {
-        AddItemView()
+        AddItemView(categoryText: $categoryText)
     }
 }
