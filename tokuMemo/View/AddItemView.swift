@@ -28,6 +28,16 @@ struct AddItemView: View {
     @State private var selection = 1
     // メモ
     @State private var inputItemMemo = ""
+    /// 複数アラート参考 https://zenn.dev/spyc/articles/993fb47a1d42e8
+    // 未入力時のアラートフラグ用
+    @State private var showingAlert = false
+    @State var alertType: AlertType = .itemName
+    // アラートの種類
+    enum AlertType {
+        case itemName
+        case itemPrice
+        case itemsVolume
+    }
 
     // 参考 https://gist.github.com/takoikatakotako/4493a9fd947e7ceda8a97d04d7ea6c83
     init(categoryText: Binding<String>, shopText: Binding<String>) {
@@ -44,8 +54,9 @@ struct AddItemView: View {
 
     var body: some View {
         VStack(spacing: 0) {
+
             Rectangle()
-                // Divider()の代わりに利用、色とライン高さ変更可能
+            // Divider()の代わりに利用、色とライン高さ変更可能
                 .foregroundColor(.orange)
                 .frame(height: 1)
             HStack {
@@ -134,10 +145,22 @@ struct AddItemView: View {
             .foregroundColor(.orange)
             .border(.orange)
             .padding(.horizontal)
-
             Button(action: {
                 // 登録タップ時の処理
-                dismiss()
+                // 入力チェック
+                if inputItemName.count<1 {
+                    alertType = .itemName
+                    showingAlert.toggle()
+                } else if inputItemPrice.count<1 {
+                    alertType = .itemPrice
+                    showingAlert.toggle()
+                } else if inputItemsVolume.count<1 {
+                    alertType = .itemsVolume
+                    showingAlert.toggle()
+                } else {
+                    // チェッククリアで画面を閉じる
+                    dismiss()
+                }
             }) {
                 Text("商品を登録する")
                     .frame(maxWidth: .infinity)
@@ -149,6 +172,18 @@ struct AddItemView: View {
             } // 登録ボタンここまで
             Spacer()
         } // VStackここまで
+        // showingAlertがtureのとき表示する
+        .alert(isPresented: $showingAlert) {
+            // アラートタイプに応じたメッセージを表示する
+            switch alertType {
+            case .itemName:
+                return Alert(title: Text("商品名を入力してください"))
+            case .itemPrice:
+                return Alert(title: Text("商品の税込金額を入力してください"))
+            case .itemsVolume:
+                return Alert(title: Text("商品の数を入力してください"))
+            } // alertTypeここまで
+        } // alertここまで
         .navigationBarTitle("商品名を登録", displayMode: .inline)
     } // bodyここまで
 } // AddItemViewここまで
