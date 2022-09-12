@@ -10,6 +10,8 @@ import SwiftUI
 struct AddItemView: View {
     // モーダル終了処理
     @Environment(\.dismiss) var dismiss
+    /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
+    @Environment(\.managedObjectContext) private var context
     // 商品名
     @State private var inputItemName = ""
     // カテゴリーテキスト部分
@@ -154,7 +156,22 @@ struct AddItemView: View {
                     alertType = .itemsVolume
                     showingAlert.toggle()
                 } else {
-                    // チェッククリアで画面を閉じる
+                    // 入力チェックがOKなら
+                    // 商品登録処理
+                    let newItem = Item(context: context)
+                    newItem.itemName = inputItemName
+                    newItem.categoryName = categoryText
+                    newItem.shopName = shopText
+                    newItem.price = Int32(inputItemPrice) ?? 0
+                    newItem.discountPrice = Int32(inputDiscountPrice) ?? 0
+                    newItem.volume = Int32(inputItemsVolume) ?? 0
+                    newItem.qtyunit = Int32(exactly: selection) ?? 0
+                    newItem.memo = inputItemMemo
+                    newItem.timestamp = Date()
+
+                    try? context.save()
+
+                    // 画面を閉じる
                     dismiss()
                 }
             }) {
@@ -185,7 +202,6 @@ struct AddItemView: View {
 } // AddItemViewここまで
 
 struct AddItemView_Previews: PreviewProvider {
-    
     @State static var categoryText = "カテゴリー"
     @State static var shopText = "ショップ"
 

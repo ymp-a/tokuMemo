@@ -21,6 +21,13 @@ struct TokuMemoListView: View {
     // ショップ名テキスト部分
     @State var _shopText: String = "ショップ"
 
+    /// データ取得処理
+    @FetchRequest(
+        entity: Item.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
+        predicate: nil
+    ) private var items: FetchedResults<Item>
+
     var body: some View {
         NavigationView {
             ZStack {
@@ -64,11 +71,9 @@ struct TokuMemoListView: View {
                     .padding(.horizontal)
 
                     List {
-                        Text("120　商品１\n120 / 個　　スギ薬局中野南台")
-                        Text("990　ディアボーテ オイルイン トリ\n4.95 / g  200g")
-                        Text("1080　チョコレート効果\n12.85 / 枚　84枚 ドンキホーテ環七")
-                        Text("387 ブレンディスティックカフェオレ\n12.9 / 個  30個 Tomod's西新宿五丁目")
-
+                        ForEach(items, id: \.self) { item in
+                            Text("¥\(item.price)"+"    "+"\(item.itemName!)")
+                        }
                     } // Listここまで
                     .foregroundColor(.orange)
 
