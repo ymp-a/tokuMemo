@@ -21,11 +21,11 @@ struct AddItemView: View {
     // 値引金額
     @State private var inputDiscountPrice = ""
     // 数量
-    @State private var inputItemsVolume = ""
+    @State private var inputItemsVolume = "1"
     // 数量単位
     private let units = ["個", "g", "ml"]
     // ピッカー初期値
-    @State private var selection = 1
+    @State private var selection = 0
     // メモ
     @State private var inputItemMemo = ""
     /// 複数アラート参考 https://zenn.dev/spyc/articles/993fb47a1d42e8
@@ -54,14 +54,13 @@ struct AddItemView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-
-            Rectangle()
             // Divider()の代わりに利用、色とライン高さ変更可能
+            Rectangle()
                 .foregroundColor(.orange)
                 .frame(height: 1)
             HStack {
-                Text("商品名")
-                TextField("", text: $inputItemName)
+                Text("")
+                TextField("商品名", text: $inputItemName)
             }
             .padding(10)
             .foregroundColor(.orange)
@@ -101,8 +100,7 @@ struct AddItemView: View {
             .padding(.bottom)
             .padding(.horizontal)
             HStack {
-                Text("税込価格")
-                TextField("", text: $inputItemPrice)
+                TextField("税込価格", text: $inputItemPrice)
             }
             .padding(10)
             .frame(height: 50)
@@ -111,8 +109,7 @@ struct AddItemView: View {
             .padding(.horizontal)
 
             HStack {
-                Text("値引き金額")
-                TextField("", text: $inputDiscountPrice)
+                TextField("値引き価格", text: $inputDiscountPrice)
             }
             .padding(10)
             .frame(height: 50)
@@ -121,11 +118,10 @@ struct AddItemView: View {
             .padding(.horizontal)
 
             HStack {
-                Text("数量")
-                TextField("", text: $inputItemsVolume)
+                TextField("数量", text: $inputItemsVolume)
                 Picker(selection: $selection, label: Text("数量単位を選択")) {
-                    ForEach(units, id: \.self) { unit in
-                        Text(unit)
+                    ForEach(0 ..< units.count, id: \.self) { num in
+                        Text(self.units[num])
                     }
                 }
                 .pickerStyle(SegmentedPickerStyle())    // セグメントピッカースタイルの指定
@@ -189,7 +185,7 @@ struct AddItemView: View {
 } // AddItemViewここまで
 
 struct AddItemView_Previews: PreviewProvider {
-
+    
     @State static var categoryText = "カテゴリー"
     @State static var shopText = "ショップ"
 
