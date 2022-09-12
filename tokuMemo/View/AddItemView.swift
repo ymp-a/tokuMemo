@@ -103,6 +103,7 @@ struct AddItemView: View {
             .padding(.horizontal)
             HStack {
                 TextField("税込価格", text: $inputItemPrice)
+                    .keyboardType(.numberPad)
             }
             .padding(10)
             .frame(height: 50)
@@ -112,6 +113,7 @@ struct AddItemView: View {
 
             HStack {
                 TextField("値引き価格", text: $inputDiscountPrice)
+                    .keyboardType(.numberPad)
             }
             .padding(10)
             .frame(height: 50)
@@ -121,6 +123,7 @@ struct AddItemView: View {
 
             HStack {
                 TextField("数量", text: $inputItemsVolume)
+                    .keyboardType(.numberPad)
                 Picker(selection: $selection, label: Text("数量単位を選択")) {
                     ForEach(0 ..< units.count, id: \.self) { num in
                         Text(self.units[num])
