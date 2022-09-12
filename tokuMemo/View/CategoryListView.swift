@@ -139,8 +139,8 @@ struct CategoryListView: View {
 
     @State private var inputText = ""
     @State private var presentAlert = false
-    @State var categoryText: String? = "すべて"
-
+    // カテゴリーテキスト部分
+    @Binding var categoryText: String
     /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
     @Environment(\.managedObjectContext) private var context
 

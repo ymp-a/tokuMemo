@@ -14,8 +14,9 @@ struct TokuMemoListView: View {
     @State private var showingModalCategoryListView = false
     // ショップ画面表示フラグ
     @State private var showingModalShopListView = false
-
-    @Binding var categoryText: String
+    // カテゴリーテキスト部分
+    // なぜラベル(_)を付けるか理解できていないビルド時にXcodeから言われるがままつけた
+    @State var _categoryText: String = "カテゴリー"
 
     var body: some View {
         NavigationView {
@@ -33,13 +34,13 @@ struct TokuMemoListView: View {
                             // ボタンタップでカテゴリ画面フラグオン
                             showingModalCategoryListView.toggle()
                         }) {
-                            Text("カテゴリー")
+                            Text("\(_categoryText)")
                                 .frame(maxWidth: .infinity)
                             Image(systemName: "chevron.right.circle")
                         }
                         // カテゴリ画面モーダル表示
                         .fullScreenCover(isPresented: $showingModalCategoryListView) {
-                            CategoryListView()
+                            CategoryListView(categoryText: $_categoryText)
                         }
 
                         Button(action: {
@@ -92,7 +93,7 @@ struct TokuMemoListView: View {
                         // 追加ボタン
                         Button(action: {}, label: {
                             // 追加Viewへ遷移する
-                            NavigationLink(destination: AddItemView(categoryText: $categoryText)) {
+                            NavigationLink(destination: AddItemView(categoryText: $_categoryText)) {
                                 Image(systemName: "plus")
                                     .font(.system(size: 24))
                                     .foregroundColor(.white)
@@ -112,9 +113,7 @@ struct TokuMemoListView: View {
 
 struct TokuMemoListView_Previews: PreviewProvider {
 
-    @State static var categoryText = "すべて"
-
     static var previews: some View {
-        TokuMemoListView(categoryText: $categoryText)
+        TokuMemoListView()
     }
 }

@@ -12,7 +12,7 @@ struct AddItemView: View {
     @Environment(\.dismiss) var dismiss
     // 商品名
     @State private var inputItemName = ""
-    // カテゴリー
+    // カテゴリーテキスト部分
     @Binding var categoryText: String
     // 商品価格
     @State var inputItemPrice = ""
@@ -65,7 +65,7 @@ struct AddItemView: View {
                 }
                 // カテゴリ画面モーダル表示
                 .fullScreenCover(isPresented: $showingModalCategoryListView) {
-                    CategoryListView()
+                    CategoryListView(categoryText: $categoryText)
                 }
 
                 Button(action: {
@@ -151,7 +151,7 @@ struct AddItemView: View {
 
 struct AddItemView_Previews: PreviewProvider {
 
-    @State static var categoryText = "すべて"
+    @State static var categoryText = "カテゴリー"
 
     static var previews: some View {
         AddItemView(categoryText: $categoryText)

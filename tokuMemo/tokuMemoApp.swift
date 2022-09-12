@@ -14,7 +14,7 @@ struct tokuMemoApp: App {
     @State static var categoryText = "すべて"
     var body: some Scene {
         WindowGroup {
-            TokuMemoListView(categoryText: tokuMemoApp.$categoryText)
+            TokuMemoListView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
