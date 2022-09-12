@@ -14,6 +14,8 @@ struct AddItemView: View {
     @State private var inputItemName = ""
     // カテゴリーテキスト部分
     @Binding var categoryText: String
+    // ショップ名テキスト部分
+    @Binding var shopText: String
     // 商品価格
     @State var inputItemPrice = ""
     // 値引金額
@@ -26,12 +28,14 @@ struct AddItemView: View {
     @State private var selection = 1
     // メモ
     @State private var inputItemMemo = ""
+
     // 参考 https://gist.github.com/takoikatakotako/4493a9fd947e7ceda8a97d04d7ea6c83
-    init(categoryText: Binding<String>) {
+    init(categoryText: Binding<String>, shopText: Binding<String>) {
         // navigationTitleカラー変更
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.orange]
 
         self._categoryText = categoryText
+        self._shopText = shopText
     }
     // カテゴリー画面表示フラグ
     @State private var showingModalCategoryListView = false
@@ -72,13 +76,13 @@ struct AddItemView: View {
                     // ボタンタップでショップ画面フラグオン
                     showingModalShopListView.toggle()
                 }) {
-                    Text("ショップ")
+                    Text("\(shopText)")
                         .frame(maxWidth: .infinity)
                     Image(systemName: "chevron.right.circle")
                 }
                 // カテゴリ画面モーダル表示
                 .fullScreenCover(isPresented: $showingModalShopListView) {
-                    ShopListView()
+                    ShopListView(shopText: $shopText)
                 }
             } // HStackここまで
             .font(.title3)
@@ -152,8 +156,9 @@ struct AddItemView: View {
 struct AddItemView_Previews: PreviewProvider {
 
     @State static var categoryText = "カテゴリー"
+    @State static var shopText = "ショップ"
 
     static var previews: some View {
-        AddItemView(categoryText: $categoryText)
+        AddItemView(categoryText: $categoryText, shopText: $shopText)
     }
 }

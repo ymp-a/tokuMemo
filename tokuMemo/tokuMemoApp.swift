@@ -11,7 +11,6 @@ import SwiftUI
 struct tokuMemoApp: App {
     let persistenceController = PersistenceController.shared
 
-    @State static var categoryText = "すべて"
     var body: some Scene {
         WindowGroup {
             TokuMemoListView()

@@ -16,7 +16,10 @@ struct TokuMemoListView: View {
     @State private var showingModalShopListView = false
     // カテゴリーテキスト部分
     // なぜラベル(_)を付けるか理解できていないビルド時にXcodeから言われるがままつけた
+    // AddItemViewの初期化init部分に合わせている？
     @State var _categoryText: String = "カテゴリー"
+    // ショップ名テキスト部分
+    @State var _shopText: String = "ショップ"
 
     var body: some View {
         NavigationView {
@@ -47,13 +50,13 @@ struct TokuMemoListView: View {
                             // ボタンタップでショップ画面フラグオン
                             showingModalShopListView.toggle()
                         }) {
-                            Text("ショップ")
+                            Text("\(_shopText)")
                                 .frame(maxWidth: .infinity)
                             Image(systemName: "chevron.right.circle")
                         }
                         // カテゴリ画面モーダル表示
                         .fullScreenCover(isPresented: $showingModalShopListView) {
-                            ShopListView()
+                            ShopListView(shopText: $_shopText)
                         }
                     }// HStackここまで
                     .font(.title3)
@@ -93,7 +96,7 @@ struct TokuMemoListView: View {
                         // 追加ボタン
                         Button(action: {}, label: {
                             // 追加Viewへ遷移する
-                            NavigationLink(destination: AddItemView(categoryText: $_categoryText)) {
+                            NavigationLink(destination: AddItemView(categoryText: $_categoryText, shopText: $_shopText)) {
                                 Image(systemName: "plus")
                                     .font(.system(size: 24))
                                     .foregroundColor(.white)

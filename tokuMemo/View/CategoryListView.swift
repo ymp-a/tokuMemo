@@ -196,8 +196,7 @@ struct CategoryListView: View {
                         .contentShape(Rectangle())
                         // タップ時の処理
                         .onTapGesture {
-                            // タップしたカテゴリー名をTokuMemoListViewのカテゴリーボタンへ渡したい
-                            //　categoryTextに値が代入されていない
+                            // タップしたカテゴリー名わたす
                             self.categoryText = category.name!
                             // 閉じる処理
                             dismiss()
