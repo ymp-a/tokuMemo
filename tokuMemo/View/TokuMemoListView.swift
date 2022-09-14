@@ -15,9 +15,9 @@ struct TokuMemoListView: View {
     // ショップ画面表示フラグ
     @State private var showingModalShopListView = false
     // カテゴリーテキスト部分
-    @State var categoryText: String = "カテゴリー"
+    @State private var categoryText: String = "カテゴリー"
     // ショップ名テキスト部分
-    @State var shopText: String = "ショップ"
+    @State private var shopText: String = "ショップ"
 
     /// データ取得処理
     @FetchRequest(

@@ -19,7 +19,7 @@ struct AddItemView: View {
     // ショップ名テキスト部分
     @Binding var shopText: String
     // 商品価格
-    @State var inputItemPrice = ""
+    @State private var inputItemPrice = ""
     // 値引金額
     @State private var inputDiscountPrice = ""
     // 数量
@@ -33,7 +33,7 @@ struct AddItemView: View {
     /// 複数アラート参考 https://zenn.dev/spyc/articles/993fb47a1d42e8
     // 未入力時のアラートフラグ用
     @State private var showingAlert = false
-    @State var alertType: AlertType = .itemName
+    @State private var alertType: AlertType = .itemName
     // アラートの種類
     enum AlertType {
         case itemName
