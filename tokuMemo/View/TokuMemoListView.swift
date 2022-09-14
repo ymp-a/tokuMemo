@@ -87,9 +87,8 @@ struct TokuMemoListView: View {
                                 Text("買い物リスト")
                             }
                     } // TabViewここまで
-                    .frame(width: .infinity, height: 40, alignment: .bottom)
+                    .frame(height: 40, alignment: .bottom)
                     .accentColor(.orange) // 選択中の色指定
-                    Spacer()
                 } // VStackここまで
                 // ボタンのViewここから
                 VStack {
