@@ -34,9 +34,6 @@ struct TokuMemoListView: View {
                         .textFieldStyle(.roundedBorder)
                         .padding(.horizontal)
 
-                        .navigationTitle("")
-                        .navigationBarTitleDisplayMode(.inline)
-
                     HStack(alignment: .center, spacing: 0) {
                         Button(action: {
                             // ボタンタップでカテゴリ画面フラグオン
