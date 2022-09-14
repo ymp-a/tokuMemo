@@ -15,11 +15,9 @@ struct TokuMemoListView: View {
     // ショップ画面表示フラグ
     @State private var showingModalShopListView = false
     // カテゴリーテキスト部分
-    // なぜラベル(_)を付けるか理解できていないビルド時にXcodeから言われるがままつけた
-    // AddItemViewの初期化init部分に合わせている？
-    @State var _categoryText: String = "カテゴリー"
+    @State var categoryText: String = "カテゴリー"
     // ショップ名テキスト部分
-    @State var _shopText: String = "ショップ"
+    @State var shopText: String = "ショップ"
 
     /// データ取得処理
     @FetchRequest(
@@ -44,26 +42,26 @@ struct TokuMemoListView: View {
                             // ボタンタップでカテゴリ画面フラグオン
                             showingModalCategoryListView.toggle()
                         }) {
-                            Text("\(_categoryText)")
+                            Text("\(categoryText)")
                                 .frame(maxWidth: .infinity)
                             Image(systemName: "chevron.right.circle")
                         }
                         // カテゴリ画面モーダル表示
                         .fullScreenCover(isPresented: $showingModalCategoryListView) {
-                            CategoryListView(categoryText: $_categoryText)
+                            CategoryListView(categoryText: $categoryText)
                         }
 
                         Button(action: {
                             // ボタンタップでショップ画面フラグオン
                             showingModalShopListView.toggle()
                         }) {
-                            Text("\(_shopText)")
+                            Text("\(shopText)")
                                 .frame(maxWidth: .infinity)
                             Image(systemName: "chevron.right.circle")
                         }
                         // カテゴリ画面モーダル表示
                         .fullScreenCover(isPresented: $showingModalShopListView) {
-                            ShopListView(shopText: $_shopText)
+                            ShopListView(shopText: $shopText)
                         }
                     }// HStackここまで
                     .font(.title3)
@@ -101,7 +99,7 @@ struct TokuMemoListView: View {
                         // 追加ボタン
                         Button(action: {}, label: {
                             // 追加Viewへ遷移する
-                            NavigationLink(destination: AddItemView(categoryText: $_categoryText, shopText: $_shopText)) {
+                            NavigationLink(destination: AddItemView(categoryText: $categoryText, shopText: $shopText)) {
                                 Image(systemName: "plus")
                                     .font(.system(size: 24))
                                     .foregroundColor(.white)
