@@ -110,7 +110,7 @@ func registSampleData(context: NSManagedObjectContext) {
         ["日用品", "", "2022/08/18"]
     ]
 
-    /// Studentテーブル全消去
+    /// カテゴリーテーブル全消去
     let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
     fetchRequest.entity = Category.entity()
     let categories = try? context.fetch(fetchRequest) as? [Category]
@@ -121,7 +121,7 @@ func registSampleData(context: NSManagedObjectContext) {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy/M/d"
 
-    /// Studentテーブル登録
+    /// カテゴリーテーブル登録
     for category in categoryList {
         let newCategory = Category(context: context)
         newCategory.name = category[0]         // カテゴリー名
@@ -139,8 +139,8 @@ struct CategoryListView: View {
 
     @State private var inputText = ""
     @State private var presentAlert = false
-    // カテゴリーテキスト部分
-    @Binding var categoryText: String
+    // カテゴリー
+    @Binding var categoryName: String
     /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
     @Environment(\.managedObjectContext) private var context
 
@@ -197,7 +197,7 @@ struct CategoryListView: View {
                         // タップ時の処理
                         .onTapGesture {
                             // タップしたカテゴリー名わたす
-                            self.categoryText = category.name!
+                            self.categoryName = category.name!
                             // 閉じる処理
                             dismiss()
                         } // .onTapGestureここまで

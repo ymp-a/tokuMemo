@@ -15,7 +15,7 @@ struct TokuMemoListView: View {
     // ショップ画面表示フラグ
     @State private var showingModalShopListView = false
     // カテゴリーテキスト部分
-    @State private var categoryText: String = "カテゴリー"
+    @State private var categoryName: String = "カテゴリー"
     // ショップ名テキスト部分
     @State private var shopText: String = "ショップ"
 
@@ -39,13 +39,13 @@ struct TokuMemoListView: View {
                             // ボタンタップでカテゴリ画面フラグオン
                             showingModalCategoryListView.toggle()
                         }) {
-                            Text("\(categoryText)")
+                            Text("\(categoryName)")
                                 .frame(maxWidth: .infinity)
                             Image(systemName: "chevron.right.circle")
                         }
                         // カテゴリ画面モーダル表示
                         .fullScreenCover(isPresented: $showingModalCategoryListView) {
-                            CategoryListView(categoryText: $categoryText)
+                            CategoryListView(categoryName: $categoryName)
                         }
 
                         Button(action: {
@@ -95,7 +95,7 @@ struct TokuMemoListView: View {
                         // 追加ボタン
                         Button(action: {}, label: {
                             // 追加Viewへ遷移する
-                            NavigationLink(destination: AddItemView(categoryText: $categoryText, shopText: $shopText)) {
+                            NavigationLink(destination: AddItemView(categoryName: $categoryName, shopText: $shopText)) {
                                 Image(systemName: "plus")
                                     .font(.system(size: 24))
                                     .foregroundColor(.white)

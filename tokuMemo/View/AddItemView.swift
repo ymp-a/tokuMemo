@@ -15,7 +15,7 @@ struct AddItemView: View {
     // 商品名
     @State private var inputItemName = ""
     // カテゴリーテキスト部分
-    @Binding var categoryText: String
+    @Binding var categoryName: String
     // ショップ名テキスト部分
     @Binding var shopText: String
     // 商品価格
@@ -42,11 +42,11 @@ struct AddItemView: View {
     }
 
     // 参考 https://gist.github.com/takoikatakotako/4493a9fd947e7ceda8a97d04d7ea6c83
-    init(categoryText: Binding<String>, shopText: Binding<String>) {
+    init(categoryName: Binding<String>, shopText: Binding<String>) {
         // navigationTitleカラー変更
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.orange]
 
-        self._categoryText = categoryText
+        self._categoryName = categoryName
         self._shopText = shopText
     }
     // カテゴリー画面表示フラグ
@@ -75,13 +75,13 @@ struct AddItemView: View {
                     // ボタンタップでカテゴリ画面フラグオン
                     showingModalCategoryListView.toggle()
                 }) {
-                    Text("\(categoryText)")
+                    Text("\(categoryName)")
                         .frame(maxWidth: .infinity)
                     Image(systemName: "chevron.right.circle")
                 }
                 // カテゴリ画面モーダル表示
                 .fullScreenCover(isPresented: $showingModalCategoryListView) {
-                    CategoryListView(categoryText: $categoryText)
+                    CategoryListView(categoryName: $categoryName)
                 }
 
                 Button(action: {
@@ -163,7 +163,7 @@ struct AddItemView: View {
                     // 商品登録処理
                     let newItem = Item(context: context)
                     newItem.itemName = inputItemName
-                    newItem.categoryName = categoryText
+                    newItem.categoryName = categoryName
                     newItem.shopName = shopText
                     newItem.price = Int32(inputItemPrice) ?? 0
                     newItem.discountPrice = Int32(inputDiscountPrice) ?? 0
@@ -205,10 +205,10 @@ struct AddItemView: View {
 } // AddItemViewここまで
 
 struct AddItemView_Previews: PreviewProvider {
-    @State static var categoryText = "カテゴリー"
+    @State static var categoryName = "カテゴリー"
     @State static var shopText = "ショップ"
 
     static var previews: some View {
-        AddItemView(categoryText: $categoryText, shopText: $shopText)
+        AddItemView(categoryName: $categoryName, shopText: $shopText)
     }
 }
