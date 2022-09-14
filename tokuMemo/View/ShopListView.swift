@@ -95,7 +95,7 @@ struct ShopListView: View {
                     ForEach(shops, id: \.self) { shop in
                         // セルの表示
                         HStack {
-                            Text("\(shop.name!)")
+                            Text(shop.name!)
                             Spacer()
                         } // HStackここまで
 

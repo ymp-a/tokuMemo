@@ -61,7 +61,6 @@ struct AddItemView: View {
                 .foregroundColor(.orange)
                 .frame(height: 1)
             HStack {
-                Text("")
                 TextField("商品名", text: $inputItemName)
             }
             .padding(10)
@@ -75,7 +74,7 @@ struct AddItemView: View {
                     // ボタンタップでカテゴリ画面フラグオン
                     showingModalCategoryListView.toggle()
                 }) {
-                    Text("\(categoryName)")
+                    Text(categoryName)
                         .frame(maxWidth: .infinity)
                     Image(systemName: "chevron.right.circle")
                 }
@@ -88,7 +87,7 @@ struct AddItemView: View {
                     // ボタンタップでショップ画面フラグオン
                     showingModalShopListView.toggle()
                 }) {
-                    Text("\(shopText)")
+                    Text(shopText)
                         .frame(maxWidth: .infinity)
                     Image(systemName: "chevron.right.circle")
                 }

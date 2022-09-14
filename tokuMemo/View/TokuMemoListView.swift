@@ -39,7 +39,7 @@ struct TokuMemoListView: View {
                             // ボタンタップでカテゴリ画面フラグオン
                             showingModalCategoryListView.toggle()
                         }) {
-                            Text("\(categoryName)")
+                            Text(categoryName)
                                 .frame(maxWidth: .infinity)
                             Image(systemName: "chevron.right.circle")
                         }
@@ -52,7 +52,7 @@ struct TokuMemoListView: View {
                             // ボタンタップでショップ画面フラグオン
                             showingModalShopListView.toggle()
                         }) {
-                            Text("\(shopText)")
+                            Text(shopText)
                                 .frame(maxWidth: .infinity)
                             Image(systemName: "chevron.right.circle")
                         }

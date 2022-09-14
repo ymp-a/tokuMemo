@@ -188,7 +188,7 @@ struct CategoryListView: View {
                     ForEach(categories, id: \.self) { category in
                         // セルの表示
                         HStack {
-                            Text("\(category.name!)")
+                            Text(category.name!)
                             Spacer()
                         } // HStackここまで
 
