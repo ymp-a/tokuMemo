@@ -47,7 +47,7 @@ struct ShopListView: View {
     @State private var inputText = ""
     @State private var presentAlert = false
     // ショップ名テキスト部分
-    @Binding var shopText: String
+    @Binding var shopName: String
 
     /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
     @Environment(\.managedObjectContext) private var context
@@ -104,7 +104,7 @@ struct ShopListView: View {
                         // タップ時の処理
                         .onTapGesture {
                             // タップしたショップ名をわたす
-                            self.shopText = shop.name!
+                            self.shopName = shop.name!
                             // 閉じる処理
                             dismiss()
                         } // .onTapGestureここまで

@@ -16,8 +16,8 @@ struct AddItemView: View {
     @State private var inputItemName = ""
     // カテゴリーテキスト部分
     @Binding var categoryName: String
-    // ショップ名テキスト部分
-    @Binding var shopText: String
+    // ショップ名
+    @Binding var shopName: String
     // 商品価格
     @State private var inputItemPrice = ""
     // 値引金額
@@ -42,12 +42,12 @@ struct AddItemView: View {
     }
 
     // 参考 https://gist.github.com/takoikatakotako/4493a9fd947e7ceda8a97d04d7ea6c83
-    init(categoryName: Binding<String>, shopText: Binding<String>) {
+    init(categoryName: Binding<String>, shopName: Binding<String>) {
         // navigationTitleカラー変更
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.orange]
 
         self._categoryName = categoryName
-        self._shopText = shopText
+        self._shopName = shopName
     }
     // カテゴリー画面表示フラグ
     @State private var showingModalCategoryListView = false
@@ -87,13 +87,13 @@ struct AddItemView: View {
                     // ボタンタップでショップ画面フラグオン
                     showingModalShopListView.toggle()
                 }) {
-                    Text(shopText)
+                    Text(shopName)
                         .frame(maxWidth: .infinity)
                     Image(systemName: "chevron.right.circle")
                 }
                 // カテゴリ画面モーダル表示
                 .fullScreenCover(isPresented: $showingModalShopListView) {
-                    ShopListView(shopText: $shopText)
+                    ShopListView(shopName: $shopName)
                 }
             } // HStackここまで
             .font(.title3)
@@ -163,7 +163,7 @@ struct AddItemView: View {
                     let newItem = Item(context: context)
                     newItem.itemName = inputItemName
                     newItem.categoryName = categoryName
-                    newItem.shopName = shopText
+                    newItem.shopName = shopName
                     newItem.price = Int32(inputItemPrice) ?? 0
                     newItem.discountPrice = Int32(inputDiscountPrice) ?? 0
                     newItem.volume = Int32(inputItemsVolume) ?? 0
@@ -205,9 +205,9 @@ struct AddItemView: View {
 
 struct AddItemView_Previews: PreviewProvider {
     @State static var categoryName = "カテゴリー"
-    @State static var shopText = "ショップ"
+    @State static var shopName = "ショップ"
 
     static var previews: some View {
-        AddItemView(categoryName: $categoryName, shopText: $shopText)
+        AddItemView(categoryName: $categoryName, shopName: $shopName)
     }
 }
