@@ -68,12 +68,10 @@ struct AddItemView: View {
             .border(.orange)
             .padding(.top)
             .padding(.horizontal)
-            // カテゴリーショップボタンの分割
-            CategoryShopTag(showingModalCategoryListView: $showingModalCategoryListView, showingModalShopListView: $showingModalShopListView, categoryName: $categoryName, shopName: $shopName)
-                .font(.title3)
-                .buttonStyle(.bordered)
+            // カテゴリーショップボタン
+            CategoryShopTagView(showingModalCategoryListView: $showingModalCategoryListView, showingModalShopListView: $showingModalShopListView, categoryName: $categoryName, shopName: $shopName)
                 .padding(.bottom)
-                .padding(.horizontal)
+
             HStack {
                 TextField("税込価格", text: $inputItemPrice)
                     .keyboardType(.numberPad)
