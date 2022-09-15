@@ -68,38 +68,12 @@ struct AddItemView: View {
             .border(.orange)
             .padding(.top)
             .padding(.horizontal)
-
-            HStack(alignment: .center, spacing: 0) {
-                Button(action: {
-                    // ボタンタップでカテゴリ画面フラグオン
-                    showingModalCategoryListView.toggle()
-                }) {
-                    Text(categoryName)
-                        .frame(maxWidth: .infinity)
-                    Image(systemName: "chevron.right.circle")
-                }
-                // カテゴリ画面モーダル表示
-                .fullScreenCover(isPresented: $showingModalCategoryListView) {
-                    CategoryListView(categoryName: $categoryName)
-                }
-
-                Button(action: {
-                    // ボタンタップでショップ画面フラグオン
-                    showingModalShopListView.toggle()
-                }) {
-                    Text(shopName)
-                        .frame(maxWidth: .infinity)
-                    Image(systemName: "chevron.right.circle")
-                }
-                // カテゴリ画面モーダル表示
-                .fullScreenCover(isPresented: $showingModalShopListView) {
-                    ShopListView(shopName: $shopName)
-                }
-            } // HStackここまで
-            .font(.title3)
-            .buttonStyle(.bordered)
-            .padding(.bottom)
-            .padding(.horizontal)
+            // カテゴリーショップボタンの分割
+            CategoryShopTag(showingModalCategoryListView: $showingModalCategoryListView, showingModalShopListView: $showingModalShopListView, categoryName: $categoryName, shopName: $shopName)
+                .font(.title3)
+                .buttonStyle(.bordered)
+                .padding(.bottom)
+                .padding(.horizontal)
             HStack {
                 TextField("税込価格", text: $inputItemPrice)
                     .keyboardType(.numberPad)
