@@ -10,10 +10,6 @@ import SwiftUI
 struct TokuMemoListView: View {
     // メモ検索入力用
     @State private var inputText = ""
-    // カテゴリー画面表示フラグ
-    @State private var showingModalCategoryListView = false
-    // ショップ画面表示フラグ
-    @State private var showingModalShopListView = false
     // カテゴリーテキスト部分
     @State private var categoryName: String = "カテゴリー"
     // ショップ名テキスト部分
@@ -35,7 +31,7 @@ struct TokuMemoListView: View {
                         .padding(.horizontal)
 
                     // カテゴリーショップボタン
-                    CategoryShopTagView(showingModalCategoryListView: $showingModalCategoryListView, showingModalShopListView: $showingModalShopListView, categoryName: $categoryName, shopName: $shopName)
+                    CategoryShopTagView(categoryName: $categoryName, shopName: $shopName)
 
                     List {
                         ForEach(items, id: \.self) { item in

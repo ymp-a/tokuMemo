@@ -136,13 +136,13 @@ func registSampleData(context: NSManagedObjectContext) {
 struct CategoryListView: View {
     // モーダル終了処理
     @Environment(\.dismiss) var dismiss
+    /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
+    @Environment(\.managedObjectContext) private var context
+    // カテゴリー
+    @Binding var categoryName: String
 
     @State private var inputText = ""
     @State private var presentAlert = false
-    // カテゴリー
-    @Binding var categoryName: String
-    /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
-    @Environment(\.managedObjectContext) private var context
 
     /// データ取得処理
     @FetchRequest(
@@ -250,8 +250,12 @@ struct CategoryListView: View {
     } // bodyここまで
 } // CategoryListViewここまで
 
+// 後ほどプレビューデータ作成する
 // struct CategoryListView_Previews: PreviewProvider {
+//    let persistenceController = PersistenceController.shared
+//
 //    static var previews: some View {
 //        CategoryListView()
+//            .environment(\.managedObjectContext, persistenceController.container.viewContext)
 //    }
 // }

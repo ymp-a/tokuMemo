@@ -43,14 +43,13 @@ func registSampleShopData(context: NSManagedObjectContext) {
 struct ShopListView: View {
     // モーダル終了処理
     @Environment(\.dismiss) var dismiss
-
-    @State private var inputText = ""
-    @State private var presentAlert = false
+    /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
+    @Environment(\.managedObjectContext) private var context
     // ショップ名テキスト部分
     @Binding var shopName: String
 
-    /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
-    @Environment(\.managedObjectContext) private var context
+    @State private var inputText = ""
+    @State private var presentAlert = false
 
     /// データ取得処理
     @FetchRequest(

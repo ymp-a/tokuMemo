@@ -12,20 +12,18 @@ struct AddItemView: View {
     @Environment(\.dismiss) var dismiss
     /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
     @Environment(\.managedObjectContext) private var context
-    // 商品名
-    @State private var inputItemName = ""
     // カテゴリーテキスト部分
     @Binding var categoryName: String
     // ショップ名
     @Binding var shopName: String
+    // 商品名
+    @State private var inputItemName = ""
     // 商品価格
     @State private var inputItemPrice = ""
     // 値引金額
     @State private var inputDiscountPrice = ""
     // 数量
     @State private var inputItemsVolume = "1"
-    // 数量単位
-    private let units = ["個", "g", "ml"]
     // ピッカー初期値
     @State private var selection = 0
     // メモ
@@ -34,6 +32,9 @@ struct AddItemView: View {
     // 未入力時のアラートフラグ用
     @State private var showingAlert = false
     @State private var alertType: AlertType = .itemName
+
+    // 数量単位
+    private let units = ["個", "g", "ml"]
     // アラートの種類
     enum AlertType {
         case itemName
@@ -49,10 +50,6 @@ struct AddItemView: View {
         self._categoryName = categoryName
         self._shopName = shopName
     }
-    // カテゴリー画面表示フラグ
-    @State private var showingModalCategoryListView = false
-    // ショップ画面表示フラグ
-    @State private var showingModalShopListView = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -69,7 +66,7 @@ struct AddItemView: View {
             .padding(.top)
             .padding(.horizontal)
             // カテゴリーショップボタン
-            CategoryShopTagView(showingModalCategoryListView: $showingModalCategoryListView, showingModalShopListView: $showingModalShopListView, categoryName: $categoryName, shopName: $shopName)
+            CategoryShopTagView(categoryName: $categoryName, shopName: $shopName)
                 .padding(.bottom)
 
             HStack {

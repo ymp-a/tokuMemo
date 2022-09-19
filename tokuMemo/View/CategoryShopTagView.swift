@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct CategoryShopTagView: View {
-    // カテゴリー画面表示フラグ
-    @Binding var showingModalCategoryListView: Bool
-    // ショップ画面表示フラグ
-    @Binding var showingModalShopListView: Bool
     // カテゴリーテキスト部分
     @Binding var categoryName: String
     // ショップ名テキスト部分
     @Binding var shopName: String
+    // カテゴリー画面表示フラグ
+    @State var showingModalCategoryListView: Bool = false
+    // ショップ画面表示フラグ
+    @State var showingModalShopListView: Bool = false
 
     var body: some View {
 
@@ -54,12 +54,10 @@ struct CategoryShopTagView: View {
 } // CategoryShopTagViewここまで
 
 struct CategoryShopTagView_Previews: PreviewProvider {
-    @State static var showingModalCategoryListView = false
-    @State static var showingModalShopListView = false
     @State static var categoryName = "カテゴリー"
     @State static var shopName = "ショップ"
 
     static var previews: some View {
-        CategoryShopTagView(showingModalCategoryListView: $showingModalCategoryListView, showingModalShopListView: $showingModalShopListView, categoryName: $categoryName, shopName: $shopName)
+        CategoryShopTagView(categoryName: $categoryName, shopName: $shopName)
     }
 }
