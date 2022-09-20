@@ -18,6 +18,10 @@ struct PersistenceController {
         let fetchRequestCategories = NSFetchRequest<NSFetchRequestResult>()
         fetchRequestCategories.entity = Category.entity()
 
+        // Category.entity()の中身を取得している？
+        let fetchRequestShops = NSFetchRequest<NSFetchRequestResult>()
+        fetchRequestShops.entity = Shop.entity()
+
         //        for _ in 0..<3 {
         //        let newCategory = Category(context: viewContext)
         //            newCategory.name = "カテゴリー"
