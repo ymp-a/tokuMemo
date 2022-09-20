@@ -13,10 +13,18 @@ struct PersistenceController {
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-        for _ in 0..<10 {
-            //            let newItem = Item(context: viewContext)
-            //            newItem.timestamp = Date()
-        }
+
+        // Category.entity()の中身を取得している？
+        let fetchRequestLists = NSFetchRequest<NSFetchRequestResult>()
+        fetchRequestLists.entity = Category.entity()
+
+        //        for _ in 0..<3 {
+        //        let newCategory = Category(context: viewContext)
+        //            newCategory.name = "カテゴリー"
+        //            newCategory.memo = ""
+        //            newCategory.timestamp = Date()
+        //        }
+
         do {
             try viewContext.save()
         } catch {
