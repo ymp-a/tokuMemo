@@ -15,8 +15,8 @@ struct PersistenceController {
         let viewContext = result.container.viewContext
 
         // Category.entity()の中身を取得している？
-        let fetchRequestLists = NSFetchRequest<NSFetchRequestResult>()
-        fetchRequestLists.entity = Category.entity()
+        let fetchRequestCategories = NSFetchRequest<NSFetchRequestResult>()
+        fetchRequestCategories.entity = Category.entity()
 
         //        for _ in 0..<3 {
         //        let newCategory = Category(context: viewContext)
