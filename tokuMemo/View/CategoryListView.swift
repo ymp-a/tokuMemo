@@ -110,7 +110,7 @@ func registSampleData(context: NSManagedObjectContext) {
         ["日用品", "", "2022/08/18"]
     ]
 
-    /// Studentテーブル全消去
+    /// カテゴリーテーブル全消去
     let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
     fetchRequest.entity = Category.entity()
     let categories = try? context.fetch(fetchRequest) as? [Category]
@@ -121,7 +121,7 @@ func registSampleData(context: NSManagedObjectContext) {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy/M/d"
 
-    /// Studentテーブル登録
+    /// カテゴリーテーブル登録
     for category in categoryList {
         let newCategory = Category(context: context)
         newCategory.name = category[0]         // カテゴリー名
@@ -136,12 +136,13 @@ func registSampleData(context: NSManagedObjectContext) {
 struct CategoryListView: View {
     // モーダル終了処理
     @Environment(\.dismiss) var dismiss
+    /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
+    @Environment(\.managedObjectContext) private var context
+    // カテゴリー
+    @Binding var categoryName: String
 
     @State private var inputText = ""
     @State private var presentAlert = false
-
-    /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
-    @Environment(\.managedObjectContext) private var context
 
     /// データ取得処理
     @FetchRequest(
@@ -184,10 +185,10 @@ struct CategoryListView: View {
                 } // HStackここまで
 
                 List {
-                    ForEach(categories) { category in
+                    ForEach(categories, id: \.self) { category in
                         // セルの表示
                         HStack {
-                            Text("\(category.name!)")
+                            Text(category.name!)
                             Spacer()
                         } // HStackここまで
 
@@ -195,7 +196,8 @@ struct CategoryListView: View {
                         .contentShape(Rectangle())
                         // タップ時の処理
                         .onTapGesture {
-                            // タップしたカテゴリー名をTokuMemoListViewのカテゴリーボタンへ渡したい
+                            // タップしたカテゴリー名わたす
+                            self.categoryName = category.name!
                             // 閉じる処理
                             dismiss()
                         } // .onTapGestureここまで
@@ -248,8 +250,12 @@ struct CategoryListView: View {
     } // bodyここまで
 } // CategoryListViewここまで
 
-struct CategoryListView_Previews: PreviewProvider {
-    static var previews: some View {
-        CategoryListView()
-    }
-}
+// 後ほどプレビューデータ作成する
+// struct CategoryListView_Previews: PreviewProvider {
+//    let persistenceController = PersistenceController.shared
+//
+//    static var previews: some View {
+//        CategoryListView()
+//            .environment(\.managedObjectContext, persistenceController.container.viewContext)
+//    }
+// }

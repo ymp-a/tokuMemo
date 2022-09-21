@@ -43,12 +43,13 @@ func registSampleShopData(context: NSManagedObjectContext) {
 struct ShopListView: View {
     // モーダル終了処理
     @Environment(\.dismiss) var dismiss
+    /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
+    @Environment(\.managedObjectContext) private var context
+    // ショップ名テキスト部分
+    @Binding var shopName: String
 
     @State private var inputText = ""
     @State private var presentAlert = false
-
-    /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
-    @Environment(\.managedObjectContext) private var context
 
     /// データ取得処理
     @FetchRequest(
@@ -90,10 +91,10 @@ struct ShopListView: View {
                 } // HStackここまで
 
                 List {
-                    ForEach(shops) { shop in
+                    ForEach(shops, id: \.self) { shop in
                         // セルの表示
                         HStack {
-                            Text("\(shop.name!)")
+                            Text(shop.name!)
                             Spacer()
                         } // HStackここまで
 
@@ -101,7 +102,8 @@ struct ShopListView: View {
                         .contentShape(Rectangle())
                         // タップ時の処理
                         .onTapGesture {
-                            // タップしたカテゴリー名をTokuMemoListViewのショップボタンへ渡したい
+                            // タップしたショップ名をわたす
+                            self.shopName = shop.name!
                             // 閉じる処理
                             dismiss()
                         } // .onTapGestureここまで
@@ -154,8 +156,8 @@ struct ShopListView: View {
     } // bodyここまで
 } // CategoryListViewここまで
 
-struct ShopListView_Previews: PreviewProvider {
-    static var previews: some View {
-        ShopListView()
-    }
-}
+// struct ShopListView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ShopListView()
+//    }
+// }
