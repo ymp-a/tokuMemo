@@ -35,7 +35,7 @@ struct TokuMemoListView: View {
 
                     List {
                         ForEach(items, id: \.self) { item in
-                            Text("¥\(item.price)"+"    "+"\(item.itemName!)")
+                            Text("¥\(item.price)      \(item.itemName!)")
                         }
                     } // Listここまで
                     .foregroundColor(.orange)
