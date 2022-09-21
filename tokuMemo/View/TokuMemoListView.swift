@@ -82,8 +82,11 @@ struct TokuMemoListView: View {
 } // structここまで
 
 struct TokuMemoListView_Previews: PreviewProvider {
+    // CoreDataテーブルを使えるようにする
+    static var persistenceController = PersistenceController.shared
 
     static var previews: some View {
         TokuMemoListView()
+            .environment(\.managedObjectContext, persistenceController.container.viewContext) // Persistencdファイルのデータを表示する
     }
 }
