@@ -32,6 +32,18 @@ class DeleteViewModel {
             let nsError = error as NSError
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }// do catchここまで
-    } // deleteCategoriesここまで
+    } // deleteShopsここまで
+
+    func deleteItems(offsets: IndexSet, items: FetchedResults<Item>, viewContext: NSManagedObjectContext) {
+        // レコードの削除
+        offsets.map { items[$0] }.forEach(viewContext.delete)
+        // データベース保存
+        do {
+            try viewContext.save()
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }// do catchここまで
+    } // deleteItemsここまで
 
 } // DeleteViewModelここまで
