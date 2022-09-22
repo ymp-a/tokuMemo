@@ -250,12 +250,11 @@ struct CategoryListView: View {
     } // bodyここまで
 } // CategoryListViewここまで
 
-// 後ほどプレビューデータ作成する
-// struct CategoryListView_Previews: PreviewProvider {
-//    let persistenceController = PersistenceController.shared
-//
-//    static var previews: some View {
-//        CategoryListView()
-//            .environment(\.managedObjectContext, persistenceController.container.viewContext)
-//    }
-// }
+struct CategoryListView_Previews: PreviewProvider {
+    @State static var categoryName = "すべて"
+
+    static var previews: some View {
+        CategoryListView(categoryName: $categoryName)
+            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)  // Persistencdファイルのデータを表示する
+    }
+}

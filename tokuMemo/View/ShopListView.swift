@@ -156,8 +156,11 @@ struct ShopListView: View {
     } // bodyここまで
 } // CategoryListViewここまで
 
-// struct ShopListView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ShopListView()
-//    }
-// }
+struct ShopListView_Previews: PreviewProvider {
+    @State static var shopName = "すべて"
+
+    static var previews: some View {
+        ShopListView(shopName: $shopName)
+            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext) // Persistencdファイルのデータを表示する
+    }
+}

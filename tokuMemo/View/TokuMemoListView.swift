@@ -85,5 +85,6 @@ struct TokuMemoListView_Previews: PreviewProvider {
 
     static var previews: some View {
         TokuMemoListView()
+            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext) // Persistencdファイルのデータを表示する
     }
 }

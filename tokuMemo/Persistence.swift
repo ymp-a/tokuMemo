@@ -13,10 +13,44 @@ struct PersistenceController {
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-        for _ in 0..<10 {
-            //            let newItem = Item(context: viewContext)
-            //            newItem.timestamp = Date()
-        }
+
+        // Category.entity()の中身を取得している？
+        let fetchRequestCategories = NSFetchRequest<NSFetchRequestResult>()
+        fetchRequestCategories.entity = Category.entity()
+
+        // Shop.entity()の中身を取得している？
+        let fetchRequestShops = NSFetchRequest<NSFetchRequestResult>()
+        fetchRequestShops.entity = Shop.entity()
+
+        // Item.entity()の中身を取得している？
+        let fetchRequestItems = NSFetchRequest<NSFetchRequestResult>()
+        fetchRequestItems.entity = Item.entity()
+
+        // サンプルデータの代入
+        let newCategory = Category(context: viewContext)
+        newCategory.name = "すべて"
+        newCategory.memo = ""
+        newCategory.timestamp = Date()
+
+        let newShop = Shop(context: viewContext)
+        newShop.name = "すべて"
+        newShop.memo = ""
+        newShop.timestamp = Date()
+
+        let newItem = Item(context: viewContext)
+        newItem.itemName = "いろはす"
+        newItem.categoryName = "すべて"
+        newItem.shopName = "すべて"
+        newItem.price = 85
+        newItem.discountPrice = 0
+        newItem.volume = 1000
+        newItem.qtyunit = 2
+        newItem.memo = ""
+        newItem.timestamp = Date()
+        // リレーション関係
+        newItem.category = newCategory
+        newItem.shop = newShop
+
         do {
             try viewContext.save()
         } catch {
