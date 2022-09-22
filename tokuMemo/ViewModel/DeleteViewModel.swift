@@ -22,4 +22,16 @@ class DeleteViewModel {
         }// do catchここまで
     } // deleteCategoriesここまで
 
+    func deleteShops(offsets: IndexSet, shops: FetchedResults<Shop>, viewContext: NSManagedObjectContext) {
+        // レコードの削除
+        offsets.map { shops[$0] }.forEach(viewContext.delete)
+        // データベース保存
+        do {
+            try viewContext.save()
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }// do catchここまで
+    } // deleteCategoriesここまで
+
 } // DeleteViewModelここまで

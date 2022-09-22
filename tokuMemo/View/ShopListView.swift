@@ -58,6 +58,8 @@ struct ShopListView: View {
         predicate: nil
     ) private var shops: FetchedResults<Shop>
 
+    private let deleteViewModel = DeleteViewModel()
+
     var body: some View {
         ZStack {
             TextFieldAlertView(
@@ -108,6 +110,9 @@ struct ShopListView: View {
                             dismiss()
                         } // .onTapGestureここまで
                     } // ForEachここまで
+                    .onDelete { indexSet in
+                        deleteViewModel.deleteShops(offsets: indexSet, shops: shops, viewContext: context)
+                    } // onDeleteここまで
                 } // Listここまで
                 .foregroundColor(.orange)
 
