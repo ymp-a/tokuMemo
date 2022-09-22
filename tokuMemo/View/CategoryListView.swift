@@ -151,6 +151,8 @@ struct CategoryListView: View {
         predicate: nil
     ) private var categories: FetchedResults<Category>
 
+    private let deleteViewModel = DeleteViewModel()
+
     var body: some View {
         ZStack {
             TextFieldAlertView(
@@ -202,6 +204,9 @@ struct CategoryListView: View {
                             dismiss()
                         } // .onTapGestureここまで
                     } // ForEachここまで
+                    .onDelete { indexSet in
+                        deleteViewModel.deleteCategories(offsets: indexSet, categories: categories, viewContext: context)
+                    } // onDeleteここまで
                 } // Listここまで
                 .foregroundColor(.orange)
 
