@@ -112,6 +112,8 @@ struct ShopListView: View {
                     } // ForEachここまで
                     .onDelete { indexSet in
                         deleteViewModel.deleteShops(offsets: indexSet, shops: shops, viewContext: context)
+                        // shopNameの初期化
+                        self.shopName = "ショップ"
                     } // onDeleteここまで
                 } // Listここまで
                 .foregroundColor(.orange)

@@ -206,6 +206,8 @@ struct CategoryListView: View {
                     } // ForEachここまで
                     .onDelete { indexSet in
                         deleteViewModel.deleteCategories(offsets: indexSet, categories: categories, viewContext: context)
+                        //　categoryNameの初期化
+                        self.categoryName = "カテゴリー"
                     } // onDeleteここまで
                 } // Listここまで
                 .foregroundColor(.orange)
