@@ -252,11 +252,14 @@ struct CategoryListView: View {
 
 struct CategoryListView_Previews: PreviewProvider {
     @State static var categoryName = "すべて"
-    // CoreDataテーブルを使えるようにする
-    static var persistenceController = PersistenceController.shared
+    //https://qiita.com/HC77/questions/524faa5eb01405fc4392
+    // CoreDataの中身をプレビューするとき
+    //    static var persistenceController = PersistenceController.shared
 
     static var previews: some View {
         CategoryListView(categoryName: $categoryName)
-            .environment(\.managedObjectContext, persistenceController.container.viewContext) // Persistencdファイルのデータを表示する
+            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)  // Persistencdファイルのデータを表示する
+        //　CoreDataの中身をプレビューするとき
+        // .environment(\.managedObjectContext, persistenceController.container.viewContext)
     }
 }
