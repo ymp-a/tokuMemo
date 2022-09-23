@@ -205,7 +205,7 @@ struct CategoryListView: View {
                         } // .onTapGestureここまで
                     } // ForEachここまで
                     .onDelete { indexSet in
-                        deleteViewModel.deleteCategories(offsets: indexSet, categories: categories, viewContext: context)
+                        deleteViewModel.deleteResult(offsets: indexSet, result: categories, viewContext: context)
                         //　categoryNameの初期化
                         self.categoryName = "カテゴリー"
                     } // onDeleteここまで

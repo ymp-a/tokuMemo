@@ -9,34 +9,11 @@ import SwiftUI
 import CoreData
 
 class DeleteViewModel {
-
-    func deleteCategories(offsets: IndexSet, categories: FetchedResults<Category>, viewContext: NSManagedObjectContext) {
+    // generics<ジェネリック名：型指定>　optionクリック or 選択右クリックJump to Definition:プロトコルチェック
+    // Item,Category,Shopに再利用可能な削除機能
+    func deleteResult<Result: NSManagedObject>(offsets: IndexSet, result: FetchedResults<Result>, viewContext: NSManagedObjectContext) {
         // レコードの削除
-        offsets.map { categories[$0] }.forEach(viewContext.delete)
-        // データベース保存
-        do {
-            try viewContext.save()
-        } catch {
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-        }// do catchここまで
-    } // deleteCategoriesここまで
-
-    func deleteShops(offsets: IndexSet, shops: FetchedResults<Shop>, viewContext: NSManagedObjectContext) {
-        // レコードの削除
-        offsets.map { shops[$0] }.forEach(viewContext.delete)
-        // データベース保存
-        do {
-            try viewContext.save()
-        } catch {
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-        }// do catchここまで
-    } // deleteShopsここまで
-
-    func deleteItems(offsets: IndexSet, items: FetchedResults<Item>, viewContext: NSManagedObjectContext) {
-        // レコードの削除
-        offsets.map { items[$0] }.forEach(viewContext.delete)
+        offsets.map { result[$0] }.forEach(viewContext.delete)
         // データベース保存
         do {
             try viewContext.save()
@@ -45,5 +22,4 @@ class DeleteViewModel {
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }// do catchここまで
     } // deleteItemsここまで
-
 } // DeleteViewModelここまで

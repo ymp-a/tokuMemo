@@ -111,7 +111,7 @@ struct ShopListView: View {
                         } // .onTapGestureここまで
                     } // ForEachここまで
                     .onDelete { indexSet in
-                        deleteViewModel.deleteShops(offsets: indexSet, shops: shops, viewContext: context)
+                        deleteViewModel.deleteResult(offsets: indexSet, result: shops, viewContext: context)
                         // shopNameの初期化
                         self.shopName = "ショップ"
                     } // onDeleteここまで
