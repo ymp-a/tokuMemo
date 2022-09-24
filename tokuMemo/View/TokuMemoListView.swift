@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct TokuMemoListView: View {
+    /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
+    @Environment(\.managedObjectContext) private var context
     // メモ検索入力用
     @State private var inputText = ""
     // カテゴリーテキスト部分
@@ -21,6 +23,8 @@ struct TokuMemoListView: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
         predicate: nil
     ) private var items: FetchedResults<Item>
+
+    private let deleteViewModel = DeleteViewModel()
 
     var body: some View {
         NavigationView {
@@ -37,6 +41,9 @@ struct TokuMemoListView: View {
                         ForEach(items, id: \.self) { item in
                             Text("¥\(item.price)      \(item.itemName!)")
                         }
+                        .onDelete { indexSet in
+                            deleteViewModel.deleteResult(offsets: indexSet, result: items, viewContext: context)
+                        } // onDeleteここまで
                     } // Listここまで
                     .foregroundColor(.orange)
 

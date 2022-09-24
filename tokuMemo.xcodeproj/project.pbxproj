@@ -10,6 +10,7 @@
 		2A10885C287EF460003AE0E8 /* ShopListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A10885B287EF460003AE0E8 /* ShopListView.swift */; };
 		2A1088BD288ECBA1003AE0E8 /* AddItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1088BC288ECBA1003AE0E8 /* AddItemView.swift */; };
 		2A16C6462879B0C1009E29CB /* CategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A16C6452879B0C1009E29CB /* CategoryListView.swift */; };
+		2A2F7AF128DC863C00644CB9 /* DeleteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2F7AF028DC863C00644CB9 /* DeleteViewModel.swift */; };
 		2A40D06228695A990068CD7A /* tokuMemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A40D06128695A990068CD7A /* tokuMemoApp.swift */; };
 		2A40D06628695A9C0068CD7A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A40D06528695A9C0068CD7A /* Assets.xcassets */; };
 		2A40D06928695A9C0068CD7A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A40D06828695A9C0068CD7A /* Preview Assets.xcassets */; };
@@ -23,6 +24,7 @@
 		2A10885B287EF460003AE0E8 /* ShopListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopListView.swift; sourceTree = "<group>"; };
 		2A1088BC288ECBA1003AE0E8 /* AddItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemView.swift; sourceTree = "<group>"; };
 		2A16C6452879B0C1009E29CB /* CategoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListView.swift; sourceTree = "<group>"; };
+		2A2F7AF028DC863C00644CB9 /* DeleteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteViewModel.swift; sourceTree = "<group>"; };
 		2A40D05E28695A990068CD7A /* tokuMemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tokuMemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A40D06128695A990068CD7A /* tokuMemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tokuMemoApp.swift; sourceTree = "<group>"; };
 		2A40D06528695A9C0068CD7A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 		2A1088C428A28BC0003AE0E8 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				2A2F7AF028DC863C00644CB9 /* DeleteViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -204,6 +207,7 @@
 				2A40D06E28695A9C0068CD7A /* tokuMemo.xcdatamodeld in Sources */,
 				2A1088BD288ECBA1003AE0E8 /* AddItemView.swift in Sources */,
 				2AF5B38A28D34EE800CA1B40 /* CategoryShopTagView.swift in Sources */,
+				2A2F7AF128DC863C00644CB9 /* DeleteViewModel.swift in Sources */,
 				2A10885C287EF460003AE0E8 /* ShopListView.swift in Sources */,
 				2A40D077286B29260068CD7A /* TokuMemoListView.swift in Sources */,
 				2A40D06228695A990068CD7A /* tokuMemoApp.swift in Sources */,
