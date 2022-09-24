@@ -142,8 +142,10 @@ struct CategoryListView: View {
     @Binding var categoryName: String
 
     @State private var inputText = ""
+    // カテゴリ追加アラート表示
     @State private var presentAlert = false
-
+    // モディファイアView表示
+    @State var isShowAction = false
     /// データ取得処理
     @FetchRequest(
         entity: Category.entity(),
@@ -192,6 +194,22 @@ struct CategoryListView: View {
                         HStack {
                             Text(category.name!)
                             Spacer()
+                            Button(action: {
+                                // 編集ダイアログポップアップしたい
+                                // actionSheetを表示する
+                                isShowAction = true
+                            }) {
+                                Text("編集 >")
+                                    .font(.caption)
+                                    .padding(4)
+                                    .cornerRadius(10)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 5)
+                                            .stroke(Color(.orange), lineWidth: 1.0)
+                                    )
+                            } // Buttonここまで
+                            // List内Button有効化のため適当なstyleをセットしている
+                            .buttonStyle(BorderlessButtonStyle())
                         } // HStackここまで
 
                         // タップできる範囲を拡張する
@@ -254,6 +272,24 @@ struct CategoryListView: View {
                 registSampleData(context: context)
             }
         } // onAppearここまで
+        .actionSheet(isPresented: $isShowAction) {
+            // ActionSheet（メニュー構造）構造体は、表示するタイトル、メッセージ、ボタンメニューを定義
+            // タイトル
+            ActionSheet(title: Text("カテゴリーを編集"),
+                        // 補足説明
+                        message: Text("編集内容を選択してください"),
+                        // ボタンメニュー　配列型
+                        buttons: [
+                            .default(Text("カテゴリーを削除"), action: {
+                                // 削除ロジック
+                            }),
+                            .default(Text("カテゴリーを編集"), action: {
+                                // 編集ロジック
+                            }),
+                            // キャンセル
+                            .cancel()
+                        ]) // ActionSheetここまで
+        } // actionSheetここまで
     } // bodyここまで
 } // CategoryListViewここまで
 
