@@ -203,7 +203,7 @@ struct CategoryListView: View {
                 rightButtonAction: {
                     // 編集のために渡す値
                     editViewModel.editResult(viewContext: context, editCategory: editCategory, context: inputText)
-
+                    // 入力内容の初期化
                     inputText = ""
                 }
             ) // TextFieldAlertViewここまで
@@ -223,7 +223,9 @@ struct CategoryListView: View {
                                 // 編集ダイアログポップアップしたい
                                 // actionSheetを表示する
                                 isShowAction = true
+                                // 編集用に元のカテゴリー名を取得
                                 inputText = category.name!
+                                // 編集用に1行データを取得
                                 editCategory = category
                             }) {
                                 Text("編集 >")
@@ -313,7 +315,6 @@ struct CategoryListView: View {
                             .default(Text("カテゴリーを編集"), action: {
                                 // 編集アラート表示
                                 presentEditAlert.toggle()
-                                // 入力内容の初期化
                             }),
                             // キャンセル
                             .cancel()
