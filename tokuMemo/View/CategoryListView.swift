@@ -143,9 +143,13 @@ struct CategoryListView: View {
 
     @State private var inputText = ""
     // カテゴリ追加アラート表示
-    @State private var presentAlert = false
+    @State private var presentAddAlert = false
+    // カテゴリ編集アラート表示
+    @State private var presentEditAlert = false
     // モディファイアView表示
     @State var isShowAction = false
+    // タップした行の情報を渡す
+    @State private var editCategory: Category?
     /// データ取得処理
     @FetchRequest(
         entity: Category.entity(),
@@ -153,13 +157,14 @@ struct CategoryListView: View {
         predicate: nil
     ) private var categories: FetchedResults<Category>
 
+    private let editViewModel = EditViewModel()
     private let deleteViewModel = DeleteViewModel()
 
     var body: some View {
         ZStack {
             TextFieldAlertView(
                 text: $inputText,
-                isShowingAlert: $presentAlert,
+                isShowingAlert: $presentAddAlert,
                 placeholder: "カテゴリー名",
                 title: "カテゴリーの追加",
                 message: "入力した内容でカテゴリー追加します",
@@ -183,6 +188,26 @@ struct CategoryListView: View {
                 }
             ) // TextFieldAlertViewここまで
 
+            TextFieldAlertView(
+                text: $inputText,
+                isShowingAlert: $presentEditAlert,
+                placeholder: "カテゴリー名",
+                title: "カテゴリーの編集",
+                message: "入力した内容でカテゴリー編集します",
+                leftButtonTitle: "キャンセル",
+                rightButtonTitle: "編集",
+                leftButtonAction: {
+                    // 入力内容の初期化
+                    inputText = ""
+                },
+                rightButtonAction: {
+                    // 編集のために渡す値
+                    editViewModel.editResult(viewContext: context, editCategory: editCategory, context: inputText)
+
+                    inputText = ""
+                }
+            ) // TextFieldAlertViewここまで
+
             VStack {
                 HStack(alignment: .center) {
                     Text("カテゴリー（大分類）")
@@ -198,6 +223,8 @@ struct CategoryListView: View {
                                 // 編集ダイアログポップアップしたい
                                 // actionSheetを表示する
                                 isShowAction = true
+                                inputText = category.name!
+                                editCategory = category
                             }) {
                                 Text("編集 >")
                                     .font(.caption)
@@ -249,7 +276,7 @@ struct CategoryListView: View {
                 VStack {
                     Button(action: {
                         // タップでカテゴリー追加アラートを表示
-                        presentAlert.toggle()
+                        presentAddAlert.toggle()
                     }) {
                         // 追加Viewへ遷移する
                         Image(systemName: "plus")
@@ -284,7 +311,9 @@ struct CategoryListView: View {
                                 // 削除ロジック
                             }),
                             .default(Text("カテゴリーを編集"), action: {
-                                // 編集ロジック
+                                // 編集アラート表示
+                                presentEditAlert.toggle()
+                                // 入力内容の初期化
                             }),
                             // キャンセル
                             .cancel()
