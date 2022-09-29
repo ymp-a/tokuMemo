@@ -128,11 +128,11 @@ struct ShopListView: View {
                             dismiss()
                         } // .onTapGestureここまで
                     } // ForEachここまで
-                    .onDelete { indexSet in
-                        deleteViewModel.deleteResult(offsets: indexSet, result: shops, viewContext: context)
-                        // shopNameの初期化
-                        self.shopName = "ショップ"
-                    } // onDeleteここまで
+                    //                    .onDelete { indexSet in
+                    //                        deleteViewModel.deleteResult(offsets: indexSet, result: shops, viewContext: context)
+                    //                        // shopNameの初期化
+                    //                        self.shopName = "ショップ"
+                    //                    } // onDeleteここまで
                 } // Listここまで
                 .foregroundColor(.orange)
 

@@ -251,11 +251,6 @@ struct CategoryListView: View {
                             dismiss()
                         } // .onTapGestureここまで
                     } // ForEachここまで
-                    .onDelete { indexSet in
-                        deleteViewModel.deleteResult(offsets: indexSet, result: categories, viewContext: context)
-                        //　categoryNameの初期化
-                        self.categoryName = "カテゴリー"
-                    } // onDeleteここまで
                 } // Listここまで
                 .foregroundColor(.orange)
 
@@ -311,6 +306,7 @@ struct CategoryListView: View {
                         buttons: [
                             .default(Text("カテゴリーを削除"), action: {
                                 // 削除ロジック
+                                deleteViewModel.deleteResult(viewContext: context, editCategory: editCategory)
                             }),
                             .default(Text("カテゴリーを編集"), action: {
                                 // 編集アラート表示
