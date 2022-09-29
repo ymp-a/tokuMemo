@@ -51,8 +51,12 @@ struct ShopListView: View {
     @State private var inputText = ""
     // ショップ追加アラート表示
     @State private var presentAlert = false
+    // ショップ編集アラート表示
+    @State private var presentEditAlert = false
     // モディファイアView表示
     @State var isShowAction = false
+    // タップした行の情報を渡す
+    @State private var editShop: Shop?
     /// データ取得処理
     @FetchRequest(
         entity: Shop.entity(),
@@ -60,6 +64,7 @@ struct ShopListView: View {
         predicate: nil
     ) private var shops: FetchedResults<Shop>
 
+    private let editViewModel = EditViewModel()
     private let deleteViewModel = DeleteViewModel()
 
     var body: some View {
@@ -89,6 +94,26 @@ struct ShopListView: View {
                     inputText = ""
                 }
             ) // TextFieldAlertViewここまで
+
+            TextFieldAlertView(
+                text: $inputText,
+                isShowingAlert: $presentEditAlert,
+                placeholder: "ショップ名",
+                title: "ショップの編集",
+                message: "入力した内容でショップ編集します",
+                leftButtonTitle: "キャンセル",
+                rightButtonTitle: "編集",
+                leftButtonAction: {
+                    // 入力内容の初期化
+                    inputText = ""
+                },
+                rightButtonAction: {
+                    // 編集のために渡す値
+                    editViewModel.editResult2(viewContext: context, editShop: editShop, context: inputText)
+                    // 入力内容の初期化
+                    inputText = ""
+                }
+            ) // TextFieldAlertViewここまで
             VStack {
                 HStack(alignment: .center) {
                     Text("SHOP")
@@ -104,6 +129,10 @@ struct ShopListView: View {
                                 // 編集ダイアログポップアップしたい
                                 // actionSheetを表示する
                                 isShowAction = true
+                                // 編集用に元のショップ名を取得
+                                inputText = shop.name!
+                                // 編集用に1行データを取得
+                                editShop = shop
                             }) {
                                 Text("編集 >")
                                     .font(.caption)
@@ -128,11 +157,6 @@ struct ShopListView: View {
                             dismiss()
                         } // .onTapGestureここまで
                     } // ForEachここまで
-                    //                    .onDelete { indexSet in
-                    //                        deleteViewModel.deleteResult(offsets: indexSet, result: shops, viewContext: context)
-                    //                        // shopNameの初期化
-                    //                        self.shopName = "ショップ"
-                    //                    } // onDeleteここまで
                 } // Listここまで
                 .foregroundColor(.orange)
 
@@ -188,9 +212,11 @@ struct ShopListView: View {
                         buttons: [
                             .default(Text("ショップを削除"), action: {
                                 // 削除ロジック
+                                deleteViewModel.deleteResult2(viewContext: context, editShop: editShop)
                             }),
                             .default(Text("ショップを編集"), action: {
-                                // 編集ロジック
+                                // 編集アラート表示
+                                presentEditAlert.toggle()
                             }),
                             // キャンセル
                             .cancel()

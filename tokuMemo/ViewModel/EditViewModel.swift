@@ -22,4 +22,17 @@ class EditViewModel {
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         } // do catchここまで
     } // editResultここまで
+
+    func editResult2(viewContext: NSManagedObjectContext, editShop: Shop?, context: String) {
+        editShop!.name = context
+        editShop!.memo = ""
+        editShop!.timestamp = Date()
+        // データベース保存
+        do {
+            try viewContext.save()
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        } // do catchここまで
+    } // editResultここまで
 } // EditViewModelここまで
