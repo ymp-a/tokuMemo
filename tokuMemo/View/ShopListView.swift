@@ -54,7 +54,7 @@ struct ShopListView: View {
     // ショップ編集アラート表示
     @State private var presentEditAlert = false
     // モディファイアView表示
-    @State var isShowAction = false
+    @State private var isShowAction = false
     // タップした行の情報を渡す
     @State private var editShop: Shop?
     /// データ取得処理
