@@ -213,6 +213,8 @@ struct ShopListView: View {
                             .default(Text("ショップを削除"), action: {
                                 // 削除ロジック
                                 deleteViewModel.deleteResult2(viewContext: context, editShop: editShop)
+                                // 初期化
+                                inputText = ""
                             }),
                             .default(Text("ショップを編集"), action: {
                                 // 編集アラート表示

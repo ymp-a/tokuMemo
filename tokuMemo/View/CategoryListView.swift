@@ -307,6 +307,8 @@ struct CategoryListView: View {
                             .default(Text("カテゴリーを削除"), action: {
                                 // 削除ロジック
                                 deleteViewModel.deleteResult(viewContext: context, editCategory: editCategory)
+                                // 初期化
+                                inputText = ""
                             }),
                             .default(Text("カテゴリーを編集"), action: {
                                 // 編集アラート表示
