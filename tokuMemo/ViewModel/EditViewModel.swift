@@ -10,9 +10,9 @@ import CoreData
 
 class EditViewModel {
     // viewContext保存に利用、editCategory:行データ、context：変更したテキスト
-    func editResult(viewContext: NSManagedObjectContext, editCategory: Category?, context: String) {
+    func editResult(viewContext: NSManagedObjectContext, editCategory: Category?, context: String, memo: String) {
         editCategory!.name = context
-        editCategory!.memo = ""
+        editCategory!.memo = memo
         editCategory!.timestamp = Date()
         // データベース保存
         do {
@@ -24,9 +24,9 @@ class EditViewModel {
     } // editResultここまで
 
     // 同じ関数名でも引数が異なるので利用できる
-    func editResult(viewContext: NSManagedObjectContext, editShop: Shop?, context: String) {
+    func editResult(viewContext: NSManagedObjectContext, editShop: Shop?, context: String, memo: String) {
         editShop!.name = context
-        editShop!.memo = ""
+        editShop!.memo = memo
         editShop!.timestamp = Date()
         // データベース保存
         do {
