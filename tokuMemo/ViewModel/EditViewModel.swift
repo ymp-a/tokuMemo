@@ -23,7 +23,8 @@ class EditViewModel {
         } // do catchここまで
     } // editResultここまで
 
-    func editResult2(viewContext: NSManagedObjectContext, editShop: Shop?, context: String) {
+    // 同じ関数名でも引数が異なるので利用できる
+    func editResult(viewContext: NSManagedObjectContext, editShop: Shop?, context: String) {
         editShop!.name = context
         editShop!.memo = ""
         editShop!.timestamp = Date()

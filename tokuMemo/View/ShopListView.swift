@@ -109,7 +109,7 @@ struct ShopListView: View {
                 },
                 rightButtonAction: {
                     // 編集のために渡す値
-                    editViewModel.editResult2(viewContext: context, editShop: editShop, context: inputText)
+                    editViewModel.editResult(viewContext: context, editShop: editShop, context: inputText)
                     // 入力内容の初期化
                     inputText = ""
                 }
@@ -212,7 +212,7 @@ struct ShopListView: View {
                         buttons: [
                             .default(Text("ショップを削除"), action: {
                                 // 削除ロジック
-                                deleteViewModel.deleteResult2(viewContext: context, editShop: editShop)
+                                deleteViewModel.deleteResult(viewContext: context, editRow: editShop!)
                                 // 初期化
                                 inputText = ""
                             }),

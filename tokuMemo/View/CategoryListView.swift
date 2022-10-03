@@ -306,7 +306,7 @@ struct CategoryListView: View {
                         buttons: [
                             .default(Text("カテゴリーを削除"), action: {
                                 // 削除ロジック
-                                deleteViewModel.deleteResult(viewContext: context, editCategory: editCategory)
+                                deleteViewModel.deleteResult(viewContext: context, editRow: editCategory!)
                                 // 初期化
                                 inputText = ""
                             }),

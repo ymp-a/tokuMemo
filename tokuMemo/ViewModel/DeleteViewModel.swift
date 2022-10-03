@@ -10,9 +10,9 @@ import CoreData
 
 class DeleteViewModel {
     // generics<ジェネリック名：型指定>　optionクリック or 選択右クリックJump to Definition:プロトコルチェック
-    func deleteResult(viewContext: NSManagedObjectContext, editCategory: Category?) {
+    func deleteResult<Result: NSManagedObject>(viewContext: NSManagedObjectContext, editRow: Result) {
         // 削除する1行分の情報
-        viewContext.delete(editCategory!)
+        viewContext.delete(editRow)
         // データベース保存
         do {
             try viewContext.save()
@@ -21,16 +21,4 @@ class DeleteViewModel {
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }// do catchここまで
     } // deleteResultここまで
-
-    func deleteResult2(viewContext: NSManagedObjectContext, editShop: Shop?) {
-        // 削除する1行分の情報
-        viewContext.delete(editShop!)
-        // データベース保存
-        do {
-            try viewContext.save()
-        } catch {
-            let nsError = error as NSError
-            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-        }// do catchここまで
-    } // deleteItems2ここまで
 } // DeleteViewModelここまで
