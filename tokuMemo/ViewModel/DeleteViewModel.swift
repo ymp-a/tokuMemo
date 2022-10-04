@@ -10,10 +10,9 @@ import CoreData
 
 class DeleteViewModel {
     // generics<ジェネリック名：型指定>　optionクリック or 選択右クリックJump to Definition:プロトコルチェック
-    // Item,Category,Shopに再利用可能な削除機能
-    func deleteResult<Result: NSManagedObject>(offsets: IndexSet, result: FetchedResults<Result>, viewContext: NSManagedObjectContext) {
-        // レコードの削除
-        offsets.map { result[$0] }.forEach(viewContext.delete)
+    func deleteResult<Result: NSManagedObject>(viewContext: NSManagedObjectContext, editRow: Result) {
+        // 削除する1行分の情報
+        viewContext.delete(editRow)
         // データベース保存
         do {
             try viewContext.save()
@@ -21,5 +20,5 @@ class DeleteViewModel {
             let nsError = error as NSError
             fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
         }// do catchここまで
-    } // deleteItemsここまで
+    } // deleteResultここまで
 } // DeleteViewModelここまで

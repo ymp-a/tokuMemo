@@ -41,9 +41,6 @@ struct TokuMemoListView: View {
                         ForEach(items, id: \.self) { item in
                             Text("¥\(item.price)      \(item.itemName!)")
                         }
-                        .onDelete { indexSet in
-                            deleteViewModel.deleteResult(offsets: indexSet, result: items, viewContext: context)
-                        } // onDeleteここまで
                     } // Listここまで
                     .foregroundColor(.orange)
 

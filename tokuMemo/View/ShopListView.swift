@@ -49,8 +49,15 @@ struct ShopListView: View {
     @Binding var shopName: String
 
     @State private var inputText = ""
-    @State private var presentAlert = false
-
+    @State private var inputMemo = ""
+    // ショップ追加アラート表示
+    @State private var presentAddAlert = false
+    // ショップ編集アラート表示
+    @State private var presentEditAlert = false
+    // モディファイアView表示
+    @State private var isShowAction = false
+    // タップした行の情報を渡す
+    @State private var editShop: Shop?
     /// データ取得処理
     @FetchRequest(
         entity: Shop.entity(),
@@ -58,35 +65,11 @@ struct ShopListView: View {
         predicate: nil
     ) private var shops: FetchedResults<Shop>
 
+    private let editViewModel = EditViewModel()
     private let deleteViewModel = DeleteViewModel()
 
     var body: some View {
         ZStack {
-            TextFieldAlertView(
-                text: $inputText,
-                isShowingAlert: $presentAlert,
-                placeholder: "ショップ名",
-                title: "ショップの追加",
-                message: "入力した内容でショップを追加します",
-                leftButtonTitle: "キャンセル",
-                rightButtonTitle: "追加",
-                leftButtonAction: {
-                    // 入力内容の初期化
-                    inputText = ""
-                },
-                rightButtonAction: {
-                    // 追加タップ時の処理
-                    // 新規ショップ登録処理
-                    let newShop = Shop(context: context)
-                    newShop.timestamp = Date()
-                    newShop.memo = ""
-                    newShop.name = inputText
-
-                    try? context.save()
-                    // 入力内容の初期化
-                    inputText = ""
-                }
-            ) // TextFieldAlertViewここまで
             VStack {
                 HStack(alignment: .center) {
                     Text("SHOP")
@@ -98,6 +81,28 @@ struct ShopListView: View {
                         HStack {
                             Text(shop.name!)
                             Spacer()
+                            Button(action: {
+                                // 編集ダイアログポップアップしたい
+                                // actionSheetを表示する
+                                isShowAction = true
+                                // 編集用に元のショップ名を取得
+                                inputText = shop.name!
+                                // 編集用のショップメモを取得
+                                inputMemo = shop.memo!
+                                // 編集用に1行データを取得
+                                editShop = shop
+                            }) {
+                                Text("編集 >")
+                                    .font(.caption)
+                                    .padding(4)
+                                    .cornerRadius(10)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 5)
+                                            .stroke(Color(.orange), lineWidth: 1.0)
+                                    )
+                            } // Buttonここまで
+                            // List内Button有効化のため適当なstyleをセットしている
+                            .buttonStyle(BorderlessButtonStyle())
                         } // HStackここまで
 
                         // タップできる範囲を拡張する
@@ -110,11 +115,6 @@ struct ShopListView: View {
                             dismiss()
                         } // .onTapGestureここまで
                     } // ForEachここまで
-                    .onDelete { indexSet in
-                        deleteViewModel.deleteResult(offsets: indexSet, result: shops, viewContext: context)
-                        // shopNameの初期化
-                        self.shopName = "ショップ"
-                    } // onDeleteここまで
                 } // Listここまで
                 .foregroundColor(.orange)
 
@@ -137,7 +137,7 @@ struct ShopListView: View {
                 VStack {
                     Button(action: {
                         // タップでショップ追加アラート画面表示
-                        presentAlert.toggle()
+                        presentAddAlert.toggle()
                     }) {
                         // 追加Viewへ遷移する
                         Image(systemName: "plus")
@@ -160,8 +160,75 @@ struct ShopListView: View {
                 registSampleShopData(context: context)
             }
         } // onAppearここまで
+        .actionSheet(isPresented: $isShowAction) {
+            // ActionSheet（メニュー構造）構造体は、表示するタイトル、メッセージ、ボタンメニューを定義
+            // タイトル
+            ActionSheet(title: Text("ショップを編集"),
+                        // 補足説明
+                        message: Text("編集内容を選択してください"),
+                        // ボタンメニュー　配列型
+                        buttons: [
+                            .default(Text("ショップを削除"), action: {
+                                // 削除ロジック
+                                deleteViewModel.deleteResult(viewContext: context, editRow: editShop!)
+                                // 初期化
+                                inputText = ""
+                            }),
+                            .default(Text("ショップを編集"), action: {
+                                // 編集アラート表示
+                                presentEditAlert.toggle()
+                            }),
+                            // キャンセル
+                            .cancel()
+                        ]) // ActionSheetここまで
+        } // actionSheetここまで
+        .alert("ショップ追加", isPresented: $presentAddAlert, actions: {
+            TextField("ショップ名", text: $inputText)
+
+            TextField("メモ", text: $inputMemo)
+
+            Button("追加", action: {
+                // 追加タップ時の処理
+                // ショップ新規登録処理
+                let newShop = Shop(context: context)
+                newShop.timestamp = Date()
+                newShop.memo = inputMemo
+                newShop.name = inputText
+
+                try? context.save()
+                // 入力内容の初期化
+                inputText = ""
+                inputMemo = ""
+            })
+            Button("Cancel", role: .cancel, action: {// 入力内容の初期化
+                inputText = ""
+                inputMemo = ""
+            })
+        }, message: {
+            Text("入力した内容でカテゴリー追加します")
+        })
+
+        .alert("ショップ編集", isPresented: $presentEditAlert, actions: {
+            TextField("ショップ名", text: $inputText)
+
+            TextField("メモ", text: $inputMemo)
+
+            Button("編集", action: {
+                // 編集のために渡す値
+                editViewModel.editResult(viewContext: context, editShop: editShop, context: inputText, memo: inputMemo)
+                // 入力内容の初期化
+                inputText = ""
+                inputMemo = ""
+            })
+            Button("Cancel", role: .cancel, action: {// 入力内容の初期化
+                inputText = ""
+                inputMemo = ""
+            })
+        }, message: {
+            Text("入力した内容でカテゴリー追加します")
+        })
     } // bodyここまで
-} // CategoryListViewここまで
+} // ShopListViewここまで
 
 struct ShopListView_Previews: PreviewProvider {
     @State static var shopName = "すべて"
