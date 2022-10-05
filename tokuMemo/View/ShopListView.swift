@@ -49,6 +49,7 @@ struct ShopListView: View {
     @Binding var shopName: String
 
     @State private var inputText = ""
+
     @State private var inputMemo = ""
     // ショップ追加アラート表示
     @State private var presentAddAlert = false
@@ -182,6 +183,7 @@ struct ShopListView: View {
                             .cancel()
                         ]) // ActionSheetここまで
         } // actionSheetここまで
+
         .alert("ショップ追加", isPresented: $presentAddAlert, actions: {
             TextField("ショップ名", text: $inputText)
 

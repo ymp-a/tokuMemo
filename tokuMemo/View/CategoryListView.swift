@@ -50,6 +50,7 @@ struct CategoryListView: View {
     @Binding var categoryName: String
 
     @State private var inputText = ""
+
     @State private var inputMemo = ""
     // カテゴリ追加アラート表示
     @State private var presentAddAlert = false
@@ -183,6 +184,7 @@ struct CategoryListView: View {
                             .cancel()
                         ]) // ActionSheetここまで
         } // actionSheetここまで
+
         .alert("カテゴリー追加", isPresented: $presentAddAlert, actions: {
             TextField("カテゴリー名", text: $inputText)
 

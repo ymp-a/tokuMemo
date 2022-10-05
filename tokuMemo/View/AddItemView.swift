@@ -7,6 +7,24 @@
 
 import SwiftUI
 
+// 商品登録項目
+struct InputItem {
+    // 商品名
+    var name: String = ""
+    // 商品価格
+    var price: String = ""
+    // 値引金額
+    var discountPrice: String = ""
+    // 数量
+    var volume: String = "1"
+    // ピッカー初期値
+    var selection: Int = 0
+    // メモ
+    var memo: String = ""
+    // 数量単位
+    let units = ["個", "g", "ml"]
+}
+
 struct AddItemView: View {
     // モーダル終了処理
     @Environment(\.dismiss) var dismiss
@@ -16,25 +34,13 @@ struct AddItemView: View {
     @Binding var categoryName: String
     // ショップ名
     @Binding var shopName: String
-    // 商品名
-    @State private var inputItemName = ""
-    // 商品価格
-    @State private var inputItemPrice = ""
-    // 値引金額
-    @State private var inputDiscountPrice = ""
-    // 数量
-    @State private var inputItemsVolume = "1"
-    // ピッカー初期値
-    @State private var selection = 0
-    // メモ
-    @State private var inputItemMemo = ""
+    // 登録商品
+    @State private var inputItem: InputItem = InputItem()
     /// 複数アラート参考 https://zenn.dev/spyc/articles/993fb47a1d42e8
-    // 未入力時のアラートフラグ用
+    // 未入力時のアラートフラグ
     @State private var showingAlert = false
     @State private var alertType: AlertType = .itemName
 
-    // 数量単位
-    private let units = ["個", "g", "ml"]
     // アラートの種類
     enum AlertType {
         case itemName
@@ -58,7 +64,7 @@ struct AddItemView: View {
                 .foregroundColor(.orange)
                 .frame(height: 1)
             HStack {
-                TextField("商品名", text: $inputItemName)
+                TextField("商品名", text: $inputItem.name)
             }
             .padding(10)
             .foregroundColor(.orange)
@@ -70,7 +76,7 @@ struct AddItemView: View {
                 .padding(.bottom)
 
             HStack {
-                TextField("税込価格", text: $inputItemPrice)
+                TextField("税込価格", text: $inputItem.price)
                     .keyboardType(.numberPad)
             }
             .padding(10)
@@ -80,7 +86,7 @@ struct AddItemView: View {
             .padding(.horizontal)
 
             HStack {
-                TextField("値引き価格", text: $inputDiscountPrice)
+                TextField("値引価格", text: $inputItem.discountPrice)
                     .keyboardType(.numberPad)
             }
             .padding(10)
@@ -90,11 +96,11 @@ struct AddItemView: View {
             .padding(.horizontal)
 
             HStack {
-                TextField("数量", text: $inputItemsVolume)
+                TextField("数量", text: $inputItem.volume)
                     .keyboardType(.numberPad)
-                Picker(selection: $selection, label: Text("数量単位を選択")) {
-                    ForEach(0 ..< units.count, id: \.self) { num in
-                        Text(self.units[num])
+                Picker(selection: $inputItem.selection, label: Text("数量単位を選択")) {
+                    ForEach(0 ..< inputItem.units.count, id: \.self) { num in
+                        Text(self.inputItem.units[num])
                     }
                 }
                 .pickerStyle(SegmentedPickerStyle())    // セグメントピッカースタイルの指定
@@ -107,7 +113,7 @@ struct AddItemView: View {
             .padding(.horizontal)
 
             HStack {
-                TextField("メモを入力", text: $inputItemMemo)
+                TextField("メモを入力", text: $inputItem.memo)
             }
             .padding(10)
             .frame(height: 50)
@@ -117,27 +123,27 @@ struct AddItemView: View {
             Button(action: {
                 // 登録タップ時の処理
                 // 入力チェック
-                if inputItemName.count<1 {
+                if inputItem.name.count<1 {
                     alertType = .itemName
                     showingAlert.toggle()
-                } else if inputItemPrice.count<1 {
+                } else if inputItem.price.count<1 {
                     alertType = .itemPrice
                     showingAlert.toggle()
-                } else if inputItemsVolume.count<1 {
+                } else if inputItem.volume.count<1 {
                     alertType = .itemsVolume
                     showingAlert.toggle()
                 } else {
                     // 入力チェックがOKなら
                     // 商品登録処理
                     let newItem = Item(context: context)
-                    newItem.itemName = inputItemName
+                    newItem.itemName = inputItem.name
                     newItem.categoryName = categoryName
                     newItem.shopName = shopName
-                    newItem.price = Int32(inputItemPrice) ?? 0
-                    newItem.discountPrice = Int32(inputDiscountPrice) ?? 0
-                    newItem.volume = Int32(inputItemsVolume) ?? 0
-                    newItem.qtyunit = Int32(exactly: selection) ?? 0
-                    newItem.memo = inputItemMemo
+                    newItem.price = Int32(inputItem.price) ?? 0
+                    newItem.discountPrice = Int32(inputItem.discountPrice) ?? 0
+                    newItem.volume = Int32(inputItem.volume) ?? 0
+                    newItem.qtyunit = Int32(exactly: inputItem.selection) ?? 0
+                    newItem.memo = inputItem.memo
                     newItem.timestamp = Date()
 
                     try? context.save()
