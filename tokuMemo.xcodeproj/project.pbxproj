@@ -18,6 +18,7 @@
 		2A40D06B28695A9C0068CD7A /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A40D06A28695A9C0068CD7A /* Persistence.swift */; };
 		2A40D06E28695A9C0068CD7A /* tokuMemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2A40D06C28695A9C0068CD7A /* tokuMemo.xcdatamodeld */; };
 		2A40D077286B29260068CD7A /* TokuMemoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A40D076286B29260068CD7A /* TokuMemoListView.swift */; };
+		2A52959228F4407D003B0AEC /* EditItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A52959128F4407D003B0AEC /* EditItemView.swift */; };
 		2AF5B38A28D34EE800CA1B40 /* CategoryShopTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF5B38928D34EE800CA1B40 /* CategoryShopTagView.swift */; };
 /* End PBXBuildFile section */
 
@@ -34,6 +35,7 @@
 		2A40D06A28695A9C0068CD7A /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		2A40D06D28695A9C0068CD7A /* tokuMemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = tokuMemo.xcdatamodel; sourceTree = "<group>"; };
 		2A40D076286B29260068CD7A /* TokuMemoListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokuMemoListView.swift; sourceTree = "<group>"; };
+		2A52959128F4407D003B0AEC /* EditItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditItemView.swift; sourceTree = "<group>"; };
 		2AF5B38928D34EE800CA1B40 /* CategoryShopTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryShopTagView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -52,6 +54,7 @@
 			isa = PBXGroup;
 			children = (
 				2A1088BC288ECBA1003AE0E8 /* AddItemView.swift */,
+				2A52959128F4407D003B0AEC /* EditItemView.swift */,
 				2AF5B38928D34EE800CA1B40 /* CategoryShopTagView.swift */,
 				2A10885B287EF460003AE0E8 /* ShopListView.swift */,
 				2A16C6452879B0C1009E29CB /* CategoryListView.swift */,
@@ -212,6 +215,7 @@
 				2A1088BD288ECBA1003AE0E8 /* AddItemView.swift in Sources */,
 				2AF5B38A28D34EE800CA1B40 /* CategoryShopTagView.swift in Sources */,
 				2A2F7AF128DC863C00644CB9 /* DeleteViewModel.swift in Sources */,
+				2A52959228F4407D003B0AEC /* EditItemView.swift in Sources */,
 				2A10885C287EF460003AE0E8 /* ShopListView.swift in Sources */,
 				2A40D077286B29260068CD7A /* TokuMemoListView.swift in Sources */,
 				2A40D06228695A990068CD7A /* tokuMemoApp.swift in Sources */,
