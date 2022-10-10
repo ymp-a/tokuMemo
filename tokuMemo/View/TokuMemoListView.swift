@@ -18,6 +18,8 @@ struct TokuMemoListView: View {
     @State private var shopName: String = "ショップ"
     // モディファイアView表示
     @State private var isShowAction = false
+    // タップした行の情報を渡す
+    @State private var editItem: Item?
 
     /// データ取得処理
     @FetchRequest(
@@ -48,7 +50,9 @@ struct TokuMemoListView: View {
                                     // 編集ダイアログポップアップ
                                     // actionSheetを表示する
                                     isShowAction = true
-                                    
+                                    // 編集用に1行データを取得
+                                    editItem = item
+
                                 }) {
                                     Image(systemName: "ellipsis.circle.fill")
                                 } // Buttonここまで
@@ -107,7 +111,7 @@ struct TokuMemoListView: View {
                         buttons: [
                             .default(Text("商品を削除"), action: {
                                 // 削除ロジック
-                                //                                deleteViewModel.deleteResult(viewContext: context, editRow: editCategory!)
+                                deleteViewModel.deleteResult(viewContext: context, editRow: editItem!)
                                 // 初期化
                                 inputText = ""
                             }),

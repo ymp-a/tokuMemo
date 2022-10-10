@@ -21,8 +21,8 @@ struct CategoryShopTagView: View {
 
         HStack(alignment: .center, spacing: 0) {
 
-            ButtonAction(buttonName: $categoryName)
-            ButtonAction(buttonName: $shopName)
+            ButtonAction(buttonName: $categoryName, label: "category")
+            ButtonAction(buttonName: $shopName, label: "shop")
 
         } // HStackここまで
         .font(.title3)
@@ -53,6 +53,8 @@ struct ButtonAction: View {
     // カテゴリー画面表示フラグ
     @State private var showingModalListView: Bool = false
 
+    // フラグ用
+    var label = ""
     var body: some View {
 
         Button(action: {
@@ -64,12 +66,13 @@ struct ButtonAction: View {
         // カテゴリ画面モーダル表示
         .fullScreenCover(isPresented: $showingModalListView) {
             // 引数でViewを分別
-            if buttonName == "categoryName" {
+            if label == "category" {
                 CategoryListView(categoryName: $buttonName)
             } else {
                 ShopListView(shopName: $buttonName)
             }
-        }
+
+        } // fullScreenCoverここまで
         .padding(5)
         .overlay(
             RoundedRectangle(cornerRadius: 7)
