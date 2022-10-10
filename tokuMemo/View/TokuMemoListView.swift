@@ -18,6 +18,8 @@ struct TokuMemoListView: View {
     @State private var shopName: String = "ショップ"
     // モディファイアView表示
     @State private var isShowAction = false
+    // EditItemView表示(Sheetのとき)
+    //    @State private var isShowEditItemSheet = false
     // タップした行の情報を渡す
     @State private var editItem: Item?
 
@@ -31,7 +33,7 @@ struct TokuMemoListView: View {
     private let deleteViewModel = DeleteViewModel()
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 VStack {
                     TextField("🔍 検索バー", text: $inputText)
@@ -100,29 +102,37 @@ struct TokuMemoListView: View {
                     .padding(.bottom, 30)
                 } // VStackここまで
             } // ZStackここまで
-        } // NavigationViewここまで
-        .actionSheet(isPresented: $isShowAction) {
-            // ActionSheet（メニュー構造）構造体は、表示するタイトル、メッセージ、ボタンメニューを定義
-            // タイトル
-            ActionSheet(title: Text("商品の編集"),
-                        // 補足説明
-                        message: Text("編集内容を選択してください"),
-                        // ボタンメニュー　配列型
-                        buttons: [
-                            .default(Text("商品を削除"), action: {
-                                // 削除ロジック
-                                deleteViewModel.deleteResult(viewContext: context, editRow: editItem!)
-                                // 初期化
-                                inputText = ""
-                            }),
-                            .default(Text("商品内容を編集"), action: {
-                                // 編集アラート表示
-                                //                                presentEditAlert.toggle()
-                            }),
-                            // キャンセル
-                            .cancel()
-                        ]) // ActionSheetここまで
-        } // actionSheetここまで
+
+            // NavigationLinkで遷移させたい
+            .confirmationDialog("商品の編集", isPresented: $isShowAction, titleVisibility: .visible) {
+                Button("商品の削除") {
+                    deleteViewModel.deleteResult(viewContext: context, editRow: editItem!)
+                }
+                Button(action: {}, label: {
+                    // 追加Viewへ遷移させたいが遷移しない
+                    NavigationLink(destination: EditItemView(categoryName: $categoryName, shopName: $shopName)) {
+                        Text("商品の編集")
+                    } // NavigationLinkここまで
+                })
+            } message: {
+                Text("編集内容を選択してください").bold()
+            }
+        } // NavigationStackここまで
+
+        // Sheetの場合
+        //        .confirmationDialog("商品の編集", isPresented: $isShowAction, titleVisibility: .visible) {
+        //            Button("商品の削除") {
+        //                deleteViewModel.deleteResult(viewContext: context, editRow: editItem!)
+        //            }
+        //            Button("商品の編集") {
+        //                // 追加Viewへ遷移する
+        //                isShowEditItemSheet.toggle()
+        //            }
+        //        } message: {
+        //            Text("編集内容を選択してください").bold()
+        //        }
+        //        .sheet(isPresented: $isShowEditItemSheet, content: {EditItemView(categoryName: $categoryName, shopName: $shopName)
+        //        })
 
     } // bodyここまで
 } // structここまで
