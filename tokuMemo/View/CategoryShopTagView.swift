@@ -20,37 +20,10 @@ struct CategoryShopTagView: View {
     var body: some View {
 
         HStack(alignment: .center, spacing: 0) {
-            Button(action: {
-                // ボタンタップでカテゴリ画面フラグオン
-                showingModalCategoryListView.toggle()
-            }) {
-                ButtonTab(text: categoryName)
-            }
-            // カテゴリ画面モーダル表示
-            .fullScreenCover(isPresented: $showingModalCategoryListView) {
-                CategoryListView(categoryName: $categoryName)
-            }
-            .padding(5)
-            .overlay(
-                RoundedRectangle(cornerRadius: 7)
-                    .stroke(Color.orange, lineWidth: 3)
-            )
 
-            Button(action: {
-                // ボタンタップでショップ画面フラグオン
-                showingModalShopListView.toggle()
-            }) {
-                ButtonTab(text: shopName)
-            }
-            // カテゴリ画面モーダル表示
-            .fullScreenCover(isPresented: $showingModalShopListView) {
-                ShopListView(shopName: $shopName)
-            }
-            .padding(5)
-            .overlay(
-                RoundedRectangle(cornerRadius: 7)
-                    .stroke(Color.orange, lineWidth: 3)
-            )
+            ButtonAction(buttonName: $categoryName)
+            ButtonAction(buttonName: $shopName)
+
         } // HStackここまで
         .font(.title3)
         .foregroundColor(.orange)
@@ -58,6 +31,7 @@ struct CategoryShopTagView: View {
     } // bodyここまで
 } // CategoryShopTagViewここまで
 
+// Buttonの装飾
 struct ButtonTab: View {
     var text: String
     var body: some View {
@@ -71,36 +45,38 @@ struct ButtonTab: View {
     }
 }
 
-// struct ButtonTab2 {
-//    @State private var flag: Bool
-//    private var text: String
-//    var listView: ?
-//    var body: some View {
-//        Button(action: {
-//            // ボタンタップでカテゴリ画面フラグオン
-//            self.flag.toggle()
-//        }) {
-//          Text(text)
-//              .frame(maxWidth: .infinity)
-//              .bold()
-//              .lineLimit(1)
-//              .minimumScaleFactor(0.1)
-//          Image(systemName: "chevron.right.circle")
-//              .bold()
-//        }
-//        // カテゴリ画面モーダル表示
-//        .fullScreenCover(isPresented: $flag) {
-//            listView
-//        }
-//        .padding(5)
-//        .overlay(
-//            RoundedRectangle(cornerRadius: 7)
-//                .stroke(Color.orange, lineWidth: 3)
-//        )
-//    }
-// }
+// Buttonのふるまい
+struct ButtonAction: View {
 
-//            ButtonTab2(flag: showingModalCategoryListView, text: categoryName,  listView: CategoryListView(categoryName: $categoryName))
+    @Binding var buttonName: String
+
+    // カテゴリー画面表示フラグ
+    @State private var showingModalListView: Bool = false
+
+    var body: some View {
+
+        Button(action: {
+            // ボタンタップでカテゴリ画面フラグオン
+            showingModalListView.toggle()
+        }) {
+            ButtonTab(text: buttonName)
+        }
+        // カテゴリ画面モーダル表示
+        .fullScreenCover(isPresented: $showingModalListView) {
+            // 引数でViewを分別
+            if buttonName == "categoryName" {
+                CategoryListView(categoryName: $buttonName)
+            } else {
+                ShopListView(shopName: $buttonName)
+            }
+        }
+        .padding(5)
+        .overlay(
+            RoundedRectangle(cornerRadius: 7)
+                .stroke(Color.orange, lineWidth: 3)
+        )
+    }
+}
 
 struct CategoryShopTagView_Previews: PreviewProvider {
     @State static var categoryName = "カテゴリー"
