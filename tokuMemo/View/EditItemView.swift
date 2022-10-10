@@ -117,18 +117,18 @@ struct EditItemView: View {
                 } else {
                     // 入力チェックがOKなら
                     // 商品編集登録処理
-//                    let newItem = Item(context: context)
-//                    newItem.itemName = inputItem.name
-//                    newItem.categoryName = categoryName
-//                    newItem.shopName = shopName
-//                    newItem.price = Int32(inputItem.price) ?? 0
-//                    newItem.discountPrice = Int32(inputItem.discountPrice) ?? 0
-//                    newItem.volume = Int32(inputItem.volume) ?? 0
-//                    newItem.qtyunit = Int32(exactly: inputItem.selection) ?? 0
-//                    newItem.memo = inputItem.memo
-//                    newItem.timestamp = Date()
-//
-//                    try? context.save()
+                    //                    let newItem = Item(context: context)
+                    //                    newItem.itemName = inputItem.name
+                    //                    newItem.categoryName = categoryName
+                    //                    newItem.shopName = shopName
+                    //                    newItem.price = Int32(inputItem.price) ?? 0
+                    //                    newItem.discountPrice = Int32(inputItem.discountPrice) ?? 0
+                    //                    newItem.volume = Int32(inputItem.volume) ?? 0
+                    //                    newItem.qtyunit = Int32(exactly: inputItem.selection) ?? 0
+                    //                    newItem.memo = inputItem.memo
+                    //                    newItem.timestamp = Date()
+                    //
+                    //                    try? context.save()
 
                     // 画面を閉じる
                     dismiss()

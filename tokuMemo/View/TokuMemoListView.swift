@@ -16,6 +16,8 @@ struct TokuMemoListView: View {
     @State private var categoryName: String = "カテゴリー"
     // ショップ名テキスト部分
     @State private var shopName: String = "ショップ"
+    // モディファイアView表示
+    @State private var isShowAction = false
 
     /// データ取得処理
     @FetchRequest(
@@ -39,8 +41,21 @@ struct TokuMemoListView: View {
 
                     List {
                         ForEach(items, id: \.self) { item in
-                            Text("¥\(item.price)      \(item.itemName!)")
-                        }
+                            HStack {
+                                Text("¥\(item.price)      \(item.itemName!)")
+                                Spacer()
+                                Button(action: {
+                                    // 編集ダイアログポップアップ
+                                    // actionSheetを表示する
+                                    isShowAction = true
+                                    
+                                }) {
+                                    Image(systemName: "ellipsis.circle.fill")
+                                } // Buttonここまで
+                                // List内Button有効化のため適当なstyleをセットしている
+                                .buttonStyle(BorderlessButtonStyle())
+                            } // HStackここまで
+                        } // ForEachここまで
                     } // Listここまで
                     .foregroundColor(.orange)
 
@@ -82,6 +97,29 @@ struct TokuMemoListView: View {
                 } // VStackここまで
             } // ZStackここまで
         } // NavigationViewここまで
+        .actionSheet(isPresented: $isShowAction) {
+            // ActionSheet（メニュー構造）構造体は、表示するタイトル、メッセージ、ボタンメニューを定義
+            // タイトル
+            ActionSheet(title: Text("商品の編集"),
+                        // 補足説明
+                        message: Text("編集内容を選択してください"),
+                        // ボタンメニュー　配列型
+                        buttons: [
+                            .default(Text("商品を削除"), action: {
+                                // 削除ロジック
+                                //                                deleteViewModel.deleteResult(viewContext: context, editRow: editCategory!)
+                                // 初期化
+                                inputText = ""
+                            }),
+                            .default(Text("商品内容を編集"), action: {
+                                // 編集アラート表示
+                                //                                presentEditAlert.toggle()
+                            }),
+                            // キャンセル
+                            .cancel()
+                        ]) // ActionSheetここまで
+        } // actionSheetここまで
+
     } // bodyここまで
 } // structここまで
 
