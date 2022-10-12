@@ -114,7 +114,7 @@ struct TokuMemoListView: View {
                     Text("商品の編集")
                 })
                 .navigationDestination(isPresented: $isPresented) {
-                    EditItemView(categoryName: $categoryName, shopName: $shopName)
+                    EditItemView(categoryName: $categoryName, shopName: $shopName, editItem: $editItem)
                 }// navigationDestinationここまで
             } message: {
                 Text("編集内容を選択してください").bold()

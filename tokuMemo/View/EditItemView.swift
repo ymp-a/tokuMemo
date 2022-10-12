@@ -16,6 +16,8 @@ struct EditItemView: View {
     @Binding var categoryName: String
     // ショップ名
     @Binding var shopName: String
+    // 商品情報
+    @Binding var editItem: Item?
     // 登録商品
     @State private var inputItem: InputItem = InputItem()
     /// 複数アラート参考 https://zenn.dev/spyc/articles/993fb47a1d42e8
@@ -31,12 +33,13 @@ struct EditItemView: View {
     }
 
     // 参考 https://gist.github.com/takoikatakotako/4493a9fd947e7ceda8a97d04d7ea6c83
-    init(categoryName: Binding<String>, shopName: Binding<String>) {
+    init(categoryName: Binding<String>, shopName: Binding<String>, editItem: Binding<Item?>) {
         // navigationTitleカラー変更
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.orange]
 
         self._categoryName = categoryName
         self._shopName = shopName
+        self._editItem = editItem
     }
 
     var body: some View {
@@ -117,18 +120,17 @@ struct EditItemView: View {
                 } else {
                     // 入力チェックがOKなら
                     // 商品編集登録処理
-                    //                    let newItem = Item(context: context)
-                    //                    newItem.itemName = inputItem.name
-                    //                    newItem.categoryName = categoryName
-                    //                    newItem.shopName = shopName
-                    //                    newItem.price = Int32(inputItem.price) ?? 0
-                    //                    newItem.discountPrice = Int32(inputItem.discountPrice) ?? 0
-                    //                    newItem.volume = Int32(inputItem.volume) ?? 0
-                    //                    newItem.qtyunit = Int32(exactly: inputItem.selection) ?? 0
-                    //                    newItem.memo = inputItem.memo
-                    //                    newItem.timestamp = Date()
-                    //
-                    //                    try? context.save()
+                    editItem?.itemName = inputItem.name
+                    editItem?.categoryName = categoryName
+                    editItem?.shopName = shopName
+                    editItem?.price = Int32(inputItem.price) ?? 0
+                    editItem?.discountPrice = Int32(inputItem.discountPrice) ?? 0
+                    editItem?.volume = Int32(inputItem.volume) ?? 0
+                    editItem?.qtyunit = Int32(exactly: inputItem.selection) ?? 0
+                    editItem?.memo = inputItem.memo
+                    editItem?.timestamp = Date()
+
+                    try? context.save()
 
                     // 画面を閉じる
                     dismiss()
@@ -156,6 +158,14 @@ struct EditItemView: View {
                 return Alert(title: Text("商品の数を入力してください"))
             } // alertTypeここまで
         } // alertここまで
+        .onAppear() {
+            inputItem.name = editItem?.itemName ?? ""
+            inputItem.price = String(editItem?.price ?? 0)
+            inputItem.discountPrice = String(editItem?.discountPrice ?? 0)
+            inputItem.volume = String(editItem?.volume ?? 1)
+            inputItem.selection = Int(editItem?.qtyunit ?? 0)
+            inputItem.memo = editItem?.memo ?? ""
+        } // onAppearここまで
         .navigationBarTitle("商品名を編集", displayMode: .inline)
     } // bodyここまで
 } // AddItemViewここまで
@@ -163,8 +173,20 @@ struct EditItemView: View {
 struct EditItemView_Previews: PreviewProvider {
     @State static var categoryName = "カテゴリー"
     @State static var shopName = "ショップ"
+    @State static var editItem: Item?
+    init(editItem: Item?) {
+        editItem?.itemName = "いろはす"
+        editItem?.categoryName = "すべて"
+        editItem?.shopName = "すべて"
+        editItem?.price = 85
+        editItem?.discountPrice = 0
+        editItem?.volume = 1000
+        editItem?.qtyunit = 2
+        editItem?.memo = ""
+        editItem?.timestamp = Date()
+    }
 
     static var previews: some View {
-        EditItemView(categoryName: $categoryName, shopName: $shopName)
+        EditItemView(categoryName: $categoryName, shopName: $shopName, editItem: $editItem)
     }
 }
