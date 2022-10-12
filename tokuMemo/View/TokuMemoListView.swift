@@ -18,8 +18,8 @@ struct TokuMemoListView: View {
     @State private var shopName: String = "ショップ"
     // モディファイアView表示
     @State private var isShowAction = false
-    // EditItemView表示(Sheetのとき)
-    //    @State private var isShowEditItemSheet = false
+    // EditItemView表示
+    @State private var isPresented: Bool = false
     // タップした行の情報を渡す
     @State private var editItem: Item?
 
@@ -103,37 +103,23 @@ struct TokuMemoListView: View {
                 } // VStackここまで
             } // ZStackここまで
 
-            // NavigationLinkで遷移させたい
+            // 3点リーダータップのダイアログ表示
             .confirmationDialog("商品の編集", isPresented: $isShowAction, titleVisibility: .visible) {
                 Button("商品の削除") {
                     deleteViewModel.deleteResult(viewContext: context, editRow: editItem!)
                 }
-                Button(action: {}, label: {
-                    // 追加Viewへ遷移させたいが遷移しない
-                    NavigationLink(destination: EditItemView(categoryName: $categoryName, shopName: $shopName)) {
-                        Text("商品の編集")
-                    } // NavigationLinkここまで
+                Button(action: {
+                    isPresented.toggle()
+                }, label: {
+                    Text("商品の編集")
                 })
+                .navigationDestination(isPresented: $isPresented) {
+                    EditItemView(categoryName: $categoryName, shopName: $shopName)
+                }// navigationDestinationここまで
             } message: {
                 Text("編集内容を選択してください").bold()
-            }
+            } // confirmationDialogここまで
         } // NavigationStackここまで
-
-        // Sheetの場合
-        //        .confirmationDialog("商品の編集", isPresented: $isShowAction, titleVisibility: .visible) {
-        //            Button("商品の削除") {
-        //                deleteViewModel.deleteResult(viewContext: context, editRow: editItem!)
-        //            }
-        //            Button("商品の編集") {
-        //                // 追加Viewへ遷移する
-        //                isShowEditItemSheet.toggle()
-        //            }
-        //        } message: {
-        //            Text("編集内容を選択してください").bold()
-        //        }
-        //        .sheet(isPresented: $isShowEditItemSheet, content: {EditItemView(categoryName: $categoryName, shopName: $shopName)
-        //        })
-
     } // bodyここまで
 } // structここまで
 
