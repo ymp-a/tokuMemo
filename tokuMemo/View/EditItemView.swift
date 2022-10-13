@@ -120,15 +120,15 @@ struct EditItemView: View {
                 } else {
                     // 入力チェックがOKなら
                     // 商品編集登録処理
-                    editItem?.itemName = inputItem.name
-                    editItem?.categoryName = categoryName
-                    editItem?.shopName = shopName
-                    editItem?.price = Int32(inputItem.price) ?? 0
-                    editItem?.discountPrice = Int32(inputItem.discountPrice) ?? 0
-                    editItem?.volume = Int32(inputItem.volume) ?? 0
-                    editItem?.qtyunit = Int32(exactly: inputItem.selection) ?? 0
-                    editItem?.memo = inputItem.memo
-                    editItem?.timestamp = Date()
+                    editItem!.itemName = inputItem.name
+                    editItem!.categoryName = categoryName
+                    editItem!.shopName = shopName
+                    editItem!.price = Int32(inputItem.price) ?? 0
+                    editItem!.discountPrice = Int32(inputItem.discountPrice) ?? 0
+                    editItem!.volume = Int32(inputItem.volume) ?? 0
+                    editItem!.qtyunit = Int32(exactly: inputItem.selection) ?? 0
+                    editItem!.memo = inputItem.memo
+                    editItem!.timestamp = Date()
 
                     try? context.save()
 
@@ -159,34 +159,36 @@ struct EditItemView: View {
             } // alertTypeここまで
         } // alertここまで
         .onAppear() {
-            inputItem.name = editItem?.itemName ?? ""
-            inputItem.price = String(editItem?.price ?? 0)
-            inputItem.discountPrice = String(editItem?.discountPrice ?? 0)
-            inputItem.volume = String(editItem?.volume ?? 1)
-            inputItem.selection = Int(editItem?.qtyunit ?? 0)
-            inputItem.memo = editItem?.memo ?? ""
+            inputItem.name = editItem!.itemName!
+            inputItem.price = String(editItem!.price)
+            inputItem.discountPrice = String(editItem!.discountPrice)
+            inputItem.volume = String(editItem!.volume)
+            inputItem.selection = Int(editItem!.qtyunit)
+            inputItem.memo = editItem!.memo!
         } // onAppearここまで
         .navigationBarTitle("商品名を編集", displayMode: .inline)
     } // bodyここまで
 } // AddItemViewここまで
 
-struct EditItemView_Previews: PreviewProvider {
-    @State static var categoryName = "カテゴリー"
-    @State static var shopName = "ショップ"
-    @State static var editItem: Item?
-    init(editItem: Item?) {
-        editItem?.itemName = "いろはす"
-        editItem?.categoryName = "すべて"
-        editItem?.shopName = "すべて"
-        editItem?.price = 85
-        editItem?.discountPrice = 0
-        editItem?.volume = 1000
-        editItem?.qtyunit = 2
-        editItem?.memo = ""
-        editItem?.timestamp = Date()
-    }
-
-    static var previews: some View {
-        EditItemView(categoryName: $categoryName, shopName: $shopName, editItem: $editItem)
-    }
-}
+// struct EditItemView_Previews: PreviewProvider {
+//    static var persistenceController = PersistenceController.shared
+//    @State static var categoryName = "カテゴリー"
+//    @State static var shopName = "ショップ"
+//    @State static var editItem: Item {
+//        let editItem = Item()
+//        editItem.itemName = "いろはす"
+//        editItem.categoryName = "すべて"
+//        editItem.shopName = "すべて"
+//        editItem.price = 85
+//        editItem.discountPrice = 0
+//        editItem.volume = 1000
+//        editItem.qtyunit = 2
+//        editItem.memo = ""
+//        editItem.timestamp = Date()
+//        return editItem
+//    }
+//
+//    static var previews: some View {
+//        EditItemView(categoryName: $categoryName, shopName: $shopName, editItem: $editItem) .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+//    }
+// }
