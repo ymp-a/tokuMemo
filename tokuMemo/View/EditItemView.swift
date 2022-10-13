@@ -170,23 +170,31 @@ struct EditItemView: View {
     } // bodyここまで
 } // AddItemViewここまで
 
-struct EditItemView_Previews: PreviewProvider {
-    @State static var categoryName = "カテゴリー"
-    @State static var shopName = "ショップ"
-    @State static var editItem: Item?
-    init(editItem: Item?) {
-        editItem?.itemName = "いろはす"
-        editItem?.categoryName = "すべて"
-        editItem?.shopName = "すべて"
-        editItem?.price = 85
-        editItem?.discountPrice = 0
-        editItem?.volume = 1000
-        editItem?.qtyunit = 2
-        editItem?.memo = ""
-        editItem?.timestamp = Date()
-    }
+struct EditItemPreviewView: View {
+    /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
+    @Environment(\.managedObjectContext) private var context
 
-    static var previews: some View {
+    @State private var categoryName = "カテゴリー"
+    @State private var shopName = "ショップ"
+    @State private var editItem: Item?
+
+    /// データ取得処理
+    @FetchRequest(
+        entity: Item.entity(),
+        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
+        predicate: nil
+    ) private var items: FetchedResults<Item>
+
+    var body: some View {
         EditItemView(categoryName: $categoryName, shopName: $shopName, editItem: $editItem)
+            .onAppear() {
+                editItem = items[0]
+            }
+    }
+}
+struct EditItemView_Previews: PreviewProvider {
+    static var previews: some View {
+        EditItemPreviewView()
+            .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext) // Persistencdファイルのデータを表示する
     }
 }
