@@ -16,6 +16,12 @@ struct TokuMemoListView: View {
     @State private var categoryName: String = "カテゴリー"
     // ショップ名テキスト部分
     @State private var shopName: String = "ショップ"
+    // モディファイアView表示
+    @State private var isShowAction = false
+    // EditItemView表示
+    @State private var isPresented: Bool = false
+    // タップした行の情報を渡す
+    @State private var editItem: Item?
 
     /// データ取得処理
     @FetchRequest(
@@ -27,7 +33,7 @@ struct TokuMemoListView: View {
     private let deleteViewModel = DeleteViewModel()
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 VStack {
                     TextField("🔍 検索バー", text: $inputText)
@@ -39,8 +45,23 @@ struct TokuMemoListView: View {
 
                     List {
                         ForEach(items, id: \.self) { item in
-                            Text("¥\(item.price)      \(item.itemName!)")
-                        }
+                            HStack {
+                                Text("¥\(item.price)      \(item.itemName!)")
+                                Spacer()
+                                Button(action: {
+                                    // 編集ダイアログポップアップ
+                                    // actionSheetを表示する
+                                    isShowAction = true
+                                    // 編集用に1行データを取得
+                                    editItem = item
+
+                                }) {
+                                    Image(systemName: "ellipsis.circle.fill")
+                                } // Buttonここまで
+                                // List内Button有効化のため適当なstyleをセットしている
+                                .buttonStyle(BorderlessButtonStyle())
+                            } // HStackここまで
+                        } // ForEachここまで
                     } // Listここまで
                     .foregroundColor(.orange)
 
@@ -81,7 +102,24 @@ struct TokuMemoListView: View {
                     .padding(.bottom, 30)
                 } // VStackここまで
             } // ZStackここまで
-        } // NavigationViewここまで
+
+            // 3点リーダータップのダイアログ表示
+            .confirmationDialog("商品の編集", isPresented: $isShowAction, titleVisibility: .visible) {
+                Button("商品の削除") {
+                    deleteViewModel.deleteResult(viewContext: context, editRow: editItem!)
+                }
+                Button(action: {
+                    isPresented.toggle()
+                }, label: {
+                    Text("商品の編集")
+                })
+                .navigationDestination(isPresented: $isPresented) {
+                    EditItemView(categoryName: $categoryName, shopName: $shopName, editItem: $editItem)
+                }// navigationDestinationここまで
+            } message: {
+                Text("編集内容を選択してください").bold()
+            } // confirmationDialogここまで
+        } // NavigationStackここまで
     } // bodyここまで
 } // structここまで
 
