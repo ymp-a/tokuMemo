@@ -5,6 +5,7 @@
 //  Created by satoshi yamashita on 2022/06/28.
 //
 
+// import CoreData
 import SwiftUI
 
 struct TokuMemoListView: View {
@@ -26,8 +27,7 @@ struct TokuMemoListView: View {
     /// データ取得処理
     @FetchRequest(
         entity: Item.entity(),
-        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
-        predicate: nil
+        sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)]
     ) private var items: FetchedResults<Item>
 
     private let deleteViewModel = DeleteViewModel()
@@ -64,7 +64,21 @@ struct TokuMemoListView: View {
                         } // ForEachここまで
                     } // Listここまで
                     .foregroundColor(.orange)
-
+                    // 参考 https://qiita.com/surfinhamster/items/6e0f8aba2cc122e8ccb5#ios15%E4%BB%A5%E9%99%8D%E3%81%AE%E6%96%B9%E6%B3%952022%E5%B9%B43%E6%9C%884%E6%97%A5%E8%BF%BD%E8%A8%98
+                    .onChange(of: categoryName) { newValue in
+                        items.nsPredicate = (newValue == "カテゴリー" || newValue == "すべて" ?
+                                             (shopName == "ショップ" || shopName == "すべて" ?
+                                              nil:
+                                                NSPredicate(format: "shopName == %@", shopName)):
+                                                NSPredicate(format: "categoryName == %@ and shopName == %@", categoryName, shopName))
+                    }
+                    .onChange(of: shopName) { newValue in
+                        items.nsPredicate = (newValue == "ショップ" || newValue == "すべて" ?
+                                             (categoryName == "カテゴリー" || categoryName == "すべて" ?
+                                              nil:
+                                                NSPredicate(format: "categoryName == %@", categoryName)):
+                                                NSPredicate(format: "shopName == %@ and categoryName == %@", shopName, categoryName))
+                    }
                     TabView {
                         Text("") // 1枚目の子ビュー
                             .tabItem {
