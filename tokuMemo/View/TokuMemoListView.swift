@@ -65,19 +65,11 @@ struct TokuMemoListView: View {
                     } // Listここまで
                     .foregroundColor(.orange)
                     // 参考 https://qiita.com/surfinhamster/items/6e0f8aba2cc122e8ccb5#ios15%E4%BB%A5%E9%99%8D%E3%81%AE%E6%96%B9%E6%B3%952022%E5%B9%B43%E6%9C%884%E6%97%A5%E8%BF%BD%E8%A8%98
-                    .onChange(of: categoryName) { newValue in
-                        items.nsPredicate = (newValue == "カテゴリー" || newValue == "すべて" ?
-                                             (shopName == "ショップ" || shopName == "すべて" ?
-                                              nil:
-                                                NSPredicate(format: "shopName == %@", shopName)):
-                                                NSPredicate(format: "categoryName == %@ and shopName == %@", categoryName, shopName))
+                    .onChange(of: categoryName) { _ in
+                        refineTags()
                     }
-                    .onChange(of: shopName) { newValue in
-                        items.nsPredicate = (newValue == "ショップ" || newValue == "すべて" ?
-                                             (categoryName == "カテゴリー" || categoryName == "すべて" ?
-                                              nil:
-                                                NSPredicate(format: "categoryName == %@", categoryName)):
-                                                NSPredicate(format: "shopName == %@ and categoryName == %@", shopName, categoryName))
+                    .onChange(of: shopName) { _ in
+                        refineTags()
                     }
                     TabView {
                         Text("") // 1枚目の子ビュー
@@ -85,11 +77,11 @@ struct TokuMemoListView: View {
                                 Image(systemName: "house")
                                 Text("Top")
                             }
-                        Text("") // 買い物リストView
-                            .tabItem {
-                                Image(systemName: "cart")
-                                Text("買い物リスト")
-                            }
+                        //                        Text("") // 買い物リストView
+                        //                            .tabItem {
+                        //                                Image(systemName: "cart")
+                        //                                Text("買い物リスト")
+                        //                            }
                     } // TabViewここまで
                     .frame(height: 40, alignment: .bottom)
                     .accentColor(.orange) // 選択中の色指定
@@ -135,6 +127,27 @@ struct TokuMemoListView: View {
             } // confirmationDialogここまで
         } // NavigationStackここまで
     } // bodyここまで
+
+    // タグ絞り込み条件セット
+    func refineTags() {
+        if categoryName == "カテゴリー" || categoryName == "すべて" {
+            if shopName == "ショップ" || shopName == "すべて" {
+                // 全カテゴリー全ショップ
+                items.nsPredicate = nil
+            } else {
+                // 全カテゴリー個別ショップ
+                items.nsPredicate = NSPredicate(format: "shopName == %@", shopName)
+            }
+        } else {
+            if shopName == "ショップ" || shopName == "すべて" {
+                // 個別カテゴリー全ショップ
+                items.nsPredicate = NSPredicate(format: "categoryName == %@", categoryName)
+            } else {
+                // 個別カテゴリー個別ショップ
+                items.nsPredicate = NSPredicate(format: "categoryName == %@ and shopName == %@", categoryName, shopName)
+            }
+        }
+    } // combinationTagここまで
 } // structここまで
 
 struct TokuMemoListView_Previews: PreviewProvider {
