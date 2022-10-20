@@ -44,6 +44,8 @@ struct AddItemView: View {
     // アラートの種類
     enum AlertType {
         case itemName
+        case itemCategory
+        case itmeShop
         case itemPrice
         case itemsVolume
     }
@@ -126,6 +128,12 @@ struct AddItemView: View {
                 if inputItem.name.count<1 {
                     alertType = .itemName
                     showingAlert.toggle()
+                } else if categoryName == "カテゴリー" {
+                    alertType = .itemCategory
+                    showingAlert.toggle()
+                } else if shopName == "ショップ" {
+                    alertType = .itmeShop
+                    showingAlert.toggle()
                 } else if inputItem.price.count<1 {
                     alertType = .itemPrice
                     showingAlert.toggle()
@@ -168,6 +176,10 @@ struct AddItemView: View {
             switch alertType {
             case .itemName:
                 return Alert(title: Text("商品名を入力してください"))
+            case .itemCategory:
+                return Alert(title: Text("カテゴリーを選択してください"))
+            case .itmeShop:
+                return Alert(title: Text("ショップを選択してください"))
             case .itemPrice:
                 return Alert(title: Text("商品の税込金額を入力してください"))
             case .itemsVolume:
