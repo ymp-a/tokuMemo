@@ -36,10 +36,6 @@ struct TokuMemoListView: View {
         NavigationStack {
             ZStack {
                 VStack {
-                    TextField("🔍 検索バー", text: $inputText)
-                        .textFieldStyle(.roundedBorder)
-                        .padding(.horizontal)
-
                     // カテゴリーショップボタン
                     CategoryShopTagView(categoryName: $categoryName, shopName: $shopName)
 

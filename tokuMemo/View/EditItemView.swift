@@ -204,7 +204,7 @@ struct EditItemView_Previews: PreviewProvider {
     static var previews: some View {
         // プレビュー用にCoreDataからFetchRequestするための親Viewを作成
         EditItemPreviewView()
-        // プレビュー用にメモリでデータベース作成
+            // プレビュー用にメモリでデータベース作成
             .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }
