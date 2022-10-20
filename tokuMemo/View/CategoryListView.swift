@@ -56,6 +56,8 @@ struct CategoryListView: View {
     @State private var presentAddAlert = false
     // カテゴリ編集アラート表示
     @State private var presentEditAlert = false
+    // 未入力時のアラートフラグ
+    @State private var showingAlert = false
     // モディファイアView表示
     @State private var isShowAction = false
     // タップした行の情報を渡す
@@ -192,16 +194,22 @@ struct CategoryListView: View {
 
             Button("追加", action: {
                 // 追加タップ時の処理
-                // カテゴリー新規登録処理
-                let newCategory = Category(context: context)
-                newCategory.timestamp = Date()
-                newCategory.memo = inputMemo
-                newCategory.name = inputText
+                // 入力チェック
+                if inputText.count<1 {
+                    // 未入力アラート表示
+                    showingAlert.toggle()
+                } else {
+                    // カテゴリー新規登録処理
+                    let newCategory = Category(context: context)
+                    newCategory.timestamp = Date()
+                    newCategory.memo = inputMemo
+                    newCategory.name = inputText
 
-                try? context.save()
-                // 入力内容の初期化
-                inputText = ""
-                inputMemo = ""
+                    try? context.save()
+                    // 入力内容の初期化
+                    inputText = ""
+                    inputMemo = ""
+                }
             })
             Button("Cancel", role: .cancel, action: {// 入力内容の初期化
                 inputText = ""
@@ -230,6 +238,13 @@ struct CategoryListView: View {
         }, message: {
             Text("入力した内容でカテゴリー追加します")
         })
+        // showingAlertがtureのとき表示する
+        .alert("カテゴリー名を入力してください", isPresented: $showingAlert) {
+            Button("OK") {
+                // 追加アラート再表示する
+                presentAddAlert.toggle()
+            }
+        } // alertここまで
     } // bodyここまで
 } // CategoryListViewここまで
 
