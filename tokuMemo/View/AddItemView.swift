@@ -45,9 +45,24 @@ struct AddItemView: View {
     enum AlertType {
         case itemName
         case itemCategory
-        case itmeShop
+        case itemShop
         case itemPrice
         case itemsVolume
+
+        var message: String {
+            switch self {
+            case .itemName:
+                return "商品名を入力してください"
+            case .itemCategory:
+                return "カテゴリーを選択してください"
+            case .itemShop:
+                return "ショップを選択してください"
+            case .itemPrice:
+                return "商品の税込金額を入力してください"
+            case .itemsVolume:
+                return "商品の数を入力してください"
+            }
+        }
     }
 
     // 参考 https://gist.github.com/takoikatakotako/4493a9fd947e7ceda8a97d04d7ea6c83
@@ -132,7 +147,7 @@ struct AddItemView: View {
                     alertType = .itemCategory
                     showingAlert.toggle()
                 } else if shopName == "ショップ" {
-                    alertType = .itmeShop
+                    alertType = .itemShop
                     showingAlert.toggle()
                 } else if inputItem.price.count<1 {
                     alertType = .itemPrice
@@ -172,20 +187,8 @@ struct AddItemView: View {
         } // VStackここまで
         // showingAlertがtureのとき表示する
         .alert(isPresented: $showingAlert) {
-            // アラートタイプに応じたメッセージを表示する
-            switch alertType {
-            case .itemName:
-                return Alert(title: Text("商品名を入力してください"))
-            case .itemCategory:
-                return Alert(title: Text("カテゴリーを選択してください"))
-            case .itmeShop:
-                return Alert(title: Text("ショップを選択してください"))
-            case .itemPrice:
-                return Alert(title: Text("商品の税込金額を入力してください"))
-            case .itemsVolume:
-                return Alert(title: Text("商品の数を入力してください"))
-            } // alertTypeここまで
-        } // alertここまで
+            Alert(title: Text(alertType.message))
+        }
         .navigationBarTitle("商品名を登録", displayMode: .inline)
     } // bodyここまで
 } // AddItemViewここまで
