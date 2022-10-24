@@ -188,7 +188,7 @@ struct AddItemView: View {
         // showingAlertがtureのとき表示する
         .alert(isPresented: $showingAlert) {
             Alert(title: Text(alertType.message))
-        }
+        } // alertここまで
         .navigationBarTitle("商品名を登録", displayMode: .inline)
     } // bodyここまで
 } // AddItemViewここまで
