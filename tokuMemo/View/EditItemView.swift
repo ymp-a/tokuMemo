@@ -30,6 +30,17 @@ struct EditItemView: View {
         case itemName
         case itemPrice
         case itemsVolume
+
+        var message: String {
+            switch self {
+            case .itemName:
+                return "商品名を入力してください"
+            case .itemPrice:
+                return "商品の税込金額を入力してください"
+            case .itemsVolume:
+                return "商品の数を入力してください"
+            }
+        }
     }
 
     // 参考 https://gist.github.com/takoikatakotako/4493a9fd947e7ceda8a97d04d7ea6c83
@@ -148,15 +159,7 @@ struct EditItemView: View {
         } // VStackここまで
         // showingAlertがtureのとき表示する
         .alert(isPresented: $showingAlert) {
-            // アラートタイプに応じたメッセージを表示する
-            switch alertType {
-            case .itemName:
-                return Alert(title: Text("商品名を入力してください"))
-            case .itemPrice:
-                return Alert(title: Text("商品の税込金額を入力してください"))
-            case .itemsVolume:
-                return Alert(title: Text("商品の数を入力してください"))
-            } // alertTypeここまで
+            Alert(title: Text(alertType.message))
         } // alertここまで
         .onAppear() {
             inputItem.name = editItem!.itemName!
@@ -204,7 +207,7 @@ struct EditItemView_Previews: PreviewProvider {
     static var previews: some View {
         // プレビュー用にCoreDataからFetchRequestするための親Viewを作成
         EditItemPreviewView()
-        // プレビュー用にメモリでデータベース作成
+            // プレビュー用にメモリでデータベース作成
             .environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }

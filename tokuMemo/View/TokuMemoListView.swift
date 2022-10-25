@@ -36,10 +36,6 @@ struct TokuMemoListView: View {
         NavigationStack {
             ZStack {
                 VStack {
-                    TextField("🔍 検索バー", text: $inputText)
-                        .textFieldStyle(.roundedBorder)
-                        .padding(.horizontal)
-
                     // カテゴリーショップボタン
                     CategoryShopTagView(categoryName: $categoryName, shopName: $shopName)
 
@@ -83,29 +79,24 @@ struct TokuMemoListView: View {
                         //                                Text("買い物リスト")
                         //                            }
                     } // TabViewここまで
-                    .frame(height: 40, alignment: .bottom)
+                    .frame(height: 46, alignment: .bottom)
                     .accentColor(.orange) // 選択中の色指定
                 } // VStackここまで
                 // ボタンのViewここから
                 VStack {
                     Spacer()
-                    HStack {
-                        Spacer()
-                        // 追加ボタン
-                        Button(action: {}, label: {
-                            // 追加Viewへ遷移する
-                            NavigationLink(destination: AddItemView(categoryName: $categoryName, shopName: $shopName)) {
-                                Image(systemName: "plus")
-                                    .font(.system(size: 24))
-                                    .foregroundColor(.white)
-                                    .padding(20)
-                                    .background(Color.orange)
-                                    .clipShape(Circle())
-                            } // NavigationLinkここまで
-                        })
-                        .padding(20)
-                    } // HStackここまで
-                    .padding(.bottom, 30)
+                    // 追加ボタン
+                    Button(action: {}, label: {
+                        // 追加Viewへ遷移する
+                        NavigationLink(destination: AddItemView(categoryName: $categoryName, shopName: $shopName)) {
+                            Image(systemName: "plus")
+                                .font(.system(size: 24))
+                                .foregroundColor(.white)
+                                .padding(14)
+                                .background(Color.orange)
+                                .clipShape(Circle())
+                        } // NavigationLinkここまで
+                    })
                 } // VStackここまで
             } // ZStackここまで
 

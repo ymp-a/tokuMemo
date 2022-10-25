@@ -44,8 +44,25 @@ struct AddItemView: View {
     // アラートの種類
     enum AlertType {
         case itemName
+        case itemCategory
+        case itemShop
         case itemPrice
         case itemsVolume
+
+        var message: String {
+            switch self {
+            case .itemName:
+                return "商品名を入力してください"
+            case .itemCategory:
+                return "カテゴリーを選択してください"
+            case .itemShop:
+                return "ショップを選択してください"
+            case .itemPrice:
+                return "商品の税込金額を入力してください"
+            case .itemsVolume:
+                return "商品の数を入力してください"
+            }
+        }
     }
 
     // 参考 https://gist.github.com/takoikatakotako/4493a9fd947e7ceda8a97d04d7ea6c83
@@ -126,6 +143,12 @@ struct AddItemView: View {
                 if inputItem.name.count<1 {
                     alertType = .itemName
                     showingAlert.toggle()
+                } else if categoryName == "カテゴリー" {
+                    alertType = .itemCategory
+                    showingAlert.toggle()
+                } else if shopName == "ショップ" {
+                    alertType = .itemShop
+                    showingAlert.toggle()
                 } else if inputItem.price.count<1 {
                     alertType = .itemPrice
                     showingAlert.toggle()
@@ -164,15 +187,7 @@ struct AddItemView: View {
         } // VStackここまで
         // showingAlertがtureのとき表示する
         .alert(isPresented: $showingAlert) {
-            // アラートタイプに応じたメッセージを表示する
-            switch alertType {
-            case .itemName:
-                return Alert(title: Text("商品名を入力してください"))
-            case .itemPrice:
-                return Alert(title: Text("商品の税込金額を入力してください"))
-            case .itemsVolume:
-                return Alert(title: Text("商品の数を入力してください"))
-            } // alertTypeここまで
+            Alert(title: Text(alertType.message))
         } // alertここまで
         .navigationBarTitle("商品名を登録", displayMode: .inline)
     } // bodyここまで
