@@ -24,7 +24,10 @@ struct EditItemView: View {
     // 未入力時のアラートフラグ
     @State private var showingAlert = false
     @State private var alertType: AlertType = .itemName
-
+    // 一時避難用のカテゴリーTab
+    @State private var categoryText = ""
+    // 一時避難用のショップTab
+    @State private var shopText = ""
     // アラートの種類
     enum AlertType {
         case itemName
@@ -68,7 +71,7 @@ struct EditItemView: View {
             .padding(.top)
             .padding(.horizontal)
             // カテゴリーショップボタン
-            CategoryShopTagView(categoryName: $categoryName, shopName: $shopName)
+            CategoryShopTagView(categoryName: $categoryText, shopName: $shopText)
                 .padding(.bottom)
 
             HStack {
@@ -130,6 +133,9 @@ struct EditItemView: View {
                     showingAlert.toggle()
                 } else {
                     // 入力チェックがOKなら
+                    // Tabを更新する
+                    categoryName = categoryText
+                    shopName = shopText
                     // 商品編集登録処理
                     editItem!.itemName = inputItem.name
                     editItem!.categoryName = categoryName
@@ -163,6 +169,8 @@ struct EditItemView: View {
         } // alertここまで
         .onAppear() {
             inputItem.name = editItem!.itemName!
+            categoryText = editItem!.categoryName!
+            shopText = editItem!.shopName!
             inputItem.price = String(editItem!.price)
             inputItem.discountPrice = String(editItem!.discountPrice)
             inputItem.volume = String(editItem!.volume)
