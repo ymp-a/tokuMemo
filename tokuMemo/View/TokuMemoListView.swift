@@ -80,9 +80,11 @@ struct TokuMemoListView: View {
                     .foregroundColor(.orange)
                     // 参考 https://qiita.com/surfinhamster/items/6e0f8aba2cc122e8ccb5#ios15%E4%BB%A5%E9%99%8D%E3%81%AE%E6%96%B9%E6%B3%952022%E5%B9%B43%E6%9C%884%E6%97%A5%E8%BF%BD%E8%A8%98
                     .onChange(of: categoryName) { _ in
+                        //                        print("categoryName:\(categoryName), shopName:\(shopName), s: \(s)")
                         refineTags()
                     }
                     .onChange(of: shopName) { _ in
+                        //                        print("categoryName:\(categoryName), shopName:\(shopName), v: \(v)")
                         refineTags()
                     }
                     TabView {
@@ -139,6 +141,8 @@ struct TokuMemoListView: View {
 
     // タグ絞り込み条件セット
     func refineTags() {
+        // 条件の初期化（これがない時変更登録後、条件反映しなかった）
+        items.nsPredicate = nil
         if categoryName == "カテゴリー" || categoryName == "すべて" {
             if shopName == "ショップ" || shopName == "すべて" {
                 // 全カテゴリー全ショップ
