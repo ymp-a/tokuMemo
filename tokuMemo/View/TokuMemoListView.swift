@@ -24,6 +24,8 @@ struct TokuMemoListView: View {
     // タップした行の情報を渡す
     @State private var editItem: Item?
 
+    let inputItem = InputItem()
+
     /// データ取得処理
     @FetchRequest(
         entity: Item.entity(),
@@ -41,22 +43,38 @@ struct TokuMemoListView: View {
 
                     List {
                         ForEach(items, id: \.self) { item in
-                            HStack {
-                                Text("¥\(item.price)      \(item.itemName!)")
-                                Spacer()
-                                Button(action: {
-                                    // 編集ダイアログポップアップ
-                                    // actionSheetを表示する
-                                    isShowAction = true
-                                    // 編集用に1行データを取得
-                                    editItem = item
+                            VStack(spacing: -8) {
+                                HStack {
+                                    Text("¥\(item.price)").bold()
+                                        + Text("   \(item.itemName!)")
+                                    Spacer()
+                                } // HStackここまで
+                                HStack {
+                                    Spacer()
+                                    Button(action: {
+                                        // 編集ダイアログポップアップ
+                                        // actionSheetを表示する
+                                        isShowAction = true
+                                        // 編集用に1行データを取得
+                                        editItem = item
 
-                                }) {
-                                    Image(systemName: "ellipsis.circle.fill")
-                                } // Buttonここまで
-                                // List内Button有効化のため適当なstyleをセットしている
-                                .buttonStyle(BorderlessButtonStyle())
-                            } // HStackここまで
+                                    }) {
+                                        Image(systemName: "ellipsis.circle.fill")
+                                    } // Buttonここまで
+                                    // List内Button有効化のため適当なstyleをセットしている
+                                    .buttonStyle(BorderlessButtonStyle())
+                                } // HStackここまで
+                                HStack {
+                                    Spacer()
+                                    if Int(item.qtyunit)==0 {
+                                        Text("1つあたり").font(.caption2)
+                                            + Text("¥\(String(format: "%.2f", Double(item.price)/Double(item.volume)))      ").font(.callout)
+                                    } else {
+                                        Text("100\(inputItem.units[Int(item.qtyunit)])あたり").font(.caption2)
+                                            + Text("¥\(String(format: "%.2f", Double(item.price)/Double(item.volume)*100))       ").font(.callout)
+                                    }
+                                } // HStackここまで
+                            } // VStackここまで
                         } // ForEachここまで
                     } // Listここまで
                     .foregroundColor(.orange)
