@@ -46,6 +46,12 @@ struct TokuMemoListView: View {
                         Text("商品を登録をしてください").foregroundColor(.orange)
                         Text("↓").foregroundColor(.orange)
                         Spacer()
+                            .onChange(of: categoryName) { _ in
+                                refineTags()
+                            }
+                            .onChange(of: shopName) { _ in
+                                refineTags()
+                            }
                     } else {
                         List {
                             ForEach(items, id: \.self) { item in
@@ -84,13 +90,14 @@ struct TokuMemoListView: View {
                             } // ForEachここまで
                         } // Listここまで
                         .foregroundColor(.orange)
+
                         // 参考 https://qiita.com/surfinhamster/items/6e0f8aba2cc122e8ccb5#ios15%E4%BB%A5%E9%99%8D%E3%81%AE%E6%96%B9%E6%B3%952022%E5%B9%B43%E6%9C%884%E6%97%A5%E8%BF%BD%E8%A8%98
                         .onChange(of: categoryName) { _ in
-                            //                        print("categoryName:\(categoryName), shopName:\(shopName), s: \(s)")
+                            //                            print("categoryName:\(categoryName), shopName:\(shopName), s: \(s)")
                             refineTags()
                         }
                         .onChange(of: shopName) { _ in
-                            //                        print("categoryName:\(categoryName), shopName:\(shopName), v: \(v)")
+                            //                            print("categoryName:\(categoryName), shopName:\(shopName), v: \(v)")
                             refineTags()
                         }
                     }
@@ -152,8 +159,7 @@ struct TokuMemoListView: View {
         items.nsPredicate = nil
         if categoryName == "カテゴリー" || categoryName == "すべて" {
             if shopName == "ショップ" || shopName == "すべて" {
-                // 全カテゴリー全ショップ
-                items.nsPredicate = nil
+                // 全カテゴリー全ショップ 初期化のまま
             } else {
                 // 全カテゴリー個別ショップ
                 items.nsPredicate = NSPredicate(format: "shopName == %@", shopName)
