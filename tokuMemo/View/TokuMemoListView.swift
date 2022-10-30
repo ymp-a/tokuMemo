@@ -77,6 +77,7 @@ struct TokuMemoListView: View {
                                         .buttonStyle(BorderlessButtonStyle())
                                     } // HStackここまで
                                     HStack {
+                                        Text(item.shopName!)
                                         Spacer()
                                         if Int(item.qtyunit)==0 {
                                             Text("1つあたり").font(.caption2)
