@@ -14,9 +14,9 @@ struct TokuMemoListView: View {
     // メモ検索入力用
     @State private var inputText = ""
     // カテゴリーテキスト部分
-    @State private var categoryName: String = "カテゴリー"
+    @State private var categoryName: String = "すべて"
     // ショップ名テキスト部分
-    @State private var shopName: String = "ショップ"
+    @State private var shopName: String = "すべて"
     // モディファイアView表示
     @State private var isShowAction = false
     // EditItemView表示

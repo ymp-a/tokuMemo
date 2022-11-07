@@ -68,7 +68,7 @@ struct EditItemView: View {
             .padding(10)
             .foregroundColor(.orange)
             .border(.orange)
-            .padding(.top)
+            .padding(.bottom, 5)
             .padding(.horizontal)
             // カテゴリーショップボタン
             CategoryShopTagView(categoryName: $categoryText, shopName: $shopText)

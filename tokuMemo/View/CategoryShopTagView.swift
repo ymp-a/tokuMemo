@@ -18,16 +18,26 @@ struct CategoryShopTagView: View {
     @State var showingModalShopListView: Bool = false
 
     var body: some View {
+        VStack(spacing: 5) {
+            HStack(alignment: .center, spacing: 25) {
+                Image(systemName: "list.bullet").bold()
+                Text("カテゴリ")
+                Spacer(minLength: 0)
+                Image(systemName: "house.fill").bold()
+                Text("ショップ")
+                Spacer(minLength: 5)
+            }
+            .padding(.horizontal)
+            HStack(alignment: .center, spacing: 0) {
+                ButtonAction(buttonName: $categoryName, label: "category")
+                ButtonAction(buttonName: $shopName, label: "shop")
+            } // HStackここまで
 
-        HStack(alignment: .center, spacing: 0) {
-
-            ButtonAction(buttonName: $categoryName, label: "category")
-            ButtonAction(buttonName: $shopName, label: "shop")
-
-        } // HStackここまで
-        .font(.title3)
+        } // VStackここまで
         .foregroundColor(.orange)
         .padding(.horizontal)
+        .font(.title3)
+
     } // bodyここまで
 } // CategoryShopTagViewここまで
 
@@ -82,8 +92,8 @@ struct ButtonAction: View {
 }
 
 struct CategoryShopTagView_Previews: PreviewProvider {
-    @State static var categoryName = "カテゴリー"
-    @State static var shopName = "ショップ"
+    @State static var categoryName = "すべて"
+    @State static var shopName = "すべて"
 
     static var previews: some View {
         CategoryShopTagView(categoryName: $categoryName, shopName: $shopName)
