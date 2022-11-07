@@ -19,10 +19,10 @@ struct CategoryShopTagView: View {
 
     var body: some View {
         VStack(spacing: 5) {
-            HStack(alignment: .center, spacing: 25) {
+            HStack(alignment: .center, spacing: 10) {
                 Image(systemName: "list.bullet").bold()
                 Text("カテゴリ")
-                Spacer(minLength: 0)
+                Spacer(minLength: 20)
                 Image(systemName: "house.fill").bold()
                 Text("ショップ")
                 Spacer(minLength: 5)
