@@ -31,7 +31,7 @@ func registSampleShopData(context: NSManagedObjectContext) {
     /// Shopテーブル登録
     for shop in shopList {
         let newShop = Shop(context: context)
-        newShop.name = shop[0]         // カテゴリー名
+        newShop.name = shop[0]         // カテゴリ名
         newShop.memo = shop[1]        // メモ
         newShop.timestamp = dateFormatter.date(from: shop[2])! // 追加日
     }
@@ -215,7 +215,7 @@ struct ShopListView: View {
                 inputMemo = ""
             })
         }, message: {
-            Text("入力した内容でカテゴリー追加します")
+            Text("入力した内容でカテゴリを追加します")
         })
 
         .alert("ショップ編集", isPresented: $presentEditAlert, actions: {
@@ -235,7 +235,7 @@ struct ShopListView: View {
                 inputMemo = ""
             })
         }, message: {
-            Text("入力した内容でカテゴリー追加します")
+            Text("入力した内容でカテゴリを追加します")
         })
         // showingAlertがtureのとき表示する
         .alert("ショップ名を入力してください", isPresented: $showingAlert) {

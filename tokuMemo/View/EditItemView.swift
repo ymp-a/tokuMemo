@@ -12,7 +12,7 @@ struct EditItemView: View {
     @Environment(\.dismiss) var dismiss
     /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
     @Environment(\.managedObjectContext) private var context
-    // カテゴリーテキスト部分
+    // カテゴリテキスト部分
     @Binding var categoryName: String
     // ショップ名
     @Binding var shopName: String
@@ -24,7 +24,7 @@ struct EditItemView: View {
     // 未入力時のアラートフラグ
     @State private var showingAlert = false
     @State private var alertType: AlertType = .itemName
-    // 一時避難用のカテゴリーTab
+    // 一時避難用のカテゴリTab
     @State private var categoryText = ""
     // 一時避難用のショップTab
     @State private var shopText = ""
@@ -70,7 +70,7 @@ struct EditItemView: View {
             .border(.orange)
             .padding(.bottom, 5)
             .padding(.horizontal)
-            // カテゴリーショップボタン
+            // カテゴリショップボタン
             CategoryShopTagView(categoryName: $categoryText, shopName: $shopText)
                 .padding(.bottom)
 
@@ -187,8 +187,8 @@ struct EditItemPreviewView: View {
     /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
     @Environment(\.managedObjectContext) private var context
 
-    @State private var categoryName = "カテゴリー"
-    @State private var shopName = "ショップ"
+    @State private var categoryName = "すべて"
+    @State private var shopName = "すべて"
     @State private var editItem: Item?
 
     /// データ取得処理

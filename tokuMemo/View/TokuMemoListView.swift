@@ -13,7 +13,7 @@ struct TokuMemoListView: View {
     @Environment(\.managedObjectContext) private var context
     // メモ検索入力用
     @State private var inputText = ""
-    // カテゴリーテキスト部分
+    // カテゴリテキスト部分
     @State private var categoryName: String = "すべて"
     // ショップ名テキスト部分
     @State private var shopName: String = "すべて"
@@ -38,7 +38,7 @@ struct TokuMemoListView: View {
         NavigationStack {
             ZStack {
                 VStack {
-                    // カテゴリーショップボタン
+                    // カテゴリショップボタン
                     CategoryShopTagView(categoryName: $categoryName, shopName: $shopName)
 
                     if items.isEmpty {
@@ -149,19 +149,19 @@ struct TokuMemoListView: View {
     func refineTags() {
         // 条件の初期化（これがない時変更登録後、条件反映しなかった）
         items.nsPredicate = nil
-        if categoryName == "カテゴリー" || categoryName == "すべて" {
-            if shopName == "ショップ" || shopName == "すべて" {
-                // 全カテゴリー全ショップ 初期化のまま
+        if categoryName == "すべて" {
+            if shopName == "すべて" {
+                // 全カテゴリ全ショップ 初期化のまま
             } else {
-                // 全カテゴリー個別ショップ
+                // 全カテゴリ個別ショップ
                 items.nsPredicate = NSPredicate(format: "shopName == %@", shopName)
             }
         } else {
-            if shopName == "ショップ" || shopName == "すべて" {
-                // 個別カテゴリー全ショップ
+            if shopName == "すべて" {
+                // 個別カテゴリ全ショップ
                 items.nsPredicate = NSPredicate(format: "categoryName == %@", categoryName)
             } else {
-                // 個別カテゴリー個別ショップ
+                // 個別カテゴリ個別ショップ
                 items.nsPredicate = NSPredicate(format: "categoryName == %@ and shopName == %@", categoryName, shopName)
             }
         }

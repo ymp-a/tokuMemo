@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct CategoryShopTagView: View {
-    // カテゴリーテキスト部分
+    // カテゴリテキスト部分
     @Binding var categoryName: String
     // ショップ名テキスト部分
     @Binding var shopName: String
-    // カテゴリー画面表示フラグ
+    // カテゴリ画面表示フラグ
     @State var showingModalCategoryListView: Bool = false
     // ショップ画面表示フラグ
     @State var showingModalShopListView: Bool = false
@@ -60,7 +60,7 @@ struct ButtonAction: View {
 
     @Binding var buttonName: String
 
-    // カテゴリー画面表示フラグ
+    // カテゴリ画面表示フラグ
     @State private var showingModalListView: Bool = false
 
     // フラグ用

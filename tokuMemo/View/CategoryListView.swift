@@ -18,7 +18,7 @@ func registSampleCategoryData(context: NSManagedObjectContext) {
         ["日用品", "サンプル", "2022/08/18"]
     ]
 
-    /// カテゴリーテーブル全消去
+    /// カテゴリテーブル全消去
     let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
     fetchRequest.entity = Category.entity()
     let categories = try? context.fetch(fetchRequest) as? [Category]
@@ -29,10 +29,10 @@ func registSampleCategoryData(context: NSManagedObjectContext) {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy/M/d"
 
-    /// カテゴリーテーブル登録
+    /// カテゴリテーブル登録
     for category in categoryList {
         let newCategory = Category(context: context)
-        newCategory.name = category[0]         // カテゴリー名
+        newCategory.name = category[0]         // カテゴリ名
         newCategory.memo = category[1]        // メモ
         newCategory.timestamp = dateFormatter.date(from: category[2])! // 追加日
     }
@@ -46,7 +46,7 @@ struct CategoryListView: View {
     @Environment(\.dismiss) var dismiss
     /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
     @Environment(\.managedObjectContext) private var context
-    // カテゴリー
+    // カテゴリ
     @Binding var categoryName: String
 
     @State private var inputText = ""
@@ -76,7 +76,7 @@ struct CategoryListView: View {
         ZStack {
             VStack {
                 HStack(alignment: .center) {
-                    Text("カテゴリー（大分類）")
+                    Text("カテゴリ")
                 } // HStackここまで
 
                 List {
@@ -89,9 +89,9 @@ struct CategoryListView: View {
                                 // 編集ダイアログポップアップ
                                 // actionSheetを表示する
                                 isShowAction = true
-                                // 編集用のカテゴリー名を取得
+                                // 編集用のカテゴリ名を取得
                                 inputText = category.name!
-                                // 編集用のカテゴリーメモを取得
+                                // 編集用のカテゴリメモを取得
                                 inputMemo = category.memo!
                                 // 編集用に1行データを取得
                                 editCategory = category
@@ -113,7 +113,7 @@ struct CategoryListView: View {
                         .contentShape(Rectangle())
                         // タップ時の処理
                         .onTapGesture {
-                            // タップしたカテゴリー名わたす
+                            // タップしたカテゴリ名わたす
                             self.categoryName = category.name!
                             // 閉じる処理
                             dismiss()
@@ -140,7 +140,7 @@ struct CategoryListView: View {
                 Spacer()
                 VStack {
                     Button(action: {
-                        // タップでカテゴリー追加アラートを表示
+                        // タップでカテゴリ追加アラートを表示
                         presentAddAlert.toggle()
                     }) {
                         // 追加Viewへ遷移する
@@ -158,7 +158,7 @@ struct CategoryListView: View {
             } // HStackここまで
         } // ZStackここまで
         .onAppear {
-            // カテゴリー名が０のとき
+            // カテゴリ名が０のとき
             if self.categories.count == 0 {
                 /// Listビュー表示時に初期データ登録処理を実行する
                 registSampleCategoryData(context: context)
@@ -167,18 +167,18 @@ struct CategoryListView: View {
         .actionSheet(isPresented: $isShowAction) {
             // ActionSheet（メニュー構造）構造体は、表示するタイトル、メッセージ、ボタンメニューを定義
             // タイトル
-            ActionSheet(title: Text("カテゴリーを編集"),
+            ActionSheet(title: Text("カテゴリを編集"),
                         // 補足説明
                         message: Text("編集内容を選択してください"),
                         // ボタンメニュー　配列型
                         buttons: [
-                            .default(Text("カテゴリーを削除"), action: {
+                            .default(Text("カテゴリを削除"), action: {
                                 // 削除ロジック
                                 deleteViewModel.deleteResult(viewContext: context, editRow: editCategory!)
                                 // 初期化
                                 inputText = ""
                             }),
-                            .default(Text("カテゴリーを編集"), action: {
+                            .default(Text("カテゴリを編集"), action: {
                                 // 編集アラート表示
                                 presentEditAlert.toggle()
                             }),
@@ -187,8 +187,8 @@ struct CategoryListView: View {
                         ]) // ActionSheetここまで
         } // actionSheetここまで
 
-        .alert("カテゴリー追加", isPresented: $presentAddAlert, actions: {
-            TextField("カテゴリー名", text: $inputText)
+        .alert("カテゴリ追加", isPresented: $presentAddAlert, actions: {
+            TextField("カテゴリ名", text: $inputText)
 
             TextField("メモ", text: $inputMemo)
 
@@ -199,7 +199,7 @@ struct CategoryListView: View {
                     // 未入力アラート表示
                     showingAlert.toggle()
                 } else {
-                    // カテゴリー新規登録処理
+                    // カテゴリ新規登録処理
                     let newCategory = Category(context: context)
                     newCategory.timestamp = Date()
                     newCategory.memo = inputMemo
@@ -216,11 +216,11 @@ struct CategoryListView: View {
                 inputMemo = ""
             })
         }, message: {
-            Text("入力した内容でカテゴリー追加します")
+            Text("入力した内容でカテゴリ追加します")
         })
 
-        .alert("カテゴリー編集", isPresented: $presentEditAlert, actions: {
-            TextField("カテゴリー名", text: $inputText)
+        .alert("カテゴリ編集", isPresented: $presentEditAlert, actions: {
+            TextField("カテゴリ名", text: $inputText)
 
             TextField("メモ", text: $inputMemo)
 
@@ -236,10 +236,10 @@ struct CategoryListView: View {
                 inputMemo = ""
             })
         }, message: {
-            Text("入力した内容でカテゴリー追加します")
+            Text("入力した内容でカテゴリ追加します")
         })
         // showingAlertがtureのとき表示する
-        .alert("カテゴリー名を入力してください", isPresented: $showingAlert) {
+        .alert("カテゴリ名を入力してください", isPresented: $showingAlert) {
             Button("OK") {
                 // 追加アラート再表示する
                 presentAddAlert.toggle()
