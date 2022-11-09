@@ -8,26 +8,36 @@
 import SwiftUI
 
 struct CategoryShopTagView: View {
-    // カテゴリーテキスト部分
+    // カテゴリテキスト部分
     @Binding var categoryName: String
     // ショップ名テキスト部分
     @Binding var shopName: String
-    // カテゴリー画面表示フラグ
+    // カテゴリ画面表示フラグ
     @State var showingModalCategoryListView: Bool = false
     // ショップ画面表示フラグ
     @State var showingModalShopListView: Bool = false
 
     var body: some View {
+        VStack(spacing: 5) {
+            HStack(alignment: .center, spacing: 10) {
+                Image(systemName: "list.bullet").bold()
+                Text("カテゴリ")
+                Spacer(minLength: 20)
+                Image(systemName: "house.fill").bold()
+                Text("ショップ")
+                Spacer(minLength: 5)
+            }
+            .padding(.horizontal)
+            HStack(alignment: .center, spacing: 0) {
+                ButtonAction(buttonName: $categoryName, label: "category")
+                ButtonAction(buttonName: $shopName, label: "shop")
+            } // HStackここまで
 
-        HStack(alignment: .center, spacing: 0) {
-
-            ButtonAction(buttonName: $categoryName, label: "category")
-            ButtonAction(buttonName: $shopName, label: "shop")
-
-        } // HStackここまで
-        .font(.title3)
+        } // VStackここまで
         .foregroundColor(.orange)
         .padding(.horizontal)
+        .font(.title3)
+
     } // bodyここまで
 } // CategoryShopTagViewここまで
 
@@ -50,7 +60,7 @@ struct ButtonAction: View {
 
     @Binding var buttonName: String
 
-    // カテゴリー画面表示フラグ
+    // カテゴリ画面表示フラグ
     @State private var showingModalListView: Bool = false
 
     // フラグ用
@@ -82,8 +92,8 @@ struct ButtonAction: View {
 }
 
 struct CategoryShopTagView_Previews: PreviewProvider {
-    @State static var categoryName = "カテゴリー"
-    @State static var shopName = "ショップ"
+    @State static var categoryName = "すべて"
+    @State static var shopName = "すべて"
 
     static var previews: some View {
         CategoryShopTagView(categoryName: $categoryName, shopName: $shopName)

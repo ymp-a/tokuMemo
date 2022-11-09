@@ -13,10 +13,10 @@ struct TokuMemoListView: View {
     @Environment(\.managedObjectContext) private var context
     // メモ検索入力用
     @State private var inputText = ""
-    // カテゴリーテキスト部分
-    @State private var categoryName: String = "カテゴリー"
+    // カテゴリテキスト部分
+    @State private var categoryName: String = "すべて"
     // ショップ名テキスト部分
-    @State private var shopName: String = "ショップ"
+    @State private var shopName: String = "すべて"
     // モディファイアView表示
     @State private var isShowAction = false
     // EditItemView表示
@@ -38,52 +38,53 @@ struct TokuMemoListView: View {
         NavigationStack {
             ZStack {
                 VStack {
-                    // カテゴリーショップボタン
+                    // カテゴリショップボタン
                     CategoryShopTagView(categoryName: $categoryName, shopName: $shopName)
 
-                    List {
-                        ForEach(items, id: \.self) { item in
-                            VStack(spacing: -8) {
-                                HStack {
-                                    Text("¥\(item.price)").bold()
-                                        + Text("   \(item.itemName!)")
-                                    Spacer()
-                                } // HStackここまで
-                                HStack {
-                                    Spacer()
-                                    Button(action: {
-                                        // 編集ダイアログポップアップ
-                                        // actionSheetを表示する
-                                        isShowAction = true
-                                        // 編集用に1行データを取得
-                                        editItem = item
+                    if items.isEmpty {
+                        Spacer()
+                        Text("商品を登録をしてください").foregroundColor(.orange)
+                        Text("↓").foregroundColor(.orange)
+                        Spacer()
+                    } else {
+                        List {
+                            ForEach(items, id: \.self) { item in
+                                VStack(spacing: -8) {
+                                    HStack {
+                                        Text("¥\(item.price)").bold()
+                                            + Text("   \(item.itemName!)")
+                                        Spacer()
+                                    } // HStackここまで
+                                    HStack {
+                                        Spacer()
+                                        Button(action: {
+                                            // 編集ダイアログポップアップ
+                                            // actionSheetを表示する
+                                            isShowAction = true
+                                            // 編集用に1行データを取得
+                                            editItem = item
 
-                                    }) {
-                                        Image(systemName: "ellipsis.circle.fill")
-                                    } // Buttonここまで
-                                    // List内Button有効化のため適当なstyleをセットしている
-                                    .buttonStyle(BorderlessButtonStyle())
-                                } // HStackここまで
-                                HStack {
-                                    Spacer()
-                                    if Int(item.qtyunit)==0 {
-                                        Text("1つあたり").font(.caption2)
-                                            + Text("¥\(String(format: "%.2f", Double(item.price)/Double(item.volume)))      ").font(.callout)
-                                    } else {
-                                        Text("100\(inputItem.units[Int(item.qtyunit)])あたり").font(.caption2)
-                                            + Text("¥\(String(format: "%.2f", Double(item.price)/Double(item.volume)*100))       ").font(.callout)
-                                    }
-                                } // HStackここまで
-                            } // VStackここまで
-                        } // ForEachここまで
-                    } // Listここまで
-                    .foregroundColor(.orange)
-                    // 参考 https://qiita.com/surfinhamster/items/6e0f8aba2cc122e8ccb5#ios15%E4%BB%A5%E9%99%8D%E3%81%AE%E6%96%B9%E6%B3%952022%E5%B9%B43%E6%9C%884%E6%97%A5%E8%BF%BD%E8%A8%98
-                    .onChange(of: categoryName) { _ in
-                        refineTags()
-                    }
-                    .onChange(of: shopName) { _ in
-                        refineTags()
+                                        }) {
+                                            Image(systemName: "ellipsis.circle.fill")
+                                        } // Buttonここまで
+                                        // List内Button有効化のため適当なstyleをセットしている
+                                        .buttonStyle(BorderlessButtonStyle())
+                                    } // HStackここまで
+                                    HStack {
+                                        Text(item.shopName!)
+                                        Spacer()
+                                        if Int(item.qtyunit)==0 {
+                                            Text("1つあたり").font(.caption2)
+                                                + Text("¥\(String(format: "%.2f", Double(item.price)/Double(item.volume)))      ").font(.callout)
+                                        } else {
+                                            Text("100\(inputItem.units[Int(item.qtyunit)])あたり").font(.caption2)
+                                                + Text("¥\(String(format: "%.2f", Double(item.price)/Double(item.volume)*100))       ").font(.callout)
+                                        }
+                                    } // HStackここまで
+                                } // VStackここまで
+                            } // ForEachここまで
+                        } // Listここまで
+                        .foregroundColor(.orange)
                     }
                     TabView {
                         Text("") // 1枚目の子ビュー
@@ -100,6 +101,13 @@ struct TokuMemoListView: View {
                     .frame(height: 46, alignment: .bottom)
                     .accentColor(.orange) // 選択中の色指定
                 } // VStackここまで
+                // 参考 https://qiita.com/surfinhamster/items/6e0f8aba2cc122e8ccb5#ios15%E4%BB%A5%E9%99%8D%E3%81%AE%E6%96%B9%E6%B3%952022%E5%B9%B43%E6%9C%884%E6%97%A5%E8%BF%BD%E8%A8%98
+                .onChange(of: categoryName) { _ in
+                    refineTags()
+                }
+                .onChange(of: shopName) { _ in
+                    refineTags()
+                }
                 // ボタンのViewここから
                 VStack {
                     Spacer()
@@ -139,20 +147,21 @@ struct TokuMemoListView: View {
 
     // タグ絞り込み条件セット
     func refineTags() {
-        if categoryName == "カテゴリー" || categoryName == "すべて" {
-            if shopName == "ショップ" || shopName == "すべて" {
-                // 全カテゴリー全ショップ
-                items.nsPredicate = nil
+        // 条件の初期化（これがない時変更登録後、条件反映しなかった）
+        items.nsPredicate = nil
+        if categoryName == "すべて" {
+            if shopName == "すべて" {
+                // 全カテゴリ全ショップ 初期化のまま
             } else {
-                // 全カテゴリー個別ショップ
+                // 全カテゴリ個別ショップ
                 items.nsPredicate = NSPredicate(format: "shopName == %@", shopName)
             }
         } else {
-            if shopName == "ショップ" || shopName == "すべて" {
-                // 個別カテゴリー全ショップ
+            if shopName == "すべて" {
+                // 個別カテゴリ全ショップ
                 items.nsPredicate = NSPredicate(format: "categoryName == %@", categoryName)
             } else {
-                // 個別カテゴリー個別ショップ
+                // 個別カテゴリ個別ショップ
                 items.nsPredicate = NSPredicate(format: "categoryName == %@ and shopName == %@", categoryName, shopName)
             }
         }

@@ -30,7 +30,7 @@ struct AddItemView: View {
     @Environment(\.dismiss) var dismiss
     /// 被管理オブジェクトコンテキスト（ManagedObjectContext）の取得
     @Environment(\.managedObjectContext) private var context
-    // カテゴリーテキスト部分
+    // カテゴリテキスト部分
     @Binding var categoryName: String
     // ショップ名
     @Binding var shopName: String
@@ -44,8 +44,7 @@ struct AddItemView: View {
     // アラートの種類
     enum AlertType {
         case itemName
-        case itemCategory
-        case itemShop
+
         case itemPrice
         case itemsVolume
 
@@ -53,10 +52,6 @@ struct AddItemView: View {
             switch self {
             case .itemName:
                 return "商品名を入力してください"
-            case .itemCategory:
-                return "カテゴリーを選択してください"
-            case .itemShop:
-                return "ショップを選択してください"
             case .itemPrice:
                 return "商品の税込金額を入力してください"
             case .itemsVolume:
@@ -86,9 +81,9 @@ struct AddItemView: View {
             .padding(10)
             .foregroundColor(.orange)
             .border(.orange)
-            .padding(.top)
+            .padding(.bottom, 5)
             .padding(.horizontal)
-            // カテゴリーショップボタン
+            // カテゴリショップボタン
             CategoryShopTagView(categoryName: $categoryName, shopName: $shopName)
                 .padding(.bottom)
 
@@ -143,12 +138,6 @@ struct AddItemView: View {
                 if inputItem.name.count<1 {
                     alertType = .itemName
                     showingAlert.toggle()
-                } else if categoryName == "カテゴリー" {
-                    alertType = .itemCategory
-                    showingAlert.toggle()
-                } else if shopName == "ショップ" {
-                    alertType = .itemShop
-                    showingAlert.toggle()
                 } else if inputItem.price.count<1 {
                     alertType = .itemPrice
                     showingAlert.toggle()
@@ -194,8 +183,8 @@ struct AddItemView: View {
 } // AddItemViewここまで
 
 struct AddItemView_Previews: PreviewProvider {
-    @State static var categoryName = "カテゴリー"
-    @State static var shopName = "ショップ"
+    @State static var categoryName = "すべて"
+    @State static var shopName = "すべて"
 
     static var previews: some View {
         AddItemView(categoryName: $categoryName, shopName: $shopName)
