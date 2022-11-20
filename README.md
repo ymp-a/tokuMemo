@@ -1,21 +1,48 @@
-# トクメモ
+# トクメモ TokuMemo〜あなたのトクした瞬間を保管します〜
 
-## アプリの情報
+## 1. 概要
+トクメモは買い物のトクした気持ちを保存するアプリです。<br>登録した最安値などの情報をカテゴリ、店舗毎にすぐチェックできます。<br>登録した商品情報をカテゴリ、ショップ２つのTagで管理できます。
+## 2. ダウンロードリンク
+リリース待ち
+## 3. 実行画面
+- 商品登録
 
-| | | |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-|<img src="./screenshot/iPhone_14_ProMax/iPhone_14_ProMax_10.png" alt="スクリーンショット1" width=320 > || トクメモは日常のおトクを記録管理するアプリです。<br><br>近所のスーパーでいろはすが９８円、ドラッグストアでは６９円こんなことはよくありませんか。<br><br>よく行くお店の特売日、いつも買う商品価格は覚えたりメモしたりしますが、しばらくすると特売日を忘れたり思い出せない。メモの内容が全然見つからないことが稀によくあります。<br><br>あなたの思い出せないモヤモヤ、特売日を逃したガッカリ感、割高で購入して損した気分↓↓<br><br>トクメモを使うとワンタップで購入価格、単価を見つけられ憂鬱な気分から解放！！<br>お買い物準備や店頭で悩む時間を減らしてワクワクする新たなトクを探しにいけます！！ |
-|||アプリの操作説明|
-|<img src="./screenshot/iPhone_14_ProMax/iPhone_14_ProMax_1.png" alt="スクリーンショット2" width=320 > |<img src="./screenshot/iPhone_14_ProMax/iPhone_14_ProMax_2.png" alt="スクリーンショット3" width=320 >|起動直後の画面<br>+ボタンをタップして商品を登録します。<br>商品追加画面<br>商品名を入力して、カテゴリーとショップを選択します。|
-||||
-|<img src="./screenshot/iPhone_14_ProMax/iPhone_14_ProMax_3.png" alt="スクリーンショット4" width=320 >|<img src="./screenshot/iPhone_14_ProMax/iPhone_14_ProMax_6.png" alt="スクリーンショット5" width=320 > |カテゴリー選択画面<br>初期カテゴリーは3つあります。<br>カテゴリー追加は右上の+ボタンから登録します。|
-|<img src="./screenshot/iPhone_14_ProMax/iPhone_14_ProMax_4.png" alt="スクリーンショット6" width=320 >|<img src="./screenshot/iPhone_14_ProMax/iPhone_14_ProMax_5.png" alt="スクリーンショット7" width=320 >|ショップ選択画面<br>店名を+ボタンから登録します。|
-|<img src="./screenshot/iPhone_14_ProMax/iPhone_14_ProMax_7.png" alt="スクリーンショット8" width=320 >|<img src="./screenshot/iPhone_14_ProMax/iPhone_14_ProMax_8.png" alt="スクリーンショット9" width=320 >|商品購入価格、割引価格、数量・単位、メモを入力します。<br>商品登録できました。<br>購入金額、店名や単価をチェックできます。|
-||||
-|<img src="./screenshot/iPhone_14_ProMax/iPhone_14_ProMax_9.png" alt="スクリーンショット10" width=320 >|<img src="./screenshot/iPhone_14_ProMax/iPhone_14_ProMax_13.png" alt="スクリーンショット13" width=320 >|3点リーダー（・・・）をタップで登録内容の編集、削除ができます。<br>商品編集画面<br>登録内容を変更できます。|
-|<img src="./screenshot/iPhone_14_ProMax/iPhone_14_ProMax_11.png" alt="スクリーンショット11" width=320 >|<img src="./screenshot/iPhone_14_ProMax/iPhone_14_ProMax_12.png" alt="スクリーンショット12" width=320 >|カテゴリー、ショップごとに並替え条件を設定可能です。|
+https://user-images.githubusercontent.com/68992872/201657023-86fde2d9-5a0a-4363-a764-f97309ec3ba6.mp4
 
+- Tab組合せによる一覧表反映
 
-## ダウンロード
+https://user-images.githubusercontent.com/68992872/201657367-59244dc3-1a9e-40f7-bfd1-7113a6f5eaea.mp4
 
+## 4. アプリの機能
+- 商品価格、単価を一覧表示
+- シンプルに税込購入金額を入力
+- カテゴリ・ショップの組合せで一覧表示を切り替えます
+
+## 5. アプリの設計について
+```mermaid
+graph LR;
+  1(TokuMemoListView)--追加-->AddItemView--更新-->CoreData;
+  1--変更-->EditItemView--チェック-->EditViewModel--更新-->CoreData;
+  1--削除-->DeleteViewModel--更新-->CoreData;
+  CoreData--Viewを更新-->1
+```
+## 6. こだわり
+- カテゴリ、ショップが変更された時にパターンに応じて条件を更新します
+https://github.com/CodeCandySchool/tokuMemo_ymp-a/blob/a5b720fc36e4404f28fff5000942338699ec0b5a/tokuMemo/View/TokuMemoListView.swift#L105-L110
+https://github.com/CodeCandySchool/tokuMemo_ymp-a/blob/a5b720fc36e4404f28fff5000942338699ec0b5a/tokuMemo/View/TokuMemoListView.swift#L148-L168
+
+- TabViewの分割
+  - どこまで分割するか悩みました
+https://github.com/CodeCandySchool/tokuMemo_ymp-a/blob/a5b720fc36e4404f28fff5000942338699ec0b5a/tokuMemo/View/CategoryShopTagView.swift#L32-L33
+https://github.com/CodeCandySchool/tokuMemo_ymp-a/blob/a5b720fc36e4404f28fff5000942338699ec0b5a/tokuMemo/View/CategoryShopTagView.swift#L58-L92
+
+## 7. 開発環境
+- Xcode 14.0.1
+- macOS Ventura 13.0
+- iPhone simulater 14.0.1
+- iPhone実機 iOS16.0
+  SwiftUIで開発されているためiOS16以降が必要です
+## 8. 作成者
+https://twitter.com/YMPa_FXSB103
+## 9. ご意見
 ([問い合わせ](https://docs.google.com/forms/d/e/1FAIpQLSechH7A7sbCKsNdlG7AUxLwEffGEWgnq4CVrifFcn8_l53q1w/viewform?usp=sf_link)) ([プライバシーポリシー](PrivacyPolicy.md))
