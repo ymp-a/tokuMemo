@@ -19,22 +19,57 @@ https://user-images.githubusercontent.com/68992872/201657367-59244dc3-1a9e-40f7-
 - カテゴリ・ショップの組合せで一覧表示を切り替えます
 
 ## 5. アプリの設計について
+|ファイル名|解説・概要|
+|--|--|
+|TokuMemoListView|ホームView、カテゴリ、ショップTabの条件で商品一覧をList表示する|
+|AddItemView|新規商品登録View|
+|EditItemView|商品情報変更View|
+|CategoryListView|カテゴリを選択、追加、編集、削除をを行うView|
+|ShopListView|ショップを選択、追加、編集、削除を行うView|
+|CategoryShopTagView|カテゴリ、ショップのTabボタン、CategoryListView,ShopListView表示フラグ管理機能があるView|
+|EditViewModel|カテゴリ、ショップ名の編集を処理します|
+|DeleteViewModel|商品、カテゴリ、ショップの削除を処理します|
+|||
+
 ```mermaid
 graph LR;
   1(TokuMemoListView)--追加-->AddItemView--更新-->CoreData;
-  1--変更-->EditItemView--チェック-->EditViewModel--更新-->CoreData;
+  1--変更-->EditItemView--更新-->CoreData;
   1--削除-->DeleteViewModel--更新-->CoreData;
+  1--カテゴリTab-->CategryListView--選択でView更新-->1
+  1--ショップTab-->ShopListView--選択でView更新-->1
   CoreData--Viewを更新-->1
 ```
+
+
+```mermaid
+graph LR;
+  1(TokuMemoListView)--依存-->2(CategryListView)--カテゴリ選択-->1
+  1--ショップTab選択-->3(ShopListView)--ショップ選択-->1
+  
+  4(AddItemView)--カテゴリTabタップ-->2'(CategryListView)--カテゴリ選択-->4
+  4--ショップTab選択-->3'(ShopListView)--ショップ選択-->4
+```
+
+```mermaid
+graph LR;
+  2(CategryListView)--追加-->追加アラート--入力チェック&更新-->CoreData
+  2--編集-->編集アラート--入力チェック-->EditItemView--更新-->CoreData
+  2--削除-->DeleteViewModel--更新-->CoreData
+  CoreData--Viewを更新-->2
+```
+
+  
+
 ## 6. こだわり
 - カテゴリ、ショップが変更された時にパターンに応じて条件を更新します
-https://github.com/CodeCandySchool/tokuMemo_ymp-a/blob/a5b720fc36e4404f28fff5000942338699ec0b5a/tokuMemo/View/TokuMemoListView.swift#L105-L110
-https://github.com/CodeCandySchool/tokuMemo_ymp-a/blob/a5b720fc36e4404f28fff5000942338699ec0b5a/tokuMemo/View/TokuMemoListView.swift#L148-L168
+https://github.com/ymp-a/tokuMemo/blob/a5b720fc36e4404f28fff5000942338699ec0b5a/tokuMemo/View/TokuMemoListView.swift#L105-L110
+https://github.com/ymp-a/tokuMemo/blob/a5b720fc36e4404f28fff5000942338699ec0b5a/tokuMemo/View/TokuMemoListView.swift#L148-L168
 
 - TabViewの分割
   - どこまで分割するか悩みました
-https://github.com/CodeCandySchool/tokuMemo_ymp-a/blob/a5b720fc36e4404f28fff5000942338699ec0b5a/tokuMemo/View/CategoryShopTagView.swift#L32-L33
-https://github.com/CodeCandySchool/tokuMemo_ymp-a/blob/a5b720fc36e4404f28fff5000942338699ec0b5a/tokuMemo/View/CategoryShopTagView.swift#L58-L92
+https://github.com/ymp-a/tokuMemo/blob/a5b720fc36e4404f28fff5000942338699ec0b5a/tokuMemo/View/CategoryShopTagView.swift#L32-L33
+https://github.com/ymp-a/tokuMemo/blob/a5b720fc36e4404f28fff5000942338699ec0b5a/tokuMemo/View/CategoryShopTagView.swift#L58-L92
 
 ## 7. 開発環境
 - Xcode 14.0.1
@@ -42,7 +77,10 @@ https://github.com/CodeCandySchool/tokuMemo_ymp-a/blob/a5b720fc36e4404f28fff5000
 - iPhone simulater 14.0.1
 - iPhone実機 iOS16.0
   SwiftUIで開発されているためiOS16以降が必要です
-## 8. 作成者
+  
+## 8. 操作説明
+[note トクメモアプリの使い方](https://note.com/ymp_a/n/n40460a324017)
+## 9. 作成者
 https://twitter.com/YMPa_FXSB103
-## 9. ご意見
+## 10. ご意見
 ([問い合わせ](https://docs.google.com/forms/d/e/1FAIpQLSechH7A7sbCKsNdlG7AUxLwEffGEWgnq4CVrifFcn8_l53q1w/viewform?usp=sf_link)) ([プライバシーポリシー](PrivacyPolicy.md))
