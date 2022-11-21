@@ -21,42 +21,56 @@ https://user-images.githubusercontent.com/68992872/201657367-59244dc3-1a9e-40f7-
 ## 5. アプリの設計について
 |ファイル名|解説・概要|
 |--|--|
-|TokuMemoListView|ホームView、カテゴリ、ショップTabの条件で商品一覧をList表示する|
-|AddItemView|新規商品登録View|
-|EditItemView|商品情報変更View|
-|CategoryListView|カテゴリを選択、追加、編集、削除をを行うView|
+|TokuMemoListView|カテゴリ、ショップTabの組合せで商品一覧を表示するメインView|
+|AddItemView|商品追加登録するView|
+|EditItemView|商品情報を変更するView|
+|CategoryListView|カテゴリを選択、追加、編集、削除を行うView|
 |ShopListView|ショップを選択、追加、編集、削除を行うView|
-|CategoryShopTagView|カテゴリ、ショップのTabボタン、CategoryListView,ShopListView表示フラグ管理機能があるView|
+|CategoryShopTagView|カテゴリ、ショップのTabボタン、CategoryListView,ShopListView表示フラグ管理しているView|
 |EditViewModel|カテゴリ、ショップ名の編集を処理します|
 |DeleteViewModel|商品、カテゴリ、ショップの削除を処理します|
 |||
 
+- 商品テーブル
 ```mermaid
-graph LR;
-  1(TokuMemoListView)--追加-->AddItemView--更新-->CoreData;
-  1--変更-->EditItemView--更新-->CoreData;
-  1--削除-->DeleteViewModel--更新-->CoreData;
-  1--カテゴリTab-->CategryListView--選択でView更新-->1
-  1--ショップTab-->ShopListView--選択でView更新-->1
-  CoreData--Viewを更新-->1
+graph TB;
+  subgraph View
+  1
+  A
+  E
+  CA
+  SH
+  end
+  subgraph ViewModel
+  Dm
+  end
+  1(TokuMemoListView)--追加-->A(AddItemView)--更新-->C[(CoreData)]
+  1--変更-->E(EditItemView)--更新-->C
+  1--削除-->Dm{{DeleteViewModel}}--更新-->C
+  1--カテゴリTab-->CA(CategryListView)--View更新-->1
+  1--ショップTab-->SH(ShopListView)--View更新-->1
+  C--Viewを更新-->1
 ```
 
 
-```mermaid
-graph LR;
-  1(TokuMemoListView)--依存-->2(CategryListView)--カテゴリ選択-->1
-  1--ショップTab選択-->3(ShopListView)--ショップ選択-->1
-  
-  4(AddItemView)--カテゴリTabタップ-->2'(CategryListView)--カテゴリ選択-->4
-  4--ショップTab選択-->3'(ShopListView)--ショップ選択-->4
-```
 
+- カテゴリ・ショップテーブル
 ```mermaid
-graph LR;
-  2(CategryListView)--追加-->追加アラート--入力チェック&更新-->CoreData
-  2--編集-->編集アラート--入力チェック-->EditItemView--更新-->CoreData
-  2--削除-->DeleteViewModel--更新-->CoreData
-  CoreData--Viewを更新-->2
+graph TB;
+  subgraph View
+  2
+  t
+  h
+  end
+  subgraph ViewModel
+  E
+  D
+  end
+  2(CategryListView<br>ShopListView)--追加-->t([追加アラート])--入力チェック&更新-->C[(CoreData)]
+  2--編集-->h([編集アラート])--入力チェック-->E{{EditViewModel}}--更新-->C
+  2--削除-->D{{DeleteViewModel}}--更新-->C
+  C--Viewを更新-->2
+
 ```
 
   
