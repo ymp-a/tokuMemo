@@ -75,15 +75,31 @@ graph TB;
 
   
 
-## 6. こだわり
-- カテゴリ、ショップが変更された時にパターンに応じて条件を更新します
-https://github.com/ymp-a/tokuMemo/blob/a5b720fc36e4404f28fff5000942338699ec0b5a/tokuMemo/View/TokuMemoListView.swift#L105-L110
+## 6. 苦労したポイント
+### 商品変更登録後の条件更新が反映できず、 items.nsPredicate = nilの初期化で悩みました
 https://github.com/ymp-a/tokuMemo/blob/a5b720fc36e4404f28fff5000942338699ec0b5a/tokuMemo/View/TokuMemoListView.swift#L148-L168
 
-- TabViewの分割
-  - どこまで分割するか悩みました
-https://github.com/ymp-a/tokuMemo/blob/a5b720fc36e4404f28fff5000942338699ec0b5a/tokuMemo/View/CategoryShopTagView.swift#L32-L33
-https://github.com/ymp-a/tokuMemo/blob/a5b720fc36e4404f28fff5000942338699ec0b5a/tokuMemo/View/CategoryShopTagView.swift#L58-L92
+### カテゴリ、ショップの値が変更した時に.onChangeイベントで条件を更新しています
+### onChange反映するタイミングは下記のように考えました
+```mermaid
+flowchart TD
+subgraph Tab選択
+  1(TokuMemoListView)-->2(CategoryListView<br>ShopListView)--Tab変更-->U(更新　TokuMemoListView)
+  2 --cancel-->1
+  
+end
+
+subgraph "Tab追加・変更・削除"
+  3(TokuMemoListView)-->4(CategoryListView<br>ShopListView)--"Tab追加・変更・削除"-->4'(更新 CategoryListView<br>更新 ShopListView)--Tab選択-->U'(更新　TokuMemoListView)
+  4' --cancel-->3
+end
+
+
+
+```
+
+### DeletViewModelの関数deleteResultでジェネリクスを利用して商品、カテゴリ、ショップ全ての削除を行なっています
+https://github.com/ymp-a/tokuMemo/blob/271817c4b70799bdc1b1c599234a0e1fdaf80b23/tokuMemo/ViewModel/DeleteViewModel.swift#L11-L24 
 
 ## 7. 開発環境
 - Xcode 14.0.1
