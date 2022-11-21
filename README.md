@@ -3,7 +3,7 @@
 ## 1. 概要
 トクメモは買い物のトクした気持ちを保存するアプリです。<br>登録した最安値などの情報をカテゴリ、店舗毎にすぐチェックできます。<br>登録した商品情報をカテゴリ、ショップ２つのTagで管理できます。
 ## 2. ダウンロードリンク
-リリース待ち
+[AppStore　トクメモ](https://apps.apple.com/jp/app/%E3%83%88%E3%82%AF%E3%83%A1%E3%83%A2-tokumemo/id6444182651)
 ## 3. 実行画面
 - 商品登録
 
@@ -80,7 +80,7 @@ graph TB;
 https://github.com/ymp-a/tokuMemo/blob/a5b720fc36e4404f28fff5000942338699ec0b5a/tokuMemo/View/TokuMemoListView.swift#L148-L168
 
 ### カテゴリ、ショップの値が変更した時に.onChangeイベントで条件を更新しています
-### onChange反映するタイミングは下記のように考えました
+### onChange反映するタイミングは下記のようにしました
 ```mermaid
 flowchart TD
 subgraph Tab選択
@@ -94,11 +94,10 @@ subgraph "Tab追加・変更・削除"
   4' --cancel-->3
 end
 
-
-
 ```
 
-### DeletViewModelの関数deleteResultでジェネリクスを利用して商品、カテゴリ、ショップ全ての削除を行なっています
+### DeletViewModelの関数deleteResultで商品、カテゴリ、ショップの削除を行なっています
+### ジェネリクスのスコープを理解するのが難しかった
 https://github.com/ymp-a/tokuMemo/blob/271817c4b70799bdc1b1c599234a0e1fdaf80b23/tokuMemo/ViewModel/DeleteViewModel.swift#L11-L24 
 
 ## 7. 開発環境
