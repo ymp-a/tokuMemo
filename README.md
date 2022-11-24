@@ -72,7 +72,9 @@ graph TB;
   C--Viewを更新-->2
 
 ```
+上記の表はJavaScriptライブラリ mermaidを利用して、マークダウン記法で作図しています。
 
+[About Mermaid](https://mermaid-js.github.io/mermaid/#/)
   
 
 ## 6. 苦労したポイント
@@ -97,9 +99,38 @@ end
 ```
 
 ### DeletViewModelの関数deleteResultで商品、カテゴリ、ショップの削除を行なっています
-### ジェネリクスのスコープを理解するのが難しかった
-https://github.com/ymp-a/tokuMemo/blob/271817c4b70799bdc1b1c599234a0e1fdaf80b23/tokuMemo/ViewModel/DeleteViewModel.swift#L11-L24 
 
+### before：.onDelete()を利用してレコードを左スワイプして削除
+
+tokuMemo/tokuMemo/ViewModel/DeleteViewModel.swift
+```swift
+class DeleteViewModel {
+    // generics<ジェネリック名：型指定>　optionクリック or 選択右クリックJump to Definition:プロトコルチェック
+    // Item,Category,Shopに再利用可能な削除機能
+    func deleteResult<Result: NSManagedObject>(offsets: IndexSet, result: FetchedResults<Result>, viewContext: NSManagedObjectContext) {
+        // レコードの削除
+        offsets.map { result[$0] }.forEach(viewContext.delete)
+        // データベース保存
+        do {
+            try viewContext.save()
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }// do catchここまで
+    } // deleteItemsここまで
+} // DeleteViewModelここまで
+```
+
+tokuMemo/tokuMemo/View/TokuMemoListView.swift
+```swift
+ .onDelete { indexSet in
+                            deleteViewModel.deleteResult(offsets: indexSet, result: items, viewContext: context)
+                        } // onDeleteここまで
+```
+
+### after：3点リーダメニューからボタンタップで１レコード削除へ変更
+https://github.com/ymp-a/tokuMemo/blob/271817c4b70799bdc1b1c599234a0e1fdaf80b23/tokuMemo/ViewModel/DeleteViewModel.swift#L11-L24 
+https://github.com/ymp-a/tokuMemo/blob/271817c4b70799bdc1b1c599234a0e1fdaf80b23/tokuMemo/View/TokuMemoListView.swift#L129-L133
 ## 7. 開発環境
 - Xcode 14.0.1
 - macOS Ventura 13.0
