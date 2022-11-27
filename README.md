@@ -3,7 +3,11 @@
 ## 1. 概要
 トクメモは買い物のトクした気持ちを保存するアプリです。<br>登録した最安値などの情報をカテゴリ、店舗毎にすぐにチェックできます。<br>登録した商品情報をカテゴリ、ショップの２つのTagで管理できます。
 ## 2. ダウンロードリンク
-[AppStore　トクメモ](https://apps.apple.com/jp/app/%E3%83%88%E3%82%AF%E3%83%A1%E3%83%A2-tokumemo/id6444182651)
+
+
+
+
+[![App_Store_Badge_JP](https://user-images.githubusercontent.com/68992872/204145956-f5cc0fa8-d4c9-4f2c-b1d4-3c3b1d2e2aba.png)](https://apps.apple.com/jp/app/%E3%83%88%E3%82%AF%E3%83%A1%E3%83%A2-tokumemo/id6444182651)
 ## 3. 実行画面
 - 商品登録
 
@@ -72,9 +76,9 @@ graph TB;
   C--Viewを更新-->2
 
 ```
-上記の表はJavaScriptライブラリ mermaidを利用して、マークダウン記法で作図しています。
+上記の表はJavaScriptライブラリ Mermaidを利用して、マークダウン記法で作図しています。
 
-[About Mermaid](https://mermaid-js.github.io/mermaid/#/)
+[Mermaidについて詳細はこちらから確認できます。](https://mermaid-js.github.io/mermaid/#/)
   
 
 ## 6. 苦労したポイント
@@ -139,7 +143,7 @@ https://github.com/ymp-a/tokuMemo/blob/271817c4b70799bdc1b1c599234a0e1fdaf80b23/
   SwiftUIで開発されているためiOS16以降が必要です
   
 ## 8. 操作説明
-[note トクメモアプリの使い方](https://note.com/ymp_a/n/n40460a324017)
+[トクメモアプリの使い方｜ymp_a - note](https://note.com/ymp_a/n/n40460a324017)
 ## 9. 作成者
 https://twitter.com/YMPa_FXSB103
 ## 10. ご意見
