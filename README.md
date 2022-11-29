@@ -81,7 +81,7 @@ graph TB;
 [Mermaidについて詳細はこちらから確認できます。](https://mermaid-js.github.io/mermaid/#/)
   
 
-## 6. 苦労したポイント
+## 6. 苦労した問題と解決方法
 ### カテゴリ、ショップの値が変更した時に.onChangeイベントで抽出条件を更新
 View更新するタイミングは下記のようにしました
 ```mermaid
@@ -110,13 +110,14 @@ end
 
 ```
 
-### 問題. 商品変更登録後の条件更新が反映できない
-#### 解決方法. 151行目のitems.nsPredicate = nil　抽出条件を初期化することで反映しました
+### 問題1. 商品変更登録後の条件更新が反映できない
+### 解決方法1. 151行目のitems.nsPredicate = nil　抽出条件を初期化することで反映しました
 https://github.com/ymp-a/tokuMemo/blob/a5b720fc36e4404f28fff5000942338699ec0b5a/tokuMemo/View/TokuMemoListView.swift#L148-L168
 
 
+### 問題２. 削除をボタンタップで行いたい
+### 解決方法2. DeletViewModelのdeleteResultへ渡す引数を削除する行の情報に変更しました
 
-### DeletViewModelの関数deleteResultで商品、カテゴリ、ショップの削除処理を行います
 
 #### before：.onDelete()を利用してレコードを左スワイプして削除
 
@@ -149,6 +150,7 @@ tokuMemo/tokuMemo/View/TokuMemoListView.swift
 #### after：3点リーダメニューからボタンタップで削除できるよう変更
 https://github.com/ymp-a/tokuMemo/blob/271817c4b70799bdc1b1c599234a0e1fdaf80b23/tokuMemo/ViewModel/DeleteViewModel.swift#L11-L24 
 https://github.com/ymp-a/tokuMemo/blob/271817c4b70799bdc1b1c599234a0e1fdaf80b23/tokuMemo/View/TokuMemoListView.swift#L129-L133
+
 
 ## 7. 開発環境
 - Xcode 14.0.1
