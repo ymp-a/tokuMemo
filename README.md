@@ -89,17 +89,17 @@ flowchart TD
 
 subgraph Tab
 direction LR
-Tab選択 --- Tab追加編集削除
+a --- b
 linkStyle 0 stroke-width:0px
 end
 
-subgraph Tab選択
+subgraph a[Tab選択]
   1(TokuMemoListView)-->2(CategoryListView<br>ShopListView)--Tab選択-->U(View更新　TokuMemoListView)
   2 --cancel-->1
   
 end
 
-subgraph Tab追加編集削除
+subgraph b["Tab追加・編集・削除"]
   3(TokuMemoListView)-->4(CategoryListView<br>ShopListView)--"Tab追加・変更・削除"-->4'(View更新 CategoryListView<br>View更新 ShopListView)--Tab選択-->U'(View更新　TokuMemoListView)
   4' --cancel-->3
 end
