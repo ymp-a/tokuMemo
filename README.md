@@ -13,25 +13,25 @@
 
 https://user-images.githubusercontent.com/68992872/201657023-86fde2d9-5a0a-4363-a764-f97309ec3ba6.mp4
 
-- Tab組合せによる一覧表反映
+- 商品一覧表を抽出条件で更新します
 
 https://user-images.githubusercontent.com/68992872/201657367-59244dc3-1a9e-40f7-bfd1-7113a6f5eaea.mp4
 
 ## 4. アプリの機能
 - 商品価格、単価を一覧表示
-- シンプルに税込購入金額を入力
+- 商品の価格と単価は税込金額を入力します
 - カテゴリ・ショップの組合せで一覧表示を切り替えます
 
 ## 5. アプリの設計について
 |ファイル名|解説・概要|
 |--|--|
-|TokuMemoListView|カテゴリ、ショップTabの組合せで商品一覧を表示するメインView|
-|AddItemView|商品追加登録するView|
+|TokuMemoListView|抽出条件で商品一覧を表示するメインView|
+|AddItemView|商品を追加登録するView|
 |EditItemView|商品情報を変更するView|
 |CategoryListView|カテゴリを選択、追加、編集、削除を行うView|
 |ShopListView|ショップを選択、追加、編集、削除を行うView|
 |CategoryShopTagView|カテゴリ、ショップのTabボタン、CategoryListView,ShopListView表示フラグ管理しているView|
-|EditViewModel|カテゴリ、ショップ名の編集を処理します|
+|EditViewModel|カテゴリ、ショップの編集を処理します|
 |DeleteViewModel|商品、カテゴリ、ショップの削除を処理します|
 |||
 
@@ -82,29 +82,43 @@ graph TB;
   
 
 ## 6. 苦労したポイント
-### 商品変更登録後の条件更新が反映できず、 items.nsPredicate = nilの初期化で悩みました
-https://github.com/ymp-a/tokuMemo/blob/a5b720fc36e4404f28fff5000942338699ec0b5a/tokuMemo/View/TokuMemoListView.swift#L148-L168
-
-### カテゴリ、ショップの値が変更した時に.onChangeイベントで条件を更新しています
-### onChange反映するタイミングは下記のようにしました
+### カテゴリ、ショップの値が変更した時に.onChangeイベントで抽出条件を更新
+View更新するタイミングは下記のようにしました
 ```mermaid
 flowchart TD
+
+subgraph Tab
+direction LR
+Tab選択 --- Tab追加編集削除
+linkStyle 0 stroke-width:0px
+end
+
 subgraph Tab選択
-  1(TokuMemoListView)-->2(CategoryListView<br>ShopListView)--Tab変更-->U(更新　TokuMemoListView)
+  1(TokuMemoListView)-->2(CategoryListView<br>ShopListView)--Tab選択-->U(View更新　TokuMemoListView)
   2 --cancel-->1
   
 end
 
-subgraph "Tab追加・変更・削除"
-  3(TokuMemoListView)-->4(CategoryListView<br>ShopListView)--"Tab追加・変更・削除"-->4'(更新 CategoryListView<br>更新 ShopListView)--Tab選択-->U'(更新　TokuMemoListView)
+subgraph Tab追加編集削除
+  3(TokuMemoListView)-->4(CategoryListView<br>ShopListView)--"Tab追加・変更・削除"-->4'(View更新 CategoryListView<br>View更新 ShopListView)--Tab選択-->U'(View更新　TokuMemoListView)
   4' --cancel-->3
 end
 
+
+
+
+
 ```
 
-### DeletViewModelの関数deleteResultで商品、カテゴリ、ショップの削除を行なっています
+### 問題. 商品変更登録後の条件更新が反映できない
+#### 解決方法. 151行目のitems.nsPredicate = nil　抽出条件を初期化することで反映しました
+https://github.com/ymp-a/tokuMemo/blob/a5b720fc36e4404f28fff5000942338699ec0b5a/tokuMemo/View/TokuMemoListView.swift#L148-L168
 
-### before：.onDelete()を利用してレコードを左スワイプして削除
+
+
+### DeletViewModelの関数deleteResultで商品、カテゴリ、ショップの削除処理を行います
+
+#### before：.onDelete()を利用してレコードを左スワイプして削除
 
 tokuMemo/tokuMemo/ViewModel/DeleteViewModel.swift
 ```swift
@@ -132,9 +146,10 @@ tokuMemo/tokuMemo/View/TokuMemoListView.swift
                         } // onDeleteここまで
 ```
 
-### after：3点リーダメニューからボタンタップで１レコード削除へ変更
+#### after：3点リーダメニューからボタンタップで削除できるよう変更
 https://github.com/ymp-a/tokuMemo/blob/271817c4b70799bdc1b1c599234a0e1fdaf80b23/tokuMemo/ViewModel/DeleteViewModel.swift#L11-L24 
 https://github.com/ymp-a/tokuMemo/blob/271817c4b70799bdc1b1c599234a0e1fdaf80b23/tokuMemo/View/TokuMemoListView.swift#L129-L133
+
 ## 7. 開発環境
 - Xcode 14.0.1
 - macOS Ventura 13.0
@@ -143,6 +158,7 @@ https://github.com/ymp-a/tokuMemo/blob/271817c4b70799bdc1b1c599234a0e1fdaf80b23/
   SwiftUIで開発されているためiOS16以降が必要です
   
 ## 8. 操作説明
+本アプリの操作説明がわかるようなページを用意しました。<br>次のページをみていただくと使い方がわかります。<br>
 [トクメモアプリの使い方｜ymp_a - note](https://note.com/ymp_a/n/n40460a324017)
 ## 9. 作成者
 https://twitter.com/YMPa_FXSB103
